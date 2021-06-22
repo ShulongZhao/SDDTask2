@@ -21,17 +21,6 @@ while True:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-        # loading player UI
-        # ball = pygame.image.load(
-        #     "/Users/nagamaddali/Desktop/untitled folder/download.bmp")
-        # rect = ball.get_rect()
-        # speed = [2, 2]
-
-        # rect = rect.move(speed)
-        # if rect.left < 0 or rect.right > width:
-        #     speed[0] = -speed[0]
-        # if rect.top < 0 or rect.bottom > height:
-        #     speed[1] = -speed[1]
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
