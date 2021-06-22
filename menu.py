@@ -34,8 +34,8 @@ smallfont = pygame.font.SysFont('Corbel', 35)
 # rendering a text written in
 # this font
 
-quit = smallfont.render('quit' , True , color)
-smells = smallfont.render('naga is indian' , True , color)
+quit = smallfont.render('quit', True, color)
+smells = smallfont.render('naga is god', True, color)
 
 
 while True:
