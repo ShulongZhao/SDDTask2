@@ -72,7 +72,7 @@ while True:
     screen.blit(quit, (width/2-20, height/2))
 
     # lalith smells
-    screen.blit(smells, (width/2-60, height/2-60))
+    screen.blit(smells, (width/2-70, height/2-60))
 
     # updates the frames of the game
     pygame.display.update()
