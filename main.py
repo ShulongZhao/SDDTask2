@@ -1,31 +1,78 @@
 import pygame
-from pygame.locals import *
+import sys
 
+
+# initializing the constructor
 pygame.init()
 
-size = 700, 700
-width, height = size
+# screen resolution
+res = (720, 720)
 
-window = pygame.display.set_mode(size)
+# opens up a window
+screen = pygame.display.set_mode(res)
 
-running = True
-background = (50, 50, 50)
+# white color
+color = (255, 255, 255)
+
+# light shade of the button
+color_light = (170, 170, 170)
+
+# dark shade of the button
+color_dark = (100, 100, 100)
+
+# stores the width of the
+# screen into a variable
+width = screen.get_width()
+
+# stores the height of the
+# screen into a variable
+height = screen.get_height()
+
+# defining a font
+smallfont = pygame.font.SysFont('Corbel', 35)
+
+# rendering a text written in
+# this font
+
+quit = smallfont.render('quit', True, color)
+smells = smallfont.render('naga is god', True, color)
+
 
 while True:
-    for event in pygame.event.get():
-        # initialising window
-        pygame.display.set_caption("Naga's Pygame")
-        window.fill(background)
-        pygame.display.update()
-        # quitting the window
-        if event.type == pygame.QUIT:
-            running = False
+
+    for ev in pygame.event.get():
+
+        if ev.type == pygame.QUIT:
             pygame.quit()
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                background = (255, 0, 0)
-            elif event.key == pygame.K_g:
-                background = (0, 255, 0)
-            elif event.key == pygame.K_b:
-                background = (0, 0, 255)
+        # checks if a mouse is clicked
+        if ev.type == pygame.MOUSEBUTTONDOWN:
+
+            # if the mouse is clicked on the
+            # button the game is terminated
+            if width/2-70 <= mouse[0] <= width/2+70 and height/2 <= mouse[1] <= height/2+40:
+                pygame.quit()
+
+    # fills the screen with a color
+    screen.fill((60, 25, 60))
+
+    # stores the (x,y) coordinates into
+    # the variable as a tuple
+    mouse = pygame.mouse.get_pos()
+
+    # if mouse is hovered on a button it
+    # changes to lighter shade
+    if width/2-70 <= mouse[0] <= width/2+70 and height/2 <= mouse[1] <= height/2+40:
+        pygame.draw.rect(screen, color_light, [width/2-70, height/2, 140, 40])
+
+    else:
+        pygame.draw.rect(screen, color_dark, [width/2-70, height/2, 140, 40])
+
+    # superimposing the text onto our button
+    screen.blit(quit, (width/2-20, height/2))
+
+    # lalith smells
+    screen.blit(smells, (width/2-70, height/2-60))
+
+    # updates the frames of the game
+    pygame.display.update()
