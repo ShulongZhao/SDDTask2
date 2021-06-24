@@ -1,31 +1,45 @@
 import pygame
 from pygame.locals import *
 
-pygame.init()
+pygame.init()  # initialise python
 
-size = 700, 700
-width, height = size
 
-window = pygame.display.set_mode(size)
-
-running = True
+size = [700, 700]
 background = (50, 50, 50)
+
+screen = pygame.display.set_mode(size)
+
+plyrCoordinates = [200, 200]
+image_height, image_width = 50, 50
+movementIncrement = 2
 
 while True:
     for event in pygame.event.get():
-        # initialising window
-        pygame.display.set_caption("Naga's Pygame")
-        window.fill(background)
-        pygame.display.update()
-        # quitting the window
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
+        # initialising screen
+        pygame.display.set_caption("(insert game title here)")
+        screen.fill(background)
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                background = (255, 0, 0)
-            elif event.key == pygame.K_g:
-                background = (0, 255, 0)
-            elif event.key == pygame.K_b:
-                background = (0, 0, 255)
+        # quitting the screen
+        if event.type == pygame.QUIT:
+            exit()
+
+        # loading player character
+        plyr = pygame.image.load("Images/playerCharacter.bmp")
+        plyr = pygame.transform.scale(plyr, (image_height, image_width))
+        screen.blit(source=plyr, dest=plyrCoordinates)
+        rect = plyr.get_rect()  # forms a rect around image for collision detection
+
+        # moving player character
+        # returns array of booleans, showing which keys are pressed
+        while event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                plyrCoordinates[0] -= movementIncrement
+            elif event.key == pygame.K_RIGHT:
+                plyrCoordinates[0] += movementIncrement
+            elif event.key == pygame.K_UP:
+                plyrCoordinates[1] -= movementIncrement
+            elif event.key == pygame.K_DOWN:
+                plyrCoordinates[1] += movementIncrement
+            break
+
+        pygame.display.update()
