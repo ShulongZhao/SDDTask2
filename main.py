@@ -6,13 +6,16 @@ import sys
 pygame.init()
 
 # screen resolution
-res = (720, 720)
+res = (1280, 720)
 
 # opens up a window
 screen = pygame.display.set_mode(res)
 
+# background image
+bg = pygame.image.load("Bliss.jpeg")
+
 # white color
-color = (255, 255, 255)
+color = (0, 0, 0)
 
 # light shade of the button
 color_light = (170, 170, 170)
@@ -54,7 +57,11 @@ while True:
                 pygame.quit()
 
     # fills the screen with a color
-    screen.fill((60, 25, 60))
+    screen.fill((135, 206, 235))
+
+    # background
+    screen.blit(bg, (0, 0))
+
 
     # stores the (x,y) coordinates into
     # the variable as a tuple
