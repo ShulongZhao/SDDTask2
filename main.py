@@ -1,16 +1,13 @@
 import pygame
 from pygame.locals import *
 
-pygame.init()
+pygame.init()  # initialise python
 
-size = 700, 700
-width, height = size
-
+size = [700, 700]
 image_height, image_width = 400, 400
 
 screen = pygame.display.set_mode(size)
 
-running = True
 background = (50, 50, 50)
 
 while True:
@@ -21,8 +18,7 @@ while True:
 
         # quitting the screen
         if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
+            exit()
 
         # loading player character
         ball = pygame.image.load("playerCharacter.bmp")
