@@ -24,25 +24,10 @@ while True:
             running = False
             pygame.quit()
 
-        # loading player UI
-        ball = pygame.image.load("download.bmp")
-        #ball = pygame.transform.smoothscale(ball, (image_height, image_width))
+        # loading player character
+        ball = pygame.image.load("playerCharacter.bmp")
+        ball = pygame.transform.scale(ball, (image_height, image_width))
         screen.blit(source=ball, dest=(200, 200))
-        rect = ball.get_rect()
-        speed = [2, 2]
-
-        rect = rect.move(speed)
-        if rect.left < 0 or rect.right > width:
-            speed[0] = -speed[0]
-        if rect.top < 0 or rect.bottom > height:
-            speed[1] = -speed[1]
-
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_r:
-        #         background = (255, 0, 0)
-        #     elif event.key == pygame.K_g:
-        #         background = (0, 255, 0)
-        #     elif event.key == pygame.K_b:
-        #         background = (0, 0, 255)
+        rect = ball.get_rect()  # forms a rect around image for collision detection
 
         pygame.display.update()
