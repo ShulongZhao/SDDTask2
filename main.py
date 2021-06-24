@@ -18,7 +18,7 @@ while True:
         # initialising screen
         pygame.display.set_caption("Naga's Pygame")
         screen.fill(background)
-        pygame.display.update()
+
         # quitting the screen
         if event.type == pygame.QUIT:
             running = False
@@ -26,8 +26,8 @@ while True:
 
         # loading player UI
         ball = pygame.image.load("download.bmp")
-        ball = pygame.transform.smoothscale(ball, (image_height, image_width))
-        screen.blit(source=ball, area=(0, 0))
+        #ball = pygame.transform.smoothscale(ball, (image_height, image_width))
+        screen.blit(source=ball, dest=(200, 200))
         rect = ball.get_rect()
         speed = [2, 2]
 
@@ -37,10 +37,12 @@ while True:
         if rect.top < 0 or rect.bottom > height:
             speed[1] = -speed[1]
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                background = (255, 0, 0)
-            elif event.key == pygame.K_g:
-                background = (0, 255, 0)
-            elif event.key == pygame.K_b:
-                background = (0, 0, 255)
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_r:
+        #         background = (255, 0, 0)
+        #     elif event.key == pygame.K_g:
+        #         background = (0, 255, 0)
+        #     elif event.key == pygame.K_b:
+        #         background = (0, 0, 255)
+
+        pygame.display.update()
