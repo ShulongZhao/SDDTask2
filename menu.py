@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 
 # initializing the constructor
@@ -12,7 +11,7 @@ res = (1280, 720)
 screen = pygame.display.set_mode(res)
 
 # background image
-bg = pygame.image.load("images/menu.jpeg")
+bg = pygame.image.load("images\menu.jpeg")
 
 # white color
 color = (0, 0, 0)
@@ -38,7 +37,7 @@ titlefont = pygame.font.Font('titlefont.ttf', 35)
 # this font
 
 quit = titlefont.render('quit', True, color)
-title = titlefont.render('naga is god', True, color)
+title = titlefont.render('Max Cheng is god', True, color)
 start = titlefont.render('start', True, color)
 
 # positioning the text based on the center of a rectangle drawn around it
@@ -56,9 +55,12 @@ while True:
         # checks if a mouse is clicked
         if ev.type == pygame.MOUSEBUTTONDOWN:
 
-            # if the mouse is clicked on the
-            # button the game is terminated
+            # if the mouse is clicked on the button it does things
             if quitRect.left <= mouse[0] <= quitRect.right and quitRect.top <= mouse[1] <= quitRect.bottom:
+                pygame.quit()
+
+            if startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
+                import game
                 pygame.quit()
 
     # fills the screen with a color
