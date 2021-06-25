@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 res = (540, 720)
 screen = pygame.display.set_mode(res)
-bg = pygame.image.load("images\gamebackground.jpeg")
+bg = pygame.image.load("images\gamebackground.bmp")
 
 while True:
 
