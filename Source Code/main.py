@@ -11,7 +11,7 @@ res = (1280, 720)
 screen = pygame.display.set_mode(res)
 
 # background image
-bg = pygame.image.load("Images/menu.jpeg")
+bg = pygame.image.load("images\menu.bmp")
 
 # white color
 color = (0, 0, 0)
