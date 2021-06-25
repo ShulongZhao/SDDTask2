@@ -11,7 +11,7 @@ res = (1280, 720)
 screen = pygame.display.set_mode(res)
 
 # background image
-bg = pygame.image.load("images\menu.bmp")
+bg = pygame.image.load("Images/menu.bmp")
 
 # white color
 color = (0, 0, 0)
@@ -31,7 +31,7 @@ width = screen.get_width()
 height = screen.get_height()
 
 # defining a font
-titlefont = pygame.font.Font('fonts/titlefont.ttf', 35)
+titlefont = pygame.font.Font('Fonts/titlefont.ttf', 35)
 
 # rendering a text written in
 # this font
