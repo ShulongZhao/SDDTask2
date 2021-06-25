@@ -1,18 +1,20 @@
 import pygame
-import sys
 
 
 # initializing the constructor
 pygame.init()
 
 # screen resolution
-res = (720, 720)
+res = (1280, 720)
 
 # opens up a window
 screen = pygame.display.set_mode(res)
 
+# background image
+bg = pygame.image.load("images\menu.bmp")
+
 # white color
-color = (255, 255, 255)
+color = (0, 0, 0)
 
 # light shade of the button
 color_light = (170, 170, 170)
@@ -29,14 +31,19 @@ width = screen.get_width()
 height = screen.get_height()
 
 # defining a font
-smallfont = pygame.font.SysFont('Corbel', 35)
+titlefont = pygame.font.Font('fonts/titlefont.ttf', 35)
 
 # rendering a text written in
 # this font
 
-quit = smallfont.render('quit', True, color)
-smells = smallfont.render('naga is god', True, color)
+quit = titlefont.render('quit', True, color)
+title = titlefont.render('Max Cheng is god', True, color)
+start = titlefont.render('start', True, color)
 
+# positioning the text based on the center of a rectangle drawn around it
+titleRect = title.get_rect(center=(width/2, height/3))
+quitRect = quit.get_rect(center=(width/2, 2*height/3))
+startRect = start.get_rect(center=(width/2, height/2))
 
 while True:
 
@@ -48,13 +55,19 @@ while True:
         # checks if a mouse is clicked
         if ev.type == pygame.MOUSEBUTTONDOWN:
 
-            # if the mouse is clicked on the
-            # button the game is terminated
-            if width/2-70 <= mouse[0] <= width/2+70 and height/2 <= mouse[1] <= height/2+40:
+            # if the mouse is clicked on the button it does things
+            if quitRect.left <= mouse[0] <= quitRect.right and quitRect.top <= mouse[1] <= quitRect.bottom:
+                pygame.quit()
+
+            if startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
+                import game
                 pygame.quit()
 
     # fills the screen with a color
-    screen.fill((60, 25, 60))
+    screen.fill((135, 206, 235))
+
+    # background
+    screen.blit(bg, (0, 0))
 
     # stores the (x,y) coordinates into
     # the variable as a tuple
@@ -62,17 +75,22 @@ while True:
 
     # if mouse is hovered on a button it
     # changes to lighter shade
-    if width/2-70 <= mouse[0] <= width/2+70 and height/2 <= mouse[1] <= height/2+40:
-        pygame.draw.rect(screen, color_light, [width/2-70, height/2, 140, 40])
+    if quitRect.left <= mouse[0] <= quitRect.right and quitRect.top <= mouse[1] <= quitRect.bottom:
+        pygame.draw.rect(screen, color_light, quitRect)
 
     else:
-        pygame.draw.rect(screen, color_dark, [width/2-70, height/2, 140, 40])
+        pygame.draw.rect(screen, color_dark, quitRect)
 
-    # superimposing the text onto our button
-    screen.blit(quit, (width/2-20, height/2))
+    if startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
+        pygame.draw.rect(screen, color_light, startRect)
 
-    # lalith smells
-    screen.blit(smells, (width/2-70, height/2-60))
+    else:
+        pygame.draw.rect(screen, color_dark, startRect)
+
+    # rendering all text last so that it covers the buttons
+    screen.blit(quit, quitRect)
+    screen.blit(start, startRect)
+    screen.blit(title, titleRect)
 
     # updates the frames of the game
     pygame.display.update()
