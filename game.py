@@ -1,47 +1,41 @@
 import pygame
 from pygame.locals import *
-import time
-
-pygame.init()
+#import time
 
 size = [700, 700]
 background = (50, 50, 50)
 
+pygame.init()
 screen = pygame.display.set_mode(size)
 
-plyrCoordinates = [200, 200]
-image_height, image_width = 50, 50
+plyrCoordinates = [size[0]/2, size[1]/2]
+plyrheight, plyrwidth = 100, 100
+speed = 5
 
-speedMultiplier = 2
+pygame.display.set_caption("(insert game title here)")
 
 gameState = True
 while gameState:
+    # quitting the screen
     for event in pygame.event.get():
-        # initialising screen
-        pygame.display.set_caption("(insert game title here)")
-        screen.fill(background)
-
-        # quitting the screen
         if event.type == pygame.QUIT:
             gameState = False
 
-        # loading player character
-        plyr = pygame.image.load("Images/playerCharacter.bmp")
-        plyr = pygame.transform.scale(plyr, (image_height, image_width))
-        # redraws ball image onto screen
-        screen.blit(source=plyr, dest=plyrCoordinates)
-        # forms a rect around image for collision detection
-        rect = plyr.get_rect()
+    # moving player character
+    keys = pygame.key.get_pressed()
+    plyrCoordinates[0] += (keys[pygame.K_RIGHT] -
+                           keys[pygame.K_LEFT]) * speed
+    plyrCoordinates[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * speed
 
-        # moving player character
-        keys = pygame.key.get_pressed()
+    screen.fill(background)
 
-        plyrCoordinates[0] += (keys[pygame.K_RIGHT] -
-                               keys[pygame.K_LEFT]) * speedMultiplier
-        plyrCoordinates[1] += (keys[pygame.K_DOWN] -
-                               keys[pygame.K_UP]) * speedMultiplier
+    # loading player character
+    plyr = pygame.image.load("Images/playerCharacter.bmp")
+    plyr = pygame.transform.scale(plyr, (plyrheight, plyrwidth))
+    # draws player onto screen
+    screen.blit(plyr, (plyrCoordinates))
 
-        pygame.display.update()
+    pygame.display.update()
 
 
 pygame.quit()
