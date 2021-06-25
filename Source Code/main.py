@@ -11,7 +11,7 @@ res = (1280, 720)
 screen = pygame.display.set_mode(res)
 
 # background image
-bg = pygame.image.load("images\menu.jpeg")
+bg = pygame.image.load("Images/menu.jpeg")
 
 # white color
 color = (0, 0, 0)
@@ -69,7 +69,6 @@ while True:
     # background
     screen.blit(bg, (0, 0))
 
-
     # stores the (x,y) coordinates into
     # the variable as a tuple
     mouse = pygame.mouse.get_pos()
@@ -81,13 +80,13 @@ while True:
 
     else:
         pygame.draw.rect(screen, color_dark, quitRect)
-    
+
     if startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
         pygame.draw.rect(screen, color_light, startRect)
 
     else:
         pygame.draw.rect(screen, color_dark, startRect)
-    
+
     # rendering all text last so that it covers the buttons
     screen.blit(quit, quitRect)
     screen.blit(start, startRect)
