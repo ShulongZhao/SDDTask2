@@ -1,29 +1,42 @@
-from pygame.locals import *
 import pygame
-
-pygame.init()  # initialise python
+from pygame.locals import *
+#import time
 
 size = [700, 700]
-image_height, image_width = 400, 400
-
-screen = pygame.display.set_mode(size)
-
 background = (50, 50, 50)
 
-while True:
+pygame.init()
+screen = pygame.display.set_mode(size)
+
+plyrCoordinates = [size[0]/2, size[1]/2]
+plyrheight, plyrwidth = 100, 100
+speed = 5
+
+pygame.display.set_caption("(insert game title here)")
+
+gameState = True
+while gameState:
+    # quitting the screen
     for event in pygame.event.get():
-        # initialising screen
-        pygame.display.set_caption("Naga's Pygame")
-        screen.fill(background)
-
-        # quitting the screen
         if event.type == pygame.QUIT:
-            exit()
+            gameState = False
 
-        # loading player character
-        ball = pygame.image.load("playerCharacter.bmp")
-        ball = pygame.transform.scale(ball, (image_height, image_width))
-        screen.blit(source=ball, dest=(200, 200))
-        rect = ball.get_rect()  # forms a rect around image for collision detection
+    # moving player character
+    keys = pygame.key.get_pressed()
+    plyrCoordinates[0] += (keys[pygame.K_RIGHT] -
+                           keys[pygame.K_LEFT]) * speed
+    plyrCoordinates[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * speed
 
-        pygame.display.update()
+    screen.fill(background)
+
+    # loading player character
+    plyr = pygame.image.load("Images/playerCharacter.bmp")
+    plyr = pygame.transform.scale(plyr, (plyrheight, plyrwidth))
+    # draws player onto screen
+    screen.blit(plyr, (plyrCoordinates))
+
+    pygame.display.update()
+
+
+pygame.quit()
+exit()
