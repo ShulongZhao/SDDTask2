@@ -14,7 +14,6 @@ plyr = {
 
 if __name__ == "__main__":
 
-    pygame.init()
     pygame.display.set_caption("(insert game title here)")
 
     # returns the player's input (play or quit) as a boolean

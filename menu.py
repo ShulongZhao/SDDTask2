@@ -68,7 +68,7 @@ def Menu():
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 # conditions for mouse click on buttons
                 if quitRect.left <= mouse[0] <= quitRect.right and quitRect.top <= mouse[1] <= quitRect.bottom:
-                    gameState = False  # exits loop
+                    gameState = False  # exits loop, returning a false value to indicate quitting
                 elif startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
                     return gameState  # exits loop and returns gameState = True
 
