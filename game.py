@@ -2,24 +2,24 @@ import pygame
 from pygame.locals import *
 
 
-def Game(_framerate, _windowSize, _windowBackground, _plyr, is_game_running):
-    # ability to customise game window; different to menu window
+def Game(_frameRate, _clock, _windowSize, _windowBG, _plyr, is_game_running):
+    pygame.init()
+
     window = pygame.display.set_mode(_windowSize)
-    clock = pygame.time.Clock()
+
     while is_game_running == True:
         # framerate
-        clock.tick(_framerate)
+        _clock.tick(_frameRate)
 
         # quitting the screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_game_running = False
 
-        # moving player character
+        # getting state of all keys
         keys = pygame.key.get_pressed()
-
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
-        # i.e. keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
+        # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
         # same for player y-coordinate (down is positive and up is negative, in pygame)
         _plyr["coordinates"][0] += (keys[pygame.K_RIGHT] -
                                     keys[pygame.K_LEFT]) * _plyr["speed"]
@@ -28,7 +28,7 @@ def Game(_framerate, _windowSize, _windowBackground, _plyr, is_game_running):
 
         # window fill before drawing player
         # so player is above window layer
-        window.fill(_windowBackground)
+        window.fill(_windowBG)
 
         # player sprite property management
         _plyr["sprite"] = pygame.transform.scale(
