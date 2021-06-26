@@ -2,10 +2,8 @@ import pygame
 from pygame.locals import *
 
 
-def Game(_frameRate, _clock, _windowSize, _windowBG, _plyr, is_game_running):
+def Game(_frameRate, _clock, _window, _windowBG, _plyr, is_game_running):
     pygame.init()
-
-    window = pygame.display.set_mode(_windowSize)
 
     while is_game_running == True:
         # framerate
@@ -28,7 +26,7 @@ def Game(_frameRate, _clock, _windowSize, _windowBG, _plyr, is_game_running):
 
         # window fill before drawing player
         # so player is above window layer
-        window.fill(_windowBG)
+        _window.fill(_windowBG)
 
         # player sprite property management
         _plyr["sprite"] = pygame.transform.scale(
@@ -38,7 +36,7 @@ def Game(_frameRate, _clock, _windowSize, _windowBG, _plyr, is_game_running):
             (_plyr["height"], _plyr["width"]))
 
         # draws player onto screen
-        window.blit(_plyr["sprite"], (_plyr["coordinates"]))
+        _window.blit(_plyr["sprite"], (_plyr["coordinates"]))
 
         pygame.display.update()
 
