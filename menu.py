@@ -4,18 +4,15 @@ import pygame
 def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
     pygame.init()
 
-    # assigned the instances of the Button class in the menuButtons dict
-    title = buttonDict["title"]
-    start = buttonDict["start"]
-    quit = buttonDict["quit"]
-
     gameState = True
     while gameState:
         # framerate
         _clock.tick(_frameRate)
 
-        # background
-        _window.blit(_windowBG, (0, 0))
+        # assigned the instances of the Button class in the menuButtons dict
+        title = buttonDict["title"]
+        start = buttonDict["start"]
+        quit = buttonDict["quit"]
 
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
@@ -24,8 +21,15 @@ def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
             # checks if mouse clicks buttons
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 # conditions for mouse click on buttons
-                start.ButtonClick(returnValue=True)
-                quit.ButtonClick(returnValue=False)
+                if start.OnButtonClick(returnValue=True): return start.OnButtonClick(returnValue=True)
+                elif quit.OnButtonClick(returnValue=False) == False: gameState = False
+
+        # background
+        _window.blit(_windowBG, (0, 0))
+
+        title.main()
+        start.main()
+        quit.main()
 
         # rendering text last so that it covers buttons
         _window.blit(quit.myText, quit.textRect)

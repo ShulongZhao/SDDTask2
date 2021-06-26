@@ -29,17 +29,15 @@ plyr = {
     "sprite": pygame.image.load("Images/playerCharacter.bmp")
 }
 
-# instance of custom text class
-myText = GUI.Text()
-
-titleText = myText.RenderText("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (0, 0, 0))
-startText = myText.RenderText("Start", "Fonts/titlefont.ttf", 12, (0, 0, 0))
-quitText = myText.RenderText("Quit", "Fonts/titlefont.ttf", 12, (0, 0, 0))
+# instances of custom text class
+titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
+startText = GUI.Text("Start", "Fonts/titlefont.ttf", 24, (0, 0, 0))
+quitText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 
 # instances of custom button class
-titleButton = GUI.Button(titleText, (0, 0, 0, 0), (0, 0, 0, 0), [windowSize[0]/2, windowSize[1]/3], mouse, window)
-startButton = GUI.Button(startText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, windowSize[1]/2], mouse, window)
-quitButton = GUI.Button(quitText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, 2*windowSize[1]/3], mouse, window)
+titleButton = GUI.Button(titleText.renderedText, (0, 0, 0), (0, 0, 0), [windowSize[0]/2, windowSize[1]/3], window)
+startButton = GUI.Button(startText.renderedText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, windowSize[1]/2], window)
+quitButton = GUI.Button(quitText.renderedText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, 2*windowSize[1]/3], window)
 
 
 # dictionary containing all menu buttons
@@ -49,12 +47,9 @@ menuButtons = {
     "quit": quitButton
 }
 
-
 if __name__ == "__main__":
-
-    print(quitButton.textRect)
-
-    pygame.display.set_caption(str(titleText))
+    
+    pygame.display.set_caption(str(titleText.text))
 
     # returns a boolean
     menuState = menu.Menu(framerate, clock, window, menuWindowBG, menuButtons)
