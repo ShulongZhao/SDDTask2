@@ -5,8 +5,8 @@ size = [700, 700]
 background = (50, 50, 50)
 
 plyrCoordinates = [size[0]/2, size[1]/2]
-plyrheight, plyrwidth = 100, 100
-speed = 5
+plyrheight, plyrwidth = 20, 20
+speed = 7.5
 
 pygame.init()
 pygame.display.set_caption("(insert game title here)")
@@ -15,7 +15,7 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
 
-def Game(is_game_running):
+def Game(is_game_running):  # parsed from menu.Menu(), to run the game
     while is_game_running == True:
         # framerate
         clock.tick(50)

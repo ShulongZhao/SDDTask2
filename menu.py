@@ -35,29 +35,11 @@ startRect = start.get_rect(center=(width/2, height/2))
 
 
 def Menu():
-    menuState = True
-    running = True
-    while running:
+    gameState = True
+    while gameState:
 
         # stores the (x,y) coordinates as a tuple
         mouse = pygame.mouse.get_pos()
-
-        for ev in pygame.event.get():
-            if ev.type == pygame.QUIT:
-                running = False
-
-            # checks if a mouse is clicked
-            if ev.type == pygame.MOUSEBUTTONDOWN:
-
-                # conditions for mouse click on buttons
-                if quitRect.left <= mouse[0] <= quitRect.right and quitRect.top <= mouse[1] <= quitRect.bottom:
-                    menuState = False
-                    running = False
-                elif startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
-                    menuState = True
-                    running = False
-                else:
-                    pass
 
         screen.fill((135, 206, 235))
         # background
@@ -79,6 +61,18 @@ def Menu():
         screen.blit(start, startRect)
         screen.blit(title, titleRect)
 
+        for ev in pygame.event.get():
+            if ev.type == pygame.QUIT:
+                gameState = False  # exits loop
+
+            # checks if a mouse is clicked
+            if ev.type == pygame.MOUSEBUTTONDOWN:
+                # conditions for mouse click on buttons
+                if quitRect.left <= mouse[0] <= quitRect.right and quitRect.top <= mouse[1] <= quitRect.bottom:
+                    gameState = False  # exits loop
+                elif startRect.left <= mouse[0] <= startRect.right and startRect.top <= mouse[1] <= startRect.bottom:
+                    return gameState  # exits loop and returns gameState = True
+
         pygame.display.update()
 
-    return menuState
+    return gameState  # returns the game's state
