@@ -1,6 +1,5 @@
 import pygame
 
-# initializing the constructor
 pygame.init()
 
 # screen resolution

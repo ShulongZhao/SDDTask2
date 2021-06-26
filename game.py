@@ -1,24 +1,14 @@
 import pygame
 from pygame.locals import *
 
-size = [700, 700]
-background = (50, 50, 50)
 
-plyrCoordinates = [size[0]/2, size[1]/2]
-plyrheight, plyrwidth = 20, 20
-speed = 7.5
-
-pygame.init()
-pygame.display.set_caption("(insert game title here)")
-screen = pygame.display.set_mode(size)
-
-clock = pygame.time.Clock()
-
-
-def Game(is_game_running):  # parsed from menu.Menu(), to run the game
+def Game(_framerate, _windowSize, _windowBackground, _plyr, is_game_running):
+    # ability to customise game window; different to menu window
+    window = pygame.display.set_mode(_windowSize)
+    clock = pygame.time.Clock()
     while is_game_running == True:
         # framerate
-        clock.tick(50)
+        clock.tick(_framerate)
 
         # quitting the screen
         for event in pygame.event.get():
@@ -27,19 +17,28 @@ def Game(is_game_running):  # parsed from menu.Menu(), to run the game
 
         # moving player character
         keys = pygame.key.get_pressed()
-        plyrCoordinates[0] += (keys[pygame.K_RIGHT] -
-                               keys[pygame.K_LEFT]) * speed
-        plyrCoordinates[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * speed
 
-        # screen fill before drawing player
-        # so player is above screen layer
-        screen.fill(background)
+        # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
+        # i.e. keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
+        # same for player y-coordinate (down is positive and up is negative, in pygame)
+        _plyr["coordinates"][0] += (keys[pygame.K_RIGHT] -
+                                    keys[pygame.K_LEFT]) * _plyr["speed"]
+        _plyr["coordinates"][1] += (keys[pygame.K_DOWN] -
+                                    keys[pygame.K_UP]) * _plyr["speed"]
 
-        # loading player character
-        plyr = pygame.image.load("Images/playerCharacter.bmp")
-        plyr = pygame.transform.scale(plyr, (plyrheight, plyrwidth))
+        # window fill before drawing player
+        # so player is above window layer
+        window.fill(_windowBackground)
+
+        # player sprite property management
+        _plyr["sprite"] = pygame.transform.scale(
+            # sprite that is being scaled up
+            _plyr["sprite"],
+            # the scaled height and width of the sprite
+            (_plyr["height"], _plyr["width"]))
+
         # draws player onto screen
-        screen.blit(plyr, (plyrCoordinates))
+        window.blit(_plyr["sprite"], (_plyr["coordinates"]))
 
         pygame.display.update()
 
