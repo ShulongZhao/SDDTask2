@@ -12,14 +12,18 @@ pygame.init()
 pygame.display.set_caption("(insert game title here)")
 screen = pygame.display.set_mode(size)
 
+clock = pygame.time.Clock()
 
-def game():
-    gameState = True
-    while gameState:
+
+def Game(is_game_running):
+    while is_game_running == True:
+        # framerate
+        clock.tick(50)
+
         # quitting the screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                gameState = False
+                is_game_running = False
 
         # moving player character
         keys = pygame.key.get_pressed()
@@ -27,6 +31,8 @@ def game():
                                keys[pygame.K_LEFT]) * speed
         plyrCoordinates[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * speed
 
+        # screen fill before drawing player
+        # so player is above screen layer
         screen.fill(background)
 
         # loading player character
@@ -37,5 +43,4 @@ def game():
 
         pygame.display.update()
 
-    pygame.quit()
-    exit()
+    return
