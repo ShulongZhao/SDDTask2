@@ -1,4 +1,4 @@
 
 .DS_Store
 *.pyc
-__pycache__/game.cpython-38.pyc
+__pycache__
