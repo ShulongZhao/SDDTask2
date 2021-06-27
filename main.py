@@ -15,8 +15,9 @@ mouse = pygame.mouse.get_pos()
 
 # universal game window
 windowSize = [1280, 720]
-pygame.display.set_icon(pygame.image.load("Images/icon.bmp"))
 window = pygame.display.set_mode(windowSize)
+pygame.display.set_caption("Game Title")
+
 
 # separate window backgrounds
 menuWindowBG = pygame.image.load("Images/menu.bmp")
@@ -54,8 +55,6 @@ menuButtons = {
 }
 
 if __name__ == "__main__":
-    
-    pygame.display.set_caption("Game Title")
 
     menuState = menu.Menu(framerate, window, menuWindowBG, menuButtons)
 
