@@ -35,11 +35,11 @@ titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 2
 startText = GUI.Text("Start", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 quitText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 
-# dictionary containing instances of custom button class on menu window
+# dictionary containing instances of custom button class, located on menu window
 menuButtons = {
-    "title": GUI.Button(titleText, (0, 0, 0), (0, 0, 0), [windowSize[0]/2, windowSize[1]/3], window),
-    "start": GUI.Button(startText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, windowSize[1]/2], window),
-    "quit": GUI.Button(quitText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, 2*windowSize[1]/3], window)
+    titleText.originalText: GUI.Button(titleText, (0, 0, 0), (0, 0, 0), [windowSize[0]/2, windowSize[1]/3], window),
+    startText.originalText: GUI.Button(startText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, windowSize[1]/2], window),
+    quitText.originalText: GUI.Button(quitText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, 2*windowSize[1]/3], window)
 }
 
 
@@ -49,12 +49,13 @@ if __name__ == "__main__":
     
     pygame.display.set_caption("Game Title")
 
-    # returns a boolean
     menuState = menu.Menu(framerate, clock, window, menuWindowBG, menuButtons)
 
-    game.Game(framerate, clock, window, gameWindowBG, plyr,
-              # uses menuState as a condition for running game.Game()
-              is_game_running=menuState)
+    # for buttonName in menuButtons:
+    #     if menuState == buttonName:
+    #         pass
+
+    game.Game(framerate, clock, window, gameWindowBG, plyr)
 
     pygame.quit()
     exit()

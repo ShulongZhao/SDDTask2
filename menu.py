@@ -3,7 +3,7 @@ import pygame
 
 def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
     pygame.init()
-
+    
     gameState = True
     while gameState:
         # framerate
@@ -17,23 +17,22 @@ def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
             if ev.type == pygame.QUIT:
                 gameState = False  # exits loop
 
-            # automated this process so any number of buttons 
+            # created a loop so any number of buttons 
             # can be added without altering this file
-            for button in buttonDict:
+            for buttonName in buttonDict:
+                button = buttonDict[buttonName]
                 # checks if mouse clicks buttons
                 if ev.type == pygame.MOUSEBUTTONDOWN:
                     # condition for mouse click on buttons
-                    if buttonDict[button].OnButtonClick() == buttonDict[button].myText.originalText: 
-                        return buttonDict[button].myText.originalText
-                    else:
-                        #continue with the loop
-                        continue
+                    if button.OnButtonClick() == button.myText.originalText: 
+                        return button.myText.originalText
 
         # calls main() in all buttons of buttonDict
-        for button in buttonDict:
-            buttonDict[button].main()
-            # rendering text last so that it covers buttons
-            _window.blit(buttonDict[button].myText.renderedText, buttonDict[button].textRect)
+        for buttonName in buttonDict:
+            button = buttonDict[buttonName]
+            button.main()
+            # rendering text so it is on the uppermost layer
+            _window.blit(button.myText.renderedText, button.textRect)
 
         pygame.display.update()
 

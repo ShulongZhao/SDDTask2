@@ -1,18 +1,25 @@
+from types import TracebackType
 import pygame
 from pygame.locals import *
 
 
-def Game(_frameRate, _clock, _window, _windowBG, _plyr, is_game_running):
-    pygame.init()
+def Game(_frameRate, _clock, _window, _windowBG, _plyr):
 
-    while is_game_running == "Start":
+    gameState = True
+    while gameState:
+
         # framerate
         _clock.tick(_frameRate)
+
+        # window fill before drawing player
+        # so player is above window layer
+        _window.fill(_windowBG)
 
         # quitting the screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                is_game_running = False
+                # exits loop 
+                gameState = False
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -24,9 +31,7 @@ def Game(_frameRate, _clock, _window, _windowBG, _plyr, is_game_running):
         _plyr["coordinates"][1] += (keys[pygame.K_DOWN] -
                                     keys[pygame.K_UP]) * _plyr["speed"]
 
-        # window fill before drawing player
-        # so player is above window layer
-        _window.fill(_windowBG)
+        
 
         # player sprite property management
         _plyr["sprite"] = pygame.transform.scale(
@@ -39,5 +44,6 @@ def Game(_frameRate, _clock, _window, _windowBG, _plyr, is_game_running):
         _window.blit(_plyr["sprite"], (_plyr["coordinates"]))
 
         pygame.display.update()
+
 
     return

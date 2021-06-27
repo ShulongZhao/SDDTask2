@@ -45,8 +45,7 @@ class Text:
     renderedText = None  
     def __init__(self, text, textFontLocation, textFontSize, textColour):
         self.originalText = text
-        renderedText = pygame.font.Font(
-            textFontLocation, textFontSize).render(text, True, textColour)
+        renderedText = pygame.font.Font(textFontLocation, textFontSize).render(text, True, textColour)
         self.renderedText = renderedText
 
 
