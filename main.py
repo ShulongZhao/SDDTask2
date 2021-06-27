@@ -1,27 +1,38 @@
+from typing import Sized
 import pygame
 
 import menu
 import game
 import GUI
 
+# initalises all pygame processes 
 pygame.init()
+
 
 # time
 clock = pygame.time.Clock()
 framerate = 40
 
+
 # stores the (x,y) coordinates as a tuple
 mouse = pygame.mouse.get_pos()
 
-# universal game window
-windowSize = [1280, 720]
-window = pygame.display.set_mode(windowSize)
-pygame.display.set_caption("Game Title")
 
+window = {
+    "size": [1280, 720],
+    "display": None,
+    # window backgrounds
+    "menuBG": pygame.image.load("Images/menu.bmp"),
+    "gameBG": (50, 50, 50),
+    "title": pygame.display.set_caption("Game Title")
 
-# separate window backgrounds
-menuWindowBG = pygame.image.load("Images/menu.bmp")
-gameWindowBG = (50, 50, 50)
+}
+# cannot define keys with other values in the same dict
+# therefore, assigned outside dict  
+window["display"] = pygame.display.set_mode(window["size"])
+# created for easier referencing to dict
+windowSize = window["size"] 
+
 
 # plyr dictionary, containing all player properties
 plyr = {
@@ -31,6 +42,7 @@ plyr = {
     "speed": 7.5,
     "sprite": pygame.image.load("Images/playerCharacter.bmp")
 }
+
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
@@ -56,13 +68,13 @@ menuButtons = {
 
 if __name__ == "__main__":
 
-    menuState = menu.Menu(framerate, window, menuWindowBG, menuButtons)
+    menuState = menu.Menu(framerate, window, menuButtons)
 
     if menuState == "Start":
         # start the game
-        game.Game(framerate, window, gameWindowBG, plyr)
+        game.Game(framerate, window, plyr)
     elif menuState == "Quit":
-        # passes the sequence to quit pygame and python
+        # passes the sequence to quit pygame and quit python
         pass
 
 
