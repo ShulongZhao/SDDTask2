@@ -1,13 +1,14 @@
+from types import TracebackType
 import pygame
 
 
-def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
+def Menu(_frameRate, _window, _windowBG, buttonDict):
     pygame.init()
     
-    gameState = True
-    while gameState:
+    while True:
         # framerate
-        _clock.tick(_frameRate)
+        clock = pygame.time.Clock()
+        clock.tick(_frameRate)
 
         # background
         _window.blit(_windowBG, (0, 0))
@@ -15,7 +16,7 @@ def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
         # events (key presses, mouse presses)
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
-                gameState = False  # exits loop
+                return None # exits loop                                              
 
             # created a loop so any number of buttons 
             # can be added without altering this file
@@ -24,9 +25,9 @@ def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
                 # checks if mouse clicks buttons
                 if ev.type == pygame.MOUSEBUTTONDOWN:
                     # condition for mouse click on buttons
-                    if button.OnButtonClick() == button.myText.originalText: 
-                        return button.myText.originalText
-
+                    if button.IsButtonClick() == True:
+                        return button.myText.originalText # exits loop
+                
         # calls main() in all buttons of buttonDict
         for buttonName in buttonDict:
             button = buttonDict[buttonName]
@@ -36,4 +37,3 @@ def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
 
         pygame.display.update()
 
-    return gameState  # returns the game's state
