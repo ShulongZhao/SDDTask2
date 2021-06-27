@@ -23,7 +23,7 @@ def Game(_frameRate, _window, _plyr):
 
         # window fill before drawing player
         # so player is above window layer
-        windowDisplay.fill(_window["gameBG"])
+        windowDisplay.blit(_window["gameBG"], (0, 0))
 
         # quitting the screen
         for event in pygame.event.get():
@@ -44,7 +44,7 @@ def Game(_frameRate, _window, _plyr):
                     mouseVisibility = False
                     limit_external_input = True
 
-        # getting state of all  keys
+        # getting state of all keys
         keys = pygame.key.get_pressed()
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
@@ -62,10 +62,10 @@ def Game(_frameRate, _window, _plyr):
             (_plyr["height"], _plyr["width"]))
 
 
+
         windowX_restriction = _window["size"][0]  # restrict to width of window
         # restrict to height of window
         windowY_restriction = _window["size"][1]
-
 
         # restrict player's x and y coordinates to edge of window
         # restricting to left side

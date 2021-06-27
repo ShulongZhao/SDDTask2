@@ -1,4 +1,3 @@
-from types import TracebackType
 import pygame
 
 

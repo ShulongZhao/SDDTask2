@@ -1,0 +1,9 @@
+TO DO
+
+player:
+- shooting for player
+
+environment:
+- background management
+- adding different layers for backgrounds
+- sprite objects on screen

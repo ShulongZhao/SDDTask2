@@ -23,7 +23,7 @@ window = {
     "display": None,
     # window backgrounds
     "menuBG": pygame.image.load("Images/menu.bmp"),
-    "gameBG": (50, 50, 50),
+    "gameBG": pygame.image.load("Images/maxcheng1.bmp"),
     "title": pygame.display.set_caption("Game Title")
 
 }
