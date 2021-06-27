@@ -5,12 +5,12 @@ class Button:
     def __init__(self, myText, buttClr, buttHoverClr, buttPos, window, is_rect=True):
 
         # custom Text class
-        self.myText = myText
-
+        self.myText = myText                
         self.buttClr = buttClr
         self.buttHoverClr = buttHoverClr
         self.buttPos = buttPos
-        self.window = window
+        # specifying only the display, and not all the properties of 'window'
+        self.windowDisplay = window["display"]  
         self.is_rect = is_rect
 
     def main(self):
@@ -27,9 +27,9 @@ class Button:
 
     def OnButtonHover(self):
         if (self.textRect.left <= self.mouse[0] <= self.textRect.right) and (self.textRect.top <= self.mouse[1] <= self.textRect.bottom):
-            pygame.draw.rect(self.window, self.buttHoverClr, self.textRect)
+            pygame.draw.rect(self.windowDisplay, self.buttHoverClr, self.textRect)
         else:
-            pygame.draw.rect(self.window, self.buttClr, self.textRect)
+            pygame.draw.rect(self.windowDisplay, self.buttClr, self.textRect)
 
     # manually-called 
     def IsButtonClick(self):
