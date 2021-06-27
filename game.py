@@ -5,7 +5,7 @@ from pygame.locals import *
 def Game(_frameRate, _clock, _window, _windowBG, _plyr, is_game_running):
     pygame.init()
 
-    while is_game_running == True:
+    while is_game_running == "Start":
         # framerate
         _clock.tick(_frameRate)
 

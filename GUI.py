@@ -26,8 +26,8 @@ class Button:
         self.OnButtonHover()
 
     def TextRect(self):
-        self.textRect = self.myText.get_rect(center=(self.buttonPos[0], self.buttonPos[1]))
-        
+        self.textRect = self.myText.renderedText.get_rect(center=(self.buttonPos[0], self.buttonPos[1]))
+
     def OnButtonHover(self):
         if (self.textRect.left <= self.mouse[0] <= self.textRect.right) and (self.textRect.top <= self.mouse[1] <= self.textRect.bottom):
             pygame.draw.rect(self.window, self.buttonHoverColour, self.textRect)
@@ -35,17 +35,19 @@ class Button:
             pygame.draw.rect(self.window, self.buttonColour, self.textRect)
 
 
-    def OnButtonClick(self, returnValue):
+    def OnButtonClick(self):
         if (self.textRect.left <= self.mouse[0] <= self.textRect.right) and (self.textRect.top <= self.mouse[1] <= self.textRect.bottom):
-            return returnValue
+            return self.myText.originalText
 
 
 class Text:
-    text = ""
-    renderedText = None
+    originalText = ""      
+    renderedText = None  
     def __init__(self, text, textFontLocation, textFontSize, textColour):
-        self.text = text
-        renderedText = pygame.font.Font(textFontLocation, textFontSize).render(text, True, textColour)
+        self.originalText = text
+        renderedText = pygame.font.Font(
+            textFontLocation, textFontSize).render(text, True, textColour)
         self.renderedText = renderedText
+
 
         

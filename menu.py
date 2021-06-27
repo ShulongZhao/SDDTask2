@@ -9,32 +9,31 @@ def Menu(_frameRate, _clock, _window, _windowBG, buttonDict):
         # framerate
         _clock.tick(_frameRate)
 
-        # assigned the instances of the Button class in the menuButtons dict
-        title = buttonDict["title"]
-        start = buttonDict["start"]
-        quit = buttonDict["quit"]
+        # background
+        _window.blit(_windowBG, (0, 0))
 
+        # events (key presses, mouse presses)
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
                 gameState = False  # exits loop
 
-            # checks if mouse clicks buttons
-            if ev.type == pygame.MOUSEBUTTONDOWN:
-                # conditions for mouse click on buttons
-                if start.OnButtonClick(returnValue=True): return start.OnButtonClick(returnValue=True)
-                elif quit.OnButtonClick(returnValue=False) == False: gameState = False
+            # automated this process so any number of buttons 
+            # can be added without altering this file
+            for button in buttonDict:
+                # checks if mouse clicks buttons
+                if ev.type == pygame.MOUSEBUTTONDOWN:
+                    # condition for mouse click on buttons
+                    if buttonDict[button].OnButtonClick() == buttonDict[button].myText.originalText: 
+                        return buttonDict[button].myText.originalText
+                    else:
+                        #continue with the loop
+                        continue
 
-        # background
-        _window.blit(_windowBG, (0, 0))
-
-        title.main()
-        start.main()
-        quit.main()
-
-        # rendering text last so that it covers buttons
-        _window.blit(quit.myText, quit.textRect)
-        _window.blit(start.myText, start.textRect)
-        _window.blit(title.myText, title.textRect)
+        # calls main() in all buttons of buttonDict
+        for button in buttonDict:
+            buttonDict[button].main()
+            # rendering text last so that it covers buttons
+            _window.blit(buttonDict[button].myText.renderedText, buttonDict[button].textRect)
 
         pygame.display.update()
 

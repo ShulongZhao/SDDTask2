@@ -13,10 +13,11 @@ framerate = 40
 # stores the (x,y) coordinates as a tuple
 mouse = pygame.mouse.get_pos()
 
-# game windows
+# universal game window
 windowSize = [1280, 720]
 window = pygame.display.set_mode(windowSize)
-# window backgrounds
+
+# separate window backgrounds
 menuWindowBG = pygame.image.load("Images/menu.bmp")
 gameWindowBG = (50, 50, 50)
 
@@ -34,22 +35,19 @@ titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 2
 startText = GUI.Text("Start", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 quitText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 
-# instances of custom button class
-titleButton = GUI.Button(titleText.renderedText, (0, 0, 0), (0, 0, 0), [windowSize[0]/2, windowSize[1]/3], window)
-startButton = GUI.Button(startText.renderedText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, windowSize[1]/2], window)
-quitButton = GUI.Button(quitText.renderedText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, 2*windowSize[1]/3], window)
-
-
-# dictionary containing all menu buttons
+# dictionary containing instances of custom button class on menu window
 menuButtons = {
-    "title": titleButton,
-    "start": startButton,
-    "quit": quitButton
+    "title": GUI.Button(titleText, (0, 0, 0), (0, 0, 0), [windowSize[0]/2, windowSize[1]/3], window),
+    "start": GUI.Button(startText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, windowSize[1]/2], window),
+    "quit": GUI.Button(quitText, (170, 170, 170), (100, 100, 100), [windowSize[0]/2, 2*windowSize[1]/3], window)
 }
+
+
+#sceneOrder = ["menu", "start", ]
 
 if __name__ == "__main__":
     
-    pygame.display.set_caption(str(titleText.text))
+    pygame.display.set_caption("Game Title")
 
     # returns a boolean
     menuState = menu.Menu(framerate, clock, window, menuWindowBG, menuButtons)
