@@ -3,13 +3,25 @@ import pygame
 from pygame.locals import *
 
 
-def Game(_frameRate, _clock, _window, _windowBG, _plyr):
+def Game(_frameRate, _window, _windowBG, _plyr):
+
+    mouseVisibility = False
+    limit_external_input = True
 
     gameState = True
     while gameState:
 
         # framerate
-        _clock.tick(_frameRate)
+        clock = pygame.time.Clock()
+        clock.tick(_frameRate)
+
+        # # non-visble mouse during in game
+        # pygame.mouse.set_visible(mouseVisibility)
+        # #limits all user input to pygame environment
+        # pygame.event.set_grab(limit_external_input)
+        # if (mouseVisibility == False) and (limit_external_input == True):
+        #     #sets cursor to bottom-left of screen
+        #     pygame.mouse.set_pos((0, 720))
 
         # window fill before drawing player
         # so player is above window layer
@@ -18,8 +30,17 @@ def Game(_frameRate, _clock, _window, _windowBG, _plyr):
         # quitting the screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                # exits loop 
+                # exits loop
                 gameState = False
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_ESCAPE:
+            #         # mouse visibility is true
+            #         mouseVisibility = True
+            #         limit_external_input = False
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            #     if (mouseVisibility == True) and (limit_external_input == False):
+            #         mouseVisibility = False
+            #         limit_external_input = True
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -30,8 +51,6 @@ def Game(_frameRate, _clock, _window, _windowBG, _plyr):
                                     keys[pygame.K_LEFT]) * _plyr["speed"]
         _plyr["coordinates"][1] += (keys[pygame.K_DOWN] -
                                     keys[pygame.K_UP]) * _plyr["speed"]
-
-        
 
         # player sprite property management
         _plyr["sprite"] = pygame.transform.scale(
@@ -44,6 +63,5 @@ def Game(_frameRate, _clock, _window, _windowBG, _plyr):
         _window.blit(_plyr["sprite"], (_plyr["coordinates"]))
 
         pygame.display.update()
-
 
     return

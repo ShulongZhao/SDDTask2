@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#VSCode
+.vscode
+
+#Miscellaneous
+.DS_Store
