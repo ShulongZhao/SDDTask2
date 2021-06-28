@@ -40,9 +40,8 @@ plyr = {
     "height": 20,
     "width": 20,
     "speed": 7.5,
-    "sprite": pygame.image.load("Images/playerCharacter.bmp")
+    "sprite": pygame.image.load('Images/playerCharacter.bmp')
 }
-
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))

@@ -1,6 +1,5 @@
 import pygame
 
-
 def Game(_frameRate, _window, _plyr):
 
     mouseVisibility = False
@@ -61,7 +60,15 @@ def Game(_frameRate, _window, _plyr):
             # the scaled height and width of the sprite
             (_plyr["height"], _plyr["width"]))
 
+        # Left and right facing player sprites
+        rightPlayer = pygame.transform.scale(pygame.image.load('Images/playerCharacter.bmp'), (_plyr["height"], _plyr["width"]))
+        leftPlayer = pygame.transform.scale(pygame.transform.flip(rightPlayer, True, False), (_plyr["height"], _plyr["width"]))
 
+        # flip player when it changes direction
+        if (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) < 0:
+            _plyr["sprite"] = leftPlayer
+        elif (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) > 0: 
+            _plyr["sprite"] = rightPlayer
 
         windowX_restriction = _window["size"][0]  # restrict to width of window
         # restrict to height of window
