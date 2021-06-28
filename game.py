@@ -5,7 +5,7 @@ def Game(_frameRate, _window, _plyr):
     mouseVisibility = False
     limit_external_input = True
 
-    
+    # display property of window
     windowDisplay = _window["display"]
 
     gameState = True
@@ -53,14 +53,10 @@ def Game(_frameRate, _window, _plyr):
         _plyr["coordinates"][1] += (keys[pygame.K_DOWN] -
                                     keys[pygame.K_UP]) * _plyr["speed"]
 
-        # player sprite property management
-        _plyr["sprite"] = pygame.transform.scale(
-            # sprite that is being scaled up
-            _plyr["sprite"],
-            # the scaled height and width of the sprite
-            (_plyr["height"], _plyr["width"]))
+        # scaling player to its specified dimensions
+        _plyr["sprite"] = pygame.transform.scale(_plyr["sprite"], (_plyr["height"], _plyr["width"]))
 
-        # Left and right facing player sprites
+        # left and right facing player sprites
         rightPlayer = pygame.transform.scale(pygame.image.load('Images/playerCharacter.bmp'), (_plyr["height"], _plyr["width"]))
         leftPlayer = pygame.transform.scale(pygame.transform.flip(rightPlayer, True, False), (_plyr["height"], _plyr["width"]))
 
@@ -78,16 +74,13 @@ def Game(_frameRate, _window, _plyr):
         # restricting to left side
         if _plyr["coordinates"][0] < 0:             
             _plyr["coordinates"][0] = 0
-
         # restricting to right side; 
         # added player width so player does not clip through the edge of screen
         elif _plyr["coordinates"][0] + _plyr["width"] > windowX_restriction:
             _plyr["coordinates"][0] = windowX_restriction - _plyr["width"]
-
         # restricting to top edge
         if _plyr["coordinates"][1] < 0:             
             _plyr["coordinates"][1] = 0
-        
         # restricting to bottom edge
         # added player height so player does not clip through the edge of screen
         elif _plyr["coordinates"][1] + _plyr["height"] > windowY_restriction:    
@@ -95,7 +88,6 @@ def Game(_frameRate, _window, _plyr):
 
 
         # draws player onto screen
-        print(_plyr["coordinates"])
         windowDisplay.blit(_plyr["sprite"], (_plyr["coordinates"]))
 
         pygame.display.update()
