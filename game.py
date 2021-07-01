@@ -1,5 +1,14 @@
 import pygame
 
+class boolet(object):
+    def __init__(self, coordinates, vector):
+        self.coordinates = coordinates
+        self.height = 10
+        self.width = 10
+        self.vector = vector
+        self.velocity = 10 * vector
+        self.sprite = pygame.image.load('Images/bullet.bmp')
+
 def Game(_frameRate, _window, _plyr):
 
     mouseVisibility = False
