@@ -1,13 +1,14 @@
 import pygame
 
+#bullet class
 class boolet(object):
-    def __init__(self, coordinates, vector):
-        self.coordinates = coordinates
+    def __init__(self, location, vector, sprite):
+        self.location = location
         self.height = 10
         self.width = 10
         self.vector = vector
-        self.velocity = 10 * vector
-        self.sprite = pygame.image.load('Images/bullet.bmp')
+        self.velocity = 10 * self.vector
+        self.sprite = sprite
 
 def Game(_frameRate, _window, _plyr):
 
@@ -18,6 +19,7 @@ def Game(_frameRate, _window, _plyr):
     windowDisplay = _window["display"]
 
     gameState = True
+    boolets = []
     while gameState:
 
         # framerate
@@ -79,6 +81,19 @@ def Game(_frameRate, _window, _plyr):
         elif (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) > 0: 
             _plyr["sprite"] = rightPlayer
 
+        rightBoolet = pygame.transform.scale(pygame.image.load('Images/bullet.bmp'), (10, 10))
+        leftBoolet =  pygame.transform.scale(pygame.transform.flip(rightBoolet, True, False), (10, 10))
+        # shoot bullet when space pressed
+        if keys[pygame.K_SPACE]:
+            print("pew pew")
+            if _plyr["sprite"] == leftPlayer:
+                vector = -1
+                sprite = leftBoolet
+            else:
+                vector = 1
+                sprite = rightBoolet
+            boolets.append(boolet(_plyr["coordinates"], vector, sprite))
+
         windowX_restriction = _window["size"][0]  # restrict to width of window
         # restrict to height of window
         windowY_restriction = _window["size"][1]
@@ -103,10 +118,12 @@ def Game(_frameRate, _window, _plyr):
             _plyr["coordinates"][1] = windowY_restriction - _plyr["height"]
 
 
-        # draws player onto screen
+        # draws stuff onto screen
         print(_plyr["coordinates"])
         windowDisplay.blit(_plyr["sprite"], (_plyr["coordinates"]))
-
+        for bullet in boolets:
+            bullet.location[0] += bullet.velocity
+            windowDisplay.blit(bullet.sprite, bullet.location)
         pygame.display.update()
 
     return
