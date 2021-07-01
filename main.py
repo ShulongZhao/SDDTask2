@@ -36,7 +36,7 @@ windowSize = window["size"]
 
 # plyr dictionary, containing all player properties
 plyr = {
-    "coordinates": [0, 0],
+    "coordinates": (0, 0),
     "height": 20,
     "width": 20,
     "speed": 7.5,

@@ -1,16 +1,18 @@
 import pygame
 
 #bullet class
-class boolet(object):
+class boolet():
     def __init__(self, location, vector, sprite):
         self.location = location
         self.height = 10
         self.width = 10
-        self.vector = vector
-        self.velocity = 10 * self.vector
-        self.sprite = sprite
+        self.velocity = 10 * vector
+        self.sprite = sprite        
+
 
 def Game(_frameRate, _window, _plyr):
+
+    boolets = []
 
     mouseVisibility = False
     limit_external_input = True
@@ -19,7 +21,6 @@ def Game(_frameRate, _window, _plyr):
     windowDisplay = _window["display"]
 
     gameState = True
-    boolets = []
     while gameState:
 
         # framerate
@@ -31,9 +32,8 @@ def Game(_frameRate, _window, _plyr):
         #limits all user input to pygame environment
         pygame.event.set_grab(limit_external_input)
 
-        # window fill before drawing player
-        # so player is above window layer
-        windowDisplay.blit(_window["gameBG"], (0, 0))
+        # converting player coordinates from tuple to list to access each element
+        _plyr_coordinates_list = list(_plyr["coordinates"])
 
         # quitting the screen
         for event in pygame.event.get():
@@ -59,9 +59,9 @@ def Game(_frameRate, _window, _plyr):
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
         # same for player y-coordinate (down is positive and up is negative, in pygame)
-        _plyr["coordinates"][0] += (keys[pygame.K_RIGHT] -
+        _plyr_coordinates_list[0] += (keys[pygame.K_RIGHT] -
                                     keys[pygame.K_LEFT]) * _plyr["speed"]
-        _plyr["coordinates"][1] += (keys[pygame.K_DOWN] -
+        _plyr_coordinates_list[1] += (keys[pygame.K_DOWN] -
                                     keys[pygame.K_UP]) * _plyr["speed"]
 
         # player sprite property management
@@ -92,7 +92,7 @@ def Game(_frameRate, _window, _plyr):
             else:
                 vector = 1
                 sprite = rightBoolet
-            boolets.append(boolet(_plyr["coordinates"], vector, sprite))
+            boolets.append(boolet(_plyr_coordinates_list, vector, sprite))
 
         windowX_restriction = _window["size"][0]  # restrict to width of window
         # restrict to height of window
@@ -100,30 +100,32 @@ def Game(_frameRate, _window, _plyr):
 
         # restrict player's x and y coordinates to edge of window
         # restricting to left side
-        if _plyr["coordinates"][0] < 0:             
-            _plyr["coordinates"][0] = 0
-
+        if _plyr_coordinates_list[0] < 0:             
+            _plyr_coordinates_list[0] = 0
         # restricting to right side; 
         # added player width so player does not clip through the edge of screen
-        elif _plyr["coordinates"][0] + _plyr["width"] > windowX_restriction:
-            _plyr["coordinates"][0] = windowX_restriction - _plyr["width"]
-
+        elif _plyr_coordinates_list[0] + _plyr["width"] > windowX_restriction:
+            _plyr_coordinates_list[0] = windowX_restriction - _plyr["width"]
         # restricting to top edge
-        if _plyr["coordinates"][1] < 0:             
-            _plyr["coordinates"][1] = 0
-        
+        if _plyr_coordinates_list[1] < 0:             
+            _plyr_coordinates_list[1] = 0
         # restricting to bottom edge
         # added player height so player does not clip through the edge of screen
-        elif _plyr["coordinates"][1] + _plyr["height"] > windowY_restriction:    
-            _plyr["coordinates"][1] = windowY_restriction - _plyr["height"]
+        elif _plyr_coordinates_list[1] + _plyr["height"] > windowY_restriction:    
+            _plyr_coordinates_list[1] = windowY_restriction - _plyr["height"]
 
+        
+        _plyr["coordinates"] = (_plyr_coordinates_list[0], _plyr_coordinates_list[1]) 
 
-        # draws stuff onto screen
-        print(_plyr["coordinates"])
+        # window fill before drawing player
+        # so player is above window layer
+        windowDisplay.blit(_window["gameBG"], (0, 0))
         windowDisplay.blit(_plyr["sprite"], (_plyr["coordinates"]))
+
         for bullet in boolets:
             bullet.location[0] += bullet.velocity
             windowDisplay.blit(bullet.sprite, bullet.location)
+    
         pygame.display.update()
 
     return
