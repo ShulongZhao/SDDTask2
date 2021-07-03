@@ -24,7 +24,7 @@ window = {
 window["display"] = pygame.display.set_mode(window["size"])
 
 # instance of player class, representing player 
-plyr = Player([0, 0], [20, 20], 7.5, "Images/playerCharacter.bmp")
+plyr = Player([0, 0], [160, 160], 7.5, "Images/playerCharacter.bmp")
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
