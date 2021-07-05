@@ -1,5 +1,16 @@
 import pygame
 
+
+class Window:
+
+    def __init__(self, title, size, bgFileLocation):
+        self.title = title
+        self.size = size
+        self.width = self.size[0]
+        self.height = self.size[1]
+        self.screen = pygame.display.set_mode(self.size)
+        self.bg = pygame.image.load(bgFileLocation)
+
 class Button:
 
     def __init__(self, myText, buttClr, buttHoverClr, buttPos, window, is_rect=True):
@@ -9,7 +20,7 @@ class Button:
         self.buttHoverClr = buttHoverClr
         self.buttPos = buttPos
         # specifying only the display, and not all the properties of 'window'
-        self.windowDisplay = window["display"]  
+        self.windowDisplay = window.screen
         self.is_rect = is_rect
 
     def main(self):

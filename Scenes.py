@@ -2,7 +2,7 @@ import pygame
 
 def Menu(_frameRate, _window, buttonDict):
 
-    _windowDisplay = _window["display"]
+    _windowScreen = _window.screen
 
     while True:
         # framerate
@@ -10,7 +10,7 @@ def Menu(_frameRate, _window, buttonDict):
         clock.tick(_frameRate)
 
         # background
-        _windowDisplay.blit(_window["menuBG"], (0, 0))
+        _windowScreen.blit(_window.bg, (0, 0))
 
         # events (key presses, mouse presses)
         for ev in pygame.event.get():
@@ -33,25 +33,15 @@ def Menu(_frameRate, _window, buttonDict):
             button = buttonDict[buttonName]
             button.main()
             # rendering text so it is on the uppermost layer
-            _windowDisplay.blit(button.myText.renderedText, button.textRect)
+            _windowScreen.blit(button.myText.renderedText, button.textRect)
 
         pygame.display.update()
 
 
 def Game(_frameRate, _window, _plyr):
 
-    # local variable intialisation for easier readability
     mouseVisibility = False
-    limit_external_input = True
-    
-    _windowDisplay = _window["display"]
-    _window_w = _window["size"][0]
-    _window_h = _window["size"][1]
-
-    _plyrCoordinates_X = _plyr.coordinates[0]
-    _plyrCoordinates_Y = _plyr.coordinates[1]
-    _plyrSize_w = _plyr.size[0]
-    _plyrSize_h = _plyr.size[1]
+    limit_external_input = True 
 
     gameState = True
     while gameState:
@@ -100,18 +90,18 @@ def Game(_frameRate, _window, _plyr):
             _plyr.surface = _plyr.surface_flipped
 
         # restrict player's x and y coordinates to edge of window
-        if _plyrCoordinates_X < 0:
-            _plyrCoordinates_X = 0
-        elif _plyrCoordinates_X + _plyrSize_w > _window_w:
-            _plyrCoordinates_X = _window_w - _plyrSize_w
-        if _plyrCoordinates_Y < 0:
-            _plyrCoordinates_Y = 0
-        elif _plyrCoordinates_Y + _plyrSize_h > _window_h:
-            _plyrCoordinates_Y = _window_h - _plyrSize_h
+        if _plyr.coordinates[0] < 0:
+            _plyr.coordinates[0] = 0
+        elif _plyr.coordinates[0] + _plyr.size[0] > _window.width:
+            _plyr.coordinates[0] = _window.width - _plyr.size[0]
+        if _plyr.coordinates[1] < 0:
+            _plyr.coordinates[1] = 0
+        elif _plyr.coordinates[1] + _plyr.size[1] > _window.height:
+            _plyr.coordinates[1] = _window.height - _plyr.size[1]
 
         # drawing surfaces onto screen
-        _windowDisplay.blit(_window["gameBG"], (0, 0))        
-        _windowDisplay.blit(_plyr.surface, (_plyr.coordinates))
+        _window.screen.blit(_window.bg, (0, 0))        
+        _window.screen.blit(_plyr.surface, (_plyr.coordinates))
 
         # updating screen
         pygame.display.update()
