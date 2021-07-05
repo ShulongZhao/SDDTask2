@@ -2,6 +2,8 @@ TO DO
 
 player:
 - shooting for player
+    - add rate of fire
+    - make bullet come from center of player rather than top left corner
 
 environment:
 - background management
