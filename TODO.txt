@@ -2,10 +2,13 @@ TO DO
 
 player:
 - shooting for player
-    - add rate of fire
-    - make bullet come from center of player rather than top left corner
+	- add rate of fire
+	- make bullet come from center of player rather than top left corner
+- animations
+	- need to fix up player orientation 
+
 
 environment:
-- background management
-- adding different layers for backgrounds
-- sprite objects on screen
+	- background management
+	- adding different layers for backgrounds
+	- sprite objects on screen

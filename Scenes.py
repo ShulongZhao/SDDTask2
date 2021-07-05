@@ -49,6 +49,8 @@ def Game(_frameRate, _window, _plyr):
 
     _plyrCoordinatesList = list(_plyr.coordinates)
 
+    playerAnimIndex = 0
+
     gameState = True
     while gameState:
 
@@ -60,6 +62,15 @@ def Game(_frameRate, _window, _plyr):
         pygame.mouse.set_visible(mouseVisibility)
         # limits all user input to pygame environment
         pygame.event.set_grab(limit_external_input)
+
+        # change the surface of the player every iteration
+        _plyr.surface = pygame.transform.scale(pygame.image.load(_plyr.idleAnim[playerAnimIndex]), (_plyr.size[0], _plyr.size[1]))
+        if playerAnimIndex + 1 == len(_plyr.idleAnim):
+            playerAnimIndex = -1
+        playerAnimIndex += 1
+
+        # updates the flipped surface for the player, for use when player changes direction
+        _plyr.UpdateFlippedSurfaces()
 
         for event in pygame.event.get():
 
@@ -82,31 +93,39 @@ def Game(_frameRate, _window, _plyr):
                     limit_external_input = True
 
             # shoot bullet when space pressed
-            if keys[pygame.K_SPACE]:
-                playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, "Images/bullet.bmp")
-                if _plyr.surface == _plyr.surface_original:
-                    playerBullet.velocity = abs(playerBullet.velocity)
-                    playerBullet.surface = playerBullet.surface_original
-                elif _plyr.surface == _plyr.surface_flipped:
-                    playerBullet.velocity = -(playerBullet.velocity)
-                    playerBullet.surface = playerBullet.surface_flipped
-                bullets.append(playerBullet)
+            # (created 2 keydown event checks to split both functionalities apart)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, "Images/bullet.bmp")
+                    if _plyr.surface == _plyr.surface_original:
+                        playerBullet.velocity = abs(playerBullet.velocity)
+                        playerBullet.surface = playerBullet.surface_original
+                    elif _plyr.surface == _plyr.surface_flipped:
+                        playerBullet.velocity = -(playerBullet.velocity)
+                        playerBullet.surface = playerBullet.surface_flipped
+                    bullets.append(playerBullet)
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
         # same for player y-coordinate (down is positive and up is negative, in pygame)
-        if keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] > 0 or keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] < 0:
-            _plyrCoordinatesList[0] += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * _plyr.speed
-        elif keys[pygame.K_DOWN] - keys[pygame.K_UP] > 0 or keys[pygame.K_DOWN] - keys[pygame.K_UP] < 0:
-            _plyrCoordinatesList[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * _plyr.speed
+        deltaVertMovement = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+        deltHorizMovement = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+        
+        if deltHorizMovement:
+            _plyrCoordinatesList[0] += deltHorizMovement * _plyr.speed
+        elif deltaVertMovement:
+            _plyrCoordinatesList[1] += deltaVertMovement * _plyr.speed
 
         # flipping from left to right facing player surfaces
-        if (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) > 0:
+        if deltHorizMovement > 0:
             _plyr.surface = _plyr.surface_original
-        elif (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) < 0:
+        elif deltHorizMovement < 0:
             _plyr.surface = _plyr.surface_flipped
+        else:
+            pass
+        print
 
         # restrict player's x and y coordinates to edge of window
         if _plyrCoordinatesList[0] < 0:
