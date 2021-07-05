@@ -97,9 +97,9 @@ def Game(_frameRate, _window, _plyr):
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
         # same for player y-coordinate (down is positive and up is negative, in pygame)
-        if keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] >= 0 or keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] <= 0:
+        if keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] > 0 or keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] < 0:
             _plyrCoordinatesList[0] += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * _plyr.speed
-        elif keys[pygame.K_DOWN] - keys[pygame.K_UP] >= 0 or keys[pygame.K_DOWN] - keys[pygame.K_UP] <= 0:
+        elif keys[pygame.K_DOWN] - keys[pygame.K_UP] > 0 or keys[pygame.K_DOWN] - keys[pygame.K_UP] < 0:
             _plyrCoordinatesList[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * _plyr.speed
 
         # flipping from left to right facing player surfaces
