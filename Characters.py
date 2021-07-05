@@ -11,7 +11,8 @@ class Player:
 
         # idle animation dictionary
         self.idleAnim = []
-
+        
+        self.Animations()
 
     # need to update flipped surfaces because of ever-changing sprites of player
     def UpdateFlippedSurfaces(self):    
