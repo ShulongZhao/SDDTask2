@@ -1,47 +1,24 @@
-from typing import Sized
 import pygame
 
-import menu
-import game
+import Scenes
 import GUI
+from Characters import Player
 
 # initalises all pygame processes 
 pygame.init()
 
-
 # time
-clock = pygame.time.Clock()
 framerate = 40
 
+# game properties: external
+gameTitle = "Game Title"
+gameWindowSize = [1280, 720]
 
-# stores the (x,y) coordinates as a tuple
-mouse = pygame.mouse.get_pos()
+menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/menu.bmp")
+gameWindow = GUI.Window(gameTitle, gameWindowSize, "Images/maxcheng1.bmp")
 
-
-window = {
-    "size": [1280, 720],
-    "display": None,
-    # window backgrounds
-    "menuBG": pygame.image.load("Images/menu.bmp"),
-    "gameBG": pygame.image.load("Images/maxcheng1.bmp"),
-    "title": pygame.display.set_caption("Game Title")
-
-}
-# cannot define keys with other values in the same dict
-# therefore, assigned outside dict  
-window["display"] = pygame.display.set_mode(window["size"])
-# created for easier referencing to dict
-windowSize = window["size"] 
-
-
-# plyr dictionary, containing all player properties
-plyr = {
-    "coordinates": (0, 0),
-    "height": 64,
-    "width": 64,
-    "speed": 7.5,
-    "sprite": pygame.image.load('Images/playerCharacter.bmp')
-}
+# instance of Player class, representing player 
+plyr = Player([0, 0], [80, 80], 7.5, "Images/playerCharacter.bmp")
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
@@ -51,32 +28,29 @@ quitText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 # dictionary containing instances of custom button class, located on menu window
 menuButtons = {
     titleText.originalText: 
-        GUI.Button(titleText, (0, 0, 0, 0), (0, 0, 0, 0), 
-        [windowSize[0]/2, windowSize[1]/3], window,
+        GUI.Button(titleText, (0, 0, 0), (0, 0, 0), 
+        [menuWindow.width/2, menuWindow.height/3], menuWindow,
         # doesn't treat title rect as rect surface
-        is_rect= False),
+        is_rect=False),
 
     startText.originalText: 
         GUI.Button(startText, (170, 170, 170), (100, 100, 100), 
-        [windowSize[0]/2, windowSize[1]/2], window),
+        [menuWindow.width/2, menuWindow.height/2], menuWindow),
 
     quitText.originalText: 
         GUI.Button(quitText, (170, 170, 170), (100, 100, 100), 
-        [windowSize[0]/2, 2*windowSize[1]/3], window)
+        [menuWindow.width/2, 2*menuWindow.height/3], menuWindow)
 }
 
 if __name__ == "__main__":
 
-    menuState = menu.Menu(framerate, window, menuButtons)
+    menuState = Scenes.Menu(framerate, menuWindow, menuButtons)
 
     if menuState == "Start":
         # start the game
-        game.Game(framerate, window, plyr)
+        Scenes.Game(framerate, gameWindow, plyr)
     elif menuState == "Quit":
-        # passes the sequence to quit pygame and quit python
+        # passes the sequence to quit python
         pass
 
-
-
-    pygame.quit()
     exit()
