@@ -14,7 +14,7 @@ class Window:
 class Button:
 
     def __init__(self, myText, buttClr, buttHoverClr, buttPos, window, is_rect=True):
-
+        
         # custom Text class
         self.myText = myText                
         self.buttClr = buttClr

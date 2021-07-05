@@ -18,7 +18,7 @@ menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/menu.bmp")
 gameWindow = GUI.Window(gameTitle, gameWindowSize, "Images/maxcheng1.bmp")
 
 # instance of Player class, representing player 
-plyr = Player([0, 0], [80, 80], 7.5, "Images/playerCharacter.bmp")
+plyr = Player((0, 0), [80, 80], 7.5, "Images/playerCharacter.bmp")
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
