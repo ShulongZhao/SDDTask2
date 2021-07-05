@@ -1,5 +1,7 @@
 import pygame
 
+from Features import Bullet
+
 def Menu(_frameRate, _window, buttonDict):
 
     _windowScreen = _window.screen
@@ -40,8 +42,12 @@ def Menu(_frameRate, _window, buttonDict):
 
 def Game(_frameRate, _window, _plyr):
 
+    bullets = []
+
     mouseVisibility = False
     limit_external_input = True 
+
+    _plyrCoordinatesList = list(_plyr.coordinates)
 
     gameState = True
     while gameState:
@@ -75,20 +81,26 @@ def Game(_frameRate, _window, _plyr):
                     mouseVisibility = False
                     limit_external_input = True
 
+            # shoot bullet when space pressed
+            if keys[pygame.K_SPACE]:
+                playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, "Images/bullet.bmp")
+                if _plyr.surface == _plyr.surface_original:
+                    playerBullet.velocity = abs(playerBullet.velocity)
+                    playerBullet.surface = playerBullet.surface_original
+                elif _plyr.surface == _plyr.surface_flipped:
+                    playerBullet.velocity = -(playerBullet.velocity)
+                    playerBullet.surface = playerBullet.surface_flipped
+                bullets.append(playerBullet)
+
         # getting state of all keys
         keys = pygame.key.get_pressed()
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
         # same for player y-coordinate (down is positive and up is negative, in pygame)
-<<<<<<< Updated upstream
-        _plyr.coordinates[0] += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * _plyr.speed
-        _plyr.coordinates[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * _plyr.speed
-=======
         if keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] > 0 or keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] < 0:
             _plyrCoordinatesList[0] += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * _plyr.speed
         elif keys[pygame.K_DOWN] - keys[pygame.K_UP] > 0 or keys[pygame.K_DOWN] - keys[pygame.K_UP] < 0:
             _plyrCoordinatesList[1] += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * _plyr.speed
->>>>>>> Stashed changes
 
         # flipping from left to right facing player surfaces
         if (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) > 0:
@@ -97,24 +109,38 @@ def Game(_frameRate, _window, _plyr):
             _plyr.surface = _plyr.surface_flipped
 
         # restrict player's x and y coordinates to edge of window
-        if _plyr.coordinates[0] < 0:
-            _plyr.coordinates[0] = 0
-        elif _plyr.coordinates[0] + _plyr.size[0] > _window.width:
-            _plyr.coordinates[0] = _window.width - _plyr.size[0]
-        if _plyr.coordinates[1] < 0:
-            _plyr.coordinates[1] = 0
-        elif _plyr.coordinates[1] + _plyr.size[1] > _window.height:
-            _plyr.coordinates[1] = _window.height - _plyr.size[1]
+        if _plyrCoordinatesList[0] < 0:
+            _plyrCoordinatesList[0] = 0
+        elif _plyrCoordinatesList[0] + _plyr.size[0] > _window.width:
+            _plyrCoordinatesList[0] = _window.width - _plyr.size[0]
+        if _plyrCoordinatesList[1] < 0:
+            _plyrCoordinatesList[1] = 0
+        elif _plyrCoordinatesList[1] + _plyr.size[1] > _window.height:
+            _plyrCoordinatesList[1] = _window.height - _plyr.size[1]
+        
+        # translating coordinates from list back to tuple
+        _plyr.coordinates = (_plyrCoordinatesList[0], _plyrCoordinatesList[1])  
 
         # drawing surfaces onto screen
         _window.screen.blit(_window.bg, (0, 0))        
-        _window.screen.blit(_plyr.surface, (_plyr.coordinates))
+        _window.screen.blit(_plyr.surface, _plyr.coordinates)
+
+        # updating all visible bullets on screen
+        for bullet in bullets:
+            # deleting bullets that travel off screen
+            if bullet.coordinates[0] > _window.width or bullet.coordinates[1] > _window.height:
+                bullets.remove(bullet)
+            # updating bullet coordinates
+            bullet.coordinates[0] += bullet.velocity
+            _window.screen.blit(bullet.surface, bullet.coordinates)
 
         # updating screen
         pygame.display.update()
 
 
     return
+     
+
 
 
 
