@@ -87,7 +87,7 @@ def Game(_frameRate, _window, _plyr):
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, _plyr.bulletImage)
+                    playerBullet = Bullet(_plyr.coordinates, [10, 10], [10, 0], _plyr.bulletImage)
                     if flipSprite == False:
                         playerBullet.velocity = abs(playerBullet.velocity)
                         playerBullet.surface = playerBullet.surface_original
