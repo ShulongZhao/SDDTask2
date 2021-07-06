@@ -1,7 +1,7 @@
 import pygame
 
 class Bullet:
-    def __init__(self, coordinates, size, velocity, fileLocation):
+    def __init__(self, coordinates, size, velocity, surface):
         # converting from tuple to list for access into each element
         self.coordinates = list(coordinates)
 
@@ -11,7 +11,7 @@ class Bullet:
 
         self.velocity = velocity
 
-        self.surface_original = pygame.transform.scale(pygame.image.load(fileLocation), self.size)
-        self.surface_flipped = pygame.transform.flip(pygame.transform.scale(pygame.image.load(fileLocation), self.size), False, True)
+        self.surface_original = pygame.transform.scale(surface, self.size)
+        self.surface_flipped = pygame.transform.flip(pygame.transform.scale(surface, self.size), False, True)
         self.surface = self.surface_original        
 

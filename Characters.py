@@ -1,11 +1,11 @@
 import pygame
+from Animations import animations
 
 class Player:
-    def __init__(self, coordinates, size, speed, fileLocation):
+    def __init__(self, coordinates, size, speed, bulletImageFileLocation, _animDirectoryList):
         self.coordinates = coordinates
         self.size = size
         self.speed = speed
-        self.fileLocation = fileLocation
-        self.surface_original = pygame.transform.scale(pygame.image.load(fileLocation), (size[0], size[1]))
-        self.surface_flipped = pygame.transform.flip(pygame.transform.scale(pygame.image.load(fileLocation), (size[0], size[1])), True, False)
-        self.surface = self.surface_original
+        self.surface = None
+        self.bulletImage = pygame.image.load(bulletImageFileLocation)
+        self.animations = animations(_animDirectoryList)

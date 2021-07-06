@@ -14,11 +14,8 @@ framerate = 40
 gameTitle = "Game Title"
 gameWindowSize = [1280, 720]
 
-menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/menu.bmp")
-gameWindow = GUI.Window(gameTitle, gameWindowSize, "Images/maxcheng1.bmp")
-
-# instance of Player class, representing player 
-plyr = Player((0, 0), [80, 80], 7.5, "Images/playerCharacter.bmp")
+menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/backgroundsprites/Background.bmp")
+gameWindow = GUI.Window(gameTitle, gameWindowSize, "Images/backgroundsprites/Background.bmp")
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
@@ -41,6 +38,18 @@ menuButtons = {
         GUI.Button(quitText, (170, 170, 170), (100, 100, 100), 
         [menuWindow.width/2, 2*menuWindow.height/3], menuWindow)
 }
+
+# list of the directories containing PLAYER animation frames 
+plyr_animDirectoryList = [
+    "Images/playersprites/idle",
+    "Images/playersprites/hit",
+    "Images/playersprites/pre-shooting",
+    "Images/playersprites/shooting",
+
+]
+
+# instance of Player class, representing player
+plyr = Player((0, 0), [80, 80], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
 
 if __name__ == "__main__":
 
