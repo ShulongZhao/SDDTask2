@@ -1,5 +1,4 @@
 import pygame
-
 from Features import Bullet
 
 def Menu(_frameRate, _window, buttonDict):
@@ -19,8 +18,7 @@ def Menu(_frameRate, _window, buttonDict):
             if ev.type == pygame.QUIT:
                 return None  # exits loop
 
-            # created a loop so any number of buttons
-            # can be added without altering this file
+            # loops through all buttons within the scene
             for buttonName in buttonDict:
                 button = buttonDict[buttonName]
                 # checks if mouse clicks buttons
@@ -49,7 +47,7 @@ def Game(_frameRate, _window, _plyr):
 
     _plyrCoordinatesList = list(_plyr.coordinates)
 
-    playerAnimIndex = 0
+    plyrAnimIdx = 0
     flipSprite = False
 
     gameState = True
@@ -64,22 +62,14 @@ def Game(_frameRate, _window, _plyr):
         # limits all user input to pygame environment
         pygame.event.set_grab(limit_external_input)
 
-        # change the surface of the player every iteration
-        _plyr.surface = pygame.transform.flip(
-            pygame.transform.scale(pygame.image.load(_plyr.idleAnim[playerAnimIndex]), (_plyr.size[0], _plyr.size[1])),
-            flipSprite, False
-        )
-        if playerAnimIndex + 1 == len(_plyr.idleAnim):
-            playerAnimIndex = -1
-        playerAnimIndex += 1
+        _plyrAnimDict = _plyr.animations.animFramesDict
 
         for event in pygame.event.get():
 
             # quitting the screen
             if event.type == pygame.QUIT:
-                # exits loop
-                gameState = False
-            
+                gameState = False   # exits loop
+
             # if player hits escape, mouse is unhidden;
             # if player hits mouse down when mouse is unhidden,
             # mouse is hidden again
@@ -105,6 +95,7 @@ def Game(_frameRate, _window, _plyr):
                         playerBullet.velocity = -(playerBullet.velocity)
                         playerBullet.surface = playerBullet.surface_flipped
                     bullets.append(playerBullet)
+                    _plyrAnimDict["Images/Idle"][1] = not _plyrAnimDict["Images/Idle"][1]
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -114,6 +105,8 @@ def Game(_frameRate, _window, _plyr):
         deltaVertMovement = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltHorizMovement = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
         
+        # restricting diagonal movement by only either allowing 
+        # horizontal or vertical movement at a time
         if deltHorizMovement:
             _plyrCoordinatesList[0] += deltHorizMovement * _plyr.speed
         elif deltaVertMovement:
@@ -124,6 +117,26 @@ def Game(_frameRate, _window, _plyr):
             flipSprite = False
         elif deltHorizMovement < 0:
             flipSprite = True
+
+
+        try:
+            for directory in _plyrAnimDict:
+                if _plyrAnimDict[directory][1] == True:
+                    # change the surface of the player every iteration
+                    _plyr.surface = pygame.transform.flip(
+                        pygame.transform.scale(pygame.image.load("Images/Idle/" + _plyrAnimDict[directory][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
+                        flipSprite, False
+                    )
+                else:
+                    _plyr.surface = pygame.transform.flip(
+                        pygame.transform.scale(pygame.image.load("Images/Background.bmp"), (_plyr.size[0], _plyr.size[1])),
+                        flipSprite, False
+                    )
+            plyrAnimIdx += 1
+        except IndexError:
+            plyrAnimIdx = 0
+
+
 
         # restrict player's x and y coordinates to edge of window
         if _plyrCoordinatesList[0] < 0:
