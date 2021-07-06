@@ -1,6 +1,7 @@
 import pygame
 from Features import Bullet
 
+
 def Menu(_frameRate, _window, buttonDict):
 
     _windowScreen = _window.screen
@@ -43,7 +44,7 @@ def Game(_frameRate, _window, _plyr):
     bullets = []
 
     mouseVisibility = False
-    limit_external_input = True 
+    limit_external_input = True
 
     _plyrCoordinatesList = list(_plyr.coordinates)
 
@@ -89,13 +90,14 @@ def Game(_frameRate, _window, _plyr):
                 if event.key == pygame.K_SPACE:
                     playerBullet = Bullet(_plyr.coordinates, [10, 10], [10, 0], _plyr.bulletImage)
                     if flipSprite == False:
-                        playerBullet.velocity = abs(playerBullet.velocity)
+                        playerBullet.velocity = [abs(playerBullet.velocity[0]), abs(playerBullet.velocity[1])]
                         playerBullet.surface = playerBullet.surface_original
                     elif flipSprite == True:
-                        playerBullet.velocity = -(playerBullet.velocity)
+                        playerBullet.velocity = [-playerBullet.velocity[0], -playerBullet.velocity[1]]
                         playerBullet.surface = playerBullet.surface_flipped
                     bullets.append(playerBullet)
                     _plyrAnimDict["Images/playersprites/idle"][1] = not _plyrAnimDict["Images/playersprites/idle"][1]
+
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -104,8 +106,8 @@ def Game(_frameRate, _window, _plyr):
         # same for player y-coordinate (down is positive and up is negative, in pygame)
         deltaVertMovement = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltHorizMovement = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-        
-        # restricting diagonal movement by only either allowing 
+
+        # restricting diagonal movement by only either allowing
         # horizontal or vertical movement at a time
         if deltHorizMovement:
             _plyrCoordinatesList[0] += deltHorizMovement * _plyr.speed
@@ -145,12 +147,12 @@ def Game(_frameRate, _window, _plyr):
             _plyrCoordinatesList[1] = 0
         elif _plyrCoordinatesList[1] + _plyr.size[1] > _window.height:
             _plyrCoordinatesList[1] = _window.height - _plyr.size[1]
-        
+
         # translating coordinates from list back to tuple
-        _plyr.coordinates = (_plyrCoordinatesList[0], _plyrCoordinatesList[1])  
+        _plyr.coordinates = (_plyrCoordinatesList[0], _plyrCoordinatesList[1])
 
         # drawing surfaces onto screen
-        _window.screen.blit(_window.bg, (0, 0))        
+        _window.screen.blit(_window.bg, (0, 0))
         _window.screen.blit(_plyr.surface, _plyr.coordinates)
 
         # updating all visible bullets on screen
@@ -166,11 +168,4 @@ def Game(_frameRate, _window, _plyr):
         # updating screen
         pygame.display.update()
 
-
     return
-     
-
-
-
-
-    
