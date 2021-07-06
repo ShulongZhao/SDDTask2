@@ -11,16 +11,11 @@ class Player:
 
         # idle animation dictionary
         self.idleAnim = []
-        
-        self.Animations()
 
-    # need to update flipped surfaces because of ever-changing sprites of player
-    def UpdateFlippedSurfaces(self):    
-        self.surface_original = self.surface
-        self.surface_flipped = pygame.transform.flip(self.surface, True, False)
+        self.InitAnimations()
 
     # managing all animation work
-    def Animations(self): # need to add animDict parameter, to automate animations
+    def InitAnimations(self): # need to add animDict parameter, to automate animations
         idleDirectory = "Images/Player Sprites"
         idleFramesList = os.listdir(idleDirectory)
 

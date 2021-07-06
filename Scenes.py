@@ -50,6 +50,7 @@ def Game(_frameRate, _window, _plyr):
     _plyrCoordinatesList = list(_plyr.coordinates)
 
     playerAnimIndex = 0
+    flipSprite = False
 
     gameState = True
     while gameState:
@@ -64,13 +65,13 @@ def Game(_frameRate, _window, _plyr):
         pygame.event.set_grab(limit_external_input)
 
         # change the surface of the player every iteration
-        _plyr.surface = pygame.transform.scale(pygame.image.load(_plyr.idleAnim[playerAnimIndex]), (_plyr.size[0], _plyr.size[1]))
+        _plyr.surface = pygame.transform.flip(
+            pygame.transform.scale(pygame.image.load(_plyr.idleAnim[playerAnimIndex]), (_plyr.size[0], _plyr.size[1])),
+            flipSprite, False
+        )
         if playerAnimIndex + 1 == len(_plyr.idleAnim):
             playerAnimIndex = -1
         playerAnimIndex += 1
-
-        # updates the flipped surface for the player, for use when player changes direction
-        _plyr.UpdateFlippedSurfaces()
 
         for event in pygame.event.get():
 
@@ -97,10 +98,10 @@ def Game(_frameRate, _window, _plyr):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, "Images/bullet.bmp")
-                    if _plyr.surface == _plyr.surface_original:
+                    if flipSprite == False:
                         playerBullet.velocity = abs(playerBullet.velocity)
                         playerBullet.surface = playerBullet.surface_original
-                    elif _plyr.surface == _plyr.surface_flipped:
+                    elif flipSprite == True:
                         playerBullet.velocity = -(playerBullet.velocity)
                         playerBullet.surface = playerBullet.surface_flipped
                     bullets.append(playerBullet)
@@ -120,12 +121,9 @@ def Game(_frameRate, _window, _plyr):
 
         # flipping from left to right facing player surfaces
         if deltHorizMovement > 0:
-            _plyr.surface = _plyr.surface_original
+            flipSprite = False
         elif deltHorizMovement < 0:
-            _plyr.surface = _plyr.surface_flipped
-        else:
-            pass
-        print
+            flipSprite = True
 
         # restrict player's x and y coordinates to edge of window
         if _plyrCoordinatesList[0] < 0:

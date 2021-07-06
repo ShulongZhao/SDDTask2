@@ -14,7 +14,7 @@ framerate = 40
 gameTitle = "Game Title"
 gameWindowSize = [1280, 720]
 
-menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/menu.bmp")
+menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/Background.bmp")
 gameWindow = GUI.Window(gameTitle, gameWindowSize, "Images/maxcheng1.bmp")
 
 # instance of Player class, representing player 
