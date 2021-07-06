@@ -85,7 +85,7 @@ def Game(_frameRate, _window, _plyr):
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    playerBullet = Bullet(_plyr.coordinates, [10, 10], [10, 0], _plyr.bulletImage)
+                    playerBullet = Bullet(_plyr.coordinates, [10, 10], [10, 0], "Images/bullet.bmp")
                     if _plyr.surface == _plyr.surface_original:
                         playerBullet.velocity = [abs(playerBullet.velocity[0]), abs(playerBullet.velocity[1])]
                         playerBullet.surface = playerBullet.surface_original
@@ -133,7 +133,8 @@ def Game(_frameRate, _window, _plyr):
             if bullet.coordinates[0] > _window.width or bullet.coordinates[1] > _window.height:
                 bullets.remove(bullet)
             # updating bullet coordinates
-            bullet.coordinates[0] += bullet.velocity
+            bullet.coordinates[0] += bullet.velocity[0]
+            bullet.coordinates[1] += bullet.velocity[1]
             _window.screen.blit(bullet.surface, bullet.coordinates)
 
         # updating screen
