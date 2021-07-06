@@ -82,15 +82,17 @@ def Game(_frameRate, _window, _plyr):
                     limit_external_input = True
 
             # shoot bullet when space pressed
-            if keys[pygame.K_SPACE]:
-                playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, "Images/bullet.bmp")
-                if _plyr.surface == _plyr.surface_original:
-                    playerBullet.velocity = abs(playerBullet.velocity)
-                    playerBullet.surface = playerBullet.surface_original
-                elif _plyr.surface == _plyr.surface_flipped:
-                    playerBullet.velocity = -(playerBullet.velocity)
-                    playerBullet.surface = playerBullet.surface_flipped
-                bullets.append(playerBullet)
+            # (created 2 keydown event checks to split both functionalities apart)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    playerBullet = Bullet(_plyr.coordinates, [10, 10], [10, 0], _plyr.bulletImage)
+                    if _plyr.surface == _plyr.surface_original:
+                        playerBullet.velocity = [abs(playerBullet.velocity[0]), abs(playerBullet.velocity[1])]
+                        playerBullet.surface = playerBullet.surface_original
+                    elif _plyr.surface == _plyr.surface_flipped:
+                        playerBullet.velocity = [-(playerBullet.velocity[0], playerBullet.velocity[1])]
+                        playerBullet.surface = playerBullet.surface_flipped
+                    bullets.append(playerBullet)
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
