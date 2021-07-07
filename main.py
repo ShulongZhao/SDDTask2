@@ -49,7 +49,7 @@ plyr_animDirectoryList = [
 ]
 
 # instance of Player class, representing player
-plyr = Player((0, 0), [80, 80], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
+plyr = Player((0, 0), [100, 100], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
 
 if __name__ == "__main__":
 

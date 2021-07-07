@@ -49,6 +49,7 @@ def Game(_frameRate, _window, _plyr):
 
     plyrAnimIdx = 0
     flipSprite = False
+    _plyrAnimDict = _plyr.animations.animFramesDict
 
     gameState = True
     while gameState:
@@ -61,8 +62,6 @@ def Game(_frameRate, _window, _plyr):
         pygame.mouse.set_visible(mouseVisibility)
         # limits all user input to pygame environment
         pygame.event.set_grab(limit_external_input)
-
-        _plyrAnimDict = _plyr.animations.animFramesDict
 
         for event in pygame.event.get():
 
@@ -95,7 +94,7 @@ def Game(_frameRate, _window, _plyr):
                         playerBullet.velocity = -(playerBullet.velocity)
                         playerBullet.surface = playerBullet.surface_flipped
                     bullets.append(playerBullet)
-                    _plyrAnimDict["Images/playersprites/idle"][1] = not _plyrAnimDict["Images/playersprites/idle"][1]
+                    _plyrAnimDict["Images/playersprites/shooting"][1] = not _plyrAnimDict["Images/playersprites/shooting"][1]
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -122,19 +121,24 @@ def Game(_frameRate, _window, _plyr):
         try:
             for directory in _plyrAnimDict:
                 # if any animations are being played right now
-                if _plyrAnimDict[directory][1] == True:
+                if (_plyrAnimDict[directory][1] == True) and (_plyrAnimDict[directory] != "Images/playersprites/idle"):
                     _plyr.surface = pygame.transform.flip(
                         pygame.transform.scale(pygame.image.load(_plyrAnimDict[directory][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
                         flipSprite, False
                     )
-                else:
-                    _plyr.surface = pygame.transform.flip(
-                        pygame.transform.scale(pygame.image.load(_plyrAnimDict["Images/playersprites/idle"][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
-                        flipSprite, False
-                    )
+                    _plyrAnimDict["Images/playersprites/idle"][1] = False
+                    break
+            else: _plyrAnimDict["Images/playersprites/idle"][1] = True
+
+            if _plyrAnimDict["Images/playersprites/idle"][1]:
+                _plyr.surface = pygame.transform.flip(
+                    pygame.transform.scale(pygame.image.load(_plyrAnimDict["Images/playersprites/idle"][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
+                    flipSprite, False
+                )
             plyrAnimIdx += 1
         except IndexError:
             plyrAnimIdx = 0
+        
 
         # restrict player's x and y coordinates to edge of window
         if _plyrCoordinatesList[0] < 0:

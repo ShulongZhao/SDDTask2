@@ -19,7 +19,7 @@ class animations:
                 if animFrame.endswith(".bmp") == False:
                     animFramesList.remove(animFrame)
 
-
+            animFramesList.sort()
             self.animFramesDict[animDirectory] = [animFramesList, False]
 
 
