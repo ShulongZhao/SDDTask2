@@ -46,7 +46,7 @@ def Game(_frameRate, _window, _plyr):
     mouseVisibility = False
     limit_external_input = True
 
-    _plyrCoordinatesList = list(_plyr.coordinates)
+    #_plyrCoordinatesList = list(_plyr.coordinates)
 
     plyrAnimIdx = 0
     flipSprite = False
@@ -63,7 +63,7 @@ def Game(_frameRate, _window, _plyr):
         # limits all user input to pygame environment
         pygame.event.set_grab(limit_external_input)
 
-        _plyrAnimDict = _plyr.animations.animFramesDict
+        #_plyrAnimDict = _plyr.animations.animFramesDict
 
         for event in pygame.event.get():
 
@@ -88,7 +88,7 @@ def Game(_frameRate, _window, _plyr):
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    playerBullet = Bullet(_plyr.coordinates, [10, 10], [10, 0], _plyr.bulletImage)
+                    playerBullet = Bullet([_plyr.rect.x, _plyr.rect.y], [10, 10], [10, 0], _plyr.attackFileLocation)
                     if flipSprite == False:
                         playerBullet.velocity = [abs(playerBullet.velocity[0]), abs(playerBullet.velocity[1])]
                         playerBullet.surface = playerBullet.surface_original
@@ -96,7 +96,7 @@ def Game(_frameRate, _window, _plyr):
                         playerBullet.velocity = [-playerBullet.velocity[0], -playerBullet.velocity[1]]
                         playerBullet.surface = playerBullet.surface_flipped
                     bullets.append(playerBullet)
-                    _plyrAnimDict["Images/playersprites/idle"][1] = not _plyrAnimDict["Images/playersprites/idle"][1]
+                    # _plyrAnimDict["Images/playersprites/idle"][1] = not _plyrAnimDict["Images/playersprites/idle"][1]
 
 
         # getting state of all keys
@@ -110,50 +110,56 @@ def Game(_frameRate, _window, _plyr):
         # restricting diagonal movement by only either allowing
         # horizontal or vertical movement at a time
         if deltHorizMovement:
-            _plyrCoordinatesList[0] += deltHorizMovement * _plyr.speed
+            _plyr.rect.x += deltHorizMovement * _plyr.speed
         elif deltaVertMovement:
-            _plyrCoordinatesList[1] += deltaVertMovement * _plyr.speed
+            _plyr.rect.y += deltaVertMovement * _plyr.speed
 
         # flipping from left to right facing player surfaces
         if deltHorizMovement > 0:
-            flipSprite = False
+            _plyr.image = _plyr.imageRight
         elif deltHorizMovement < 0:
-            flipSprite = True
+            _plyr.image = _plyr.imageLeft
 
-        # updates the player sprite
-        try:
-            for directory in _plyrAnimDict:
-                # if any animations are being played right now
-                if _plyrAnimDict[directory][1] == True:
-                    _plyr.surface = pygame.transform.flip(
-                        pygame.transform.scale(pygame.image.load(_plyrAnimDict[directory][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
-                        flipSprite, False
-                    )
-                else:
-                    _plyr.surface = pygame.transform.flip(
-                        pygame.transform.scale(pygame.image.load(_plyrAnimDict["Images/playersprites/idle"][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
-                        flipSprite, False
-                    )
-            plyrAnimIdx += 1
-        except IndexError:
-            plyrAnimIdx = 0
+        # # updates the player sprite
+        # try:
+        #     for directory in _plyrAnimDict:
+        #         # if any animations are being played right now
+        #         if _plyrAnimDict[directory][1] == True:
+        #             _plyr.surface = pygame.transform.flip(
+        #                 pygame.transform.scale(pygame.image.load(_plyrAnimDict[directory][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
+        #                 flipSprite, False
+        #             )
+        #         else:
+        #             _plyr.surface = pygame.transform.flip(
+        #                 pygame.transform.scale(pygame.image.load(_plyrAnimDict["Images/playersprites/idle"][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
+        #                 flipSprite, False
+        #             )
+        #     plyrAnimIdx += 1
+        # except IndexError:
+        #     plyrAnimIdx = 0
 
         # restrict player's x and y coordinates to edge of window
-        if _plyrCoordinatesList[0] < 0:
-            _plyrCoordinatesList[0] = 0
-        elif _plyrCoordinatesList[0] + _plyr.size[0] > _window.width:
-            _plyrCoordinatesList[0] = _window.width - _plyr.size[0]
-        if _plyrCoordinatesList[1] < 0:
-            _plyrCoordinatesList[1] = 0
-        elif _plyrCoordinatesList[1] + _plyr.size[1] > _window.height:
-            _plyrCoordinatesList[1] = _window.height - _plyr.size[1]
+        if _plyr.rect.x < 0:
+            _plyr.rect.x = 0
+        elif _plyr.rect.x + _plyr.rect.width > _window.width:
+            _plyr.rect.x = _window.width - _plyr.rect.width
+        if _plyr.rect.y < 0:
+            _plyr.rect.y = 0
+        elif _plyr.rect.y + _plyr.rect.height > _window.height:
+            _plyr.rect.y = _window.height - _plyr.rect.height
 
-        # translating coordinates from list back to tuple
-        _plyr.coordinates = (_plyrCoordinatesList[0], _plyrCoordinatesList[1])
+        # # translating coordinates from list back to tuple
+        # _plyr.coordinates = (_plyr.rect.x, _plyr.rect.y)
 
         # drawing surfaces onto screen
         _window.screen.blit(_window.bg, (0, 0))
-        _window.screen.blit(_plyr.surface, _plyr.coordinates)
+
+        characterSpriteGroup = pygame.sprite.Group()
+        characterSpriteGroup.add(_plyr)
+
+        characterSpriteGroup.draw(_window.screen)
+
+       # _window.screen.blit(_plyr.surface, _plyr.coordinates)
 
         # updating all visible bullets on screen
         for bullet in bullets:

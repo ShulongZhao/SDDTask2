@@ -2,7 +2,7 @@ import pygame
 
 import Scenes
 import GUI
-from Characters import Player
+from Characters import Character
 
 # initalises all pygame processes 
 pygame.init()
@@ -45,11 +45,19 @@ plyr_animDirectoryList = [
     "Images/playersprites/hit",
     "Images/playersprites/pre-shooting",
     "Images/playersprites/shooting",
-
 ]
 
-# instance of Player class, representing player
-plyr = Player((0, 0), [80, 80], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
+# # instance of Player class, representing player
+# plyr = Player((0, 0), [80, 80], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
+
+plyr = Character("Images/playersprites/idle/player-1.bmp", [80, 80], 7.5, "Images/playersprites/bullet/bullet.bmp")
+
+#same but for enemy
+enemy_animDirectoryList= [
+    "Images/enemysprites/idle"
+]
+
+# enemy = Character(#imageLocation, (0, 0), [80, 80], 5, "Images/enemysprites/bomb/bomb.bmp")
 
 if __name__ == "__main__":
 
