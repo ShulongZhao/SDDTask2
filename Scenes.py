@@ -39,7 +39,7 @@ def Menu(_frameRate, _window, buttonDict):
         pygame.display.update()
 
 
-def Game(_frameRate, _window, _plyr, _enemy):
+def Game(_frameRate, _window, _plyr):
 
     bullets = []
 
@@ -47,7 +47,6 @@ def Game(_frameRate, _window, _plyr, _enemy):
     limit_external_input = True
 
     _plyrCoordinatesList = list(_plyr.coordinates)
-    _enemyCoordinatesList = list(_enemy.coordinates)
 
     plyrAnimIdx = 0
     flipSprite = False
@@ -65,7 +64,6 @@ def Game(_frameRate, _window, _plyr, _enemy):
         pygame.event.set_grab(limit_external_input)
 
         _plyrAnimDict = _plyr.animations.animFramesDict
-        _enemyAnimDict = _enemy.animations.animframesDict
 
         for event in pygame.event.get():
 
@@ -152,7 +150,6 @@ def Game(_frameRate, _window, _plyr, _enemy):
 
         # translating coordinates from list back to tuple
         _plyr.coordinates = (_plyrCoordinatesList[0], _plyrCoordinatesList[1])
-        _enemy.coordinates = (_enemyCoordinatesList[0], _enemyCoordinatesList[1])
 
         # drawing surfaces onto screen
         _window.screen.blit(_window.bg, (0, 0))
