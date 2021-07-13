@@ -3,7 +3,6 @@ import pygame
 import Scenes
 import GUI
 from Characters import Player
-from Characters import Enemy
 
 # initalises all pygame processes 
 pygame.init()
@@ -51,13 +50,6 @@ plyr_animDirectoryList = [
 
 # instance of Player class, representing player
 plyr = Player((0, 0), [80, 80], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
-
-#same but for enemy
-enemy_animDirectoryList= [
-    "Images/enemysprites/idle"
-]
-
-enemy = Enemy((0, 0), [80, 80], 5, "Images/enemysprites/bomb/bomb.bmp", enemy_animDirectoryList)
 
 if __name__ == "__main__":
 
