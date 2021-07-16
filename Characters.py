@@ -1,21 +1,28 @@
 import pygame
-from Animations import animations
 
 class Character (pygame.sprite.Sprite):
-    def __init__(self, _image, size, speed, attackFileLocation):
+    def __init__(self, size, velocity, animsDirList, bulletImage, flipSprite=False):
+        # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
-        # self.sprites = [pygame.image.load(sprite) for sprite in spriteList]
-        self.imageLeft = pygame.transform.flip(pygame.transform.scale(pygame.image.load(_image), size), True, False)
-        self.imageRight = pygame.transform.scale(pygame.image.load(_image), size)
-        self.image = self.imageRight
 
-
+        self.image = pygame.Surface(size)
         self.rect = self.image.get_rect()
-        self.rect.size = size
+        self.rect.center = (1280 / 2, 720 / 2)
+        self.size = size
+        self.velocity = velocity
 
-        self.speed = speed
+        self.animsDirList = animsDirList
+        self.bulletImage = bulletImage
 
-        self.attackFileLocation = pygame.image.load(attackFileLocation)
-    
-        
+        self.flipSprite = flipSprite
 
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, image, size, velocity, startingPos):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale(pygame.image.load(image), size)
+        self.rect = self.image.get_rect()
+        self.rect.x = startingPos[0]
+        self.rect.y = startingPos[1]
+        self.size = size
+        self.velocity = velocity

@@ -1,15 +1,15 @@
 import pygame
 
-
 class Window:
 
-    def __init__(self, title, size, bgFileLocation):
+    def __init__(self, title, size, frameRate, bgFileLocation):
         self.title = title
         self.size = size
         self.width = self.size[0]
         self.height = self.size[1]
         self.screen = pygame.display.set_mode(self.size)
         self.bg = pygame.image.load(bgFileLocation)
+        self.frameRate = frameRate
 
 class Button:
 
