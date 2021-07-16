@@ -1,14 +1,14 @@
 import pygame
-from Features import Bullet
+from Sprites import Bullet
 
-def Menu(_frameRate, _window, buttonDict):
+def Menu(_window, buttonDict):
 
     _windowScreen = _window.screen
 
     while True:
         # framerate
         clock = pygame.time.Clock()
-        clock.tick(_frameRate)
+        clock.tick(_window.frameRate)
 
         # background
         _windowScreen.blit(_window.bg, (0, 0))
@@ -38,25 +38,22 @@ def Menu(_frameRate, _window, buttonDict):
         pygame.display.update()
 
 
-def Game(_frameRate, _window, _plyr):
+def Game(_window, _plyr):
 
     bullets = []
 
     mouseVisibility = False
     limit_external_input = True 
 
-    _plyrCoordinatesList = list(_plyr.coordinates)
-
-    plyrAnimIdx = 0
-    flipSprite = False
-    _plyrAnimDict = _plyr.animations.animFramesDict
+    characterSpriteGroup = pygame.sprite.Group()
+    characterSpriteGroup.add(_plyr)
 
     gameState = True
     while gameState:
 
         # framerate
         clock = pygame.time.Clock()
-        clock.tick(_frameRate)
+        clock.tick(_window.frameRate)
 
         # non-visble mouse during in game
         pygame.mouse.set_visible(mouseVisibility)
@@ -81,25 +78,23 @@ def Game(_frameRate, _window, _plyr):
                 if (mouseVisibility == True) and (limit_external_input == False):
                     mouseVisibility = False
                     limit_external_input = True
-
+        
             # shoot bullet when space pressed
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    playerBullet = Bullet(_plyr.coordinates, [10, 10], 10, _plyr.bulletImage)
-                    if flipSprite == False:
+                    playerBullet = Bullet(_plyr.bulletImage, [10, 10], 10, startingPos=(_plyr.rect.centerx, _plyr.rect.bottom))
+                    if _plyr.flipSprite == False:
                         playerBullet.velocity = abs(playerBullet.velocity)
-                        playerBullet.surface = playerBullet.surface_original
-                    elif flipSprite == True:
+                    elif _plyr.flipSprite == True:
                         playerBullet.velocity = -(playerBullet.velocity)
-                        playerBullet.surface = playerBullet.surface_flipped
                     bullets.append(playerBullet)
-                    _plyrAnimDict["Images/playersprites/shooting"][1] = not _plyrAnimDict["Images/playersprites/shooting"][1]
+                    _plyr.animsDirList[2].isActive = True
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
-        # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * speed --> goes left
+        # therefore, keys[pygame.K_RIGHT] = 0, keys[pygame.K_LEFT] = 1 --> player x-coordinate = (0 - 1) * velocity --> goes left
         # same for player y-coordinate (down is positive and up is negative, in pygame)
         deltaVertMovement = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltHorizMovement = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
@@ -107,64 +102,75 @@ def Game(_frameRate, _window, _plyr):
         # restricting diagonal movement by only either allowing 
         # horizontal or vertical movement at a time
         if deltHorizMovement:
-            _plyrCoordinatesList[0] += deltHorizMovement * _plyr.speed
+            _plyr.rect.x += deltHorizMovement * _plyr.velocity
         elif deltaVertMovement:
-            _plyrCoordinatesList[1] += deltaVertMovement * _plyr.speed
+            _plyr.rect.y += deltaVertMovement * _plyr.velocity
 
         # flipping from left to right facing player surfaces
         if deltHorizMovement > 0:
-            flipSprite = False
+            _plyr.flipSprite = False
         elif deltHorizMovement < 0:
-            flipSprite = True
+            _plyr.flipSprite = True
 
-        # updates the player sprite
-        try:
-            for directory in _plyrAnimDict:
-                # if any animations are being played right now
-                if (_plyrAnimDict[directory][1] == True) and (_plyrAnimDict[directory] != "Images/playersprites/idle"):
-                    _plyr.surface = pygame.transform.flip(
-                        pygame.transform.scale(pygame.image.load(_plyrAnimDict[directory][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
-                        flipSprite, False
+        for _plyrDir in _plyr.animsDirList:
+            # sort the list into alphabetical order
+            _plyrDir.animFramesList.sort()
+            try:
+                # if animation is active
+                if (_plyrDir.isActive == True) and _plyrDir != "Images/playersprites/idle":
+                    _plyr.image = pygame.transform.flip(
+                        pygame.transform.scale(
+                                pygame.image.load(_plyrDir.animFramesList[_plyrDir.plyrAnimIdx]), 
+                            _plyr.size),
+                        _plyr.flipSprite, False
                     )
-                    _plyrAnimDict["Images/playersprites/idle"][1] = False
-                    break
-            else: _plyrAnimDict["Images/playersprites/idle"][1] = True
+                else:
+                    _plyr.image = pygame.transform.flip(
+                        pygame.transform.scale(
+                                pygame.image.load(_plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]), 
+                            _plyr.size),
+                        _plyr.flipSprite, False
+                    )
+                _plyrDir.plyrAnimIdx += 1
+            except IndexError:
+                # loop back to 0 index after all animations have been looped
+                _plyrDir.plyrAnimIdx = 0
 
-            if _plyrAnimDict["Images/playersprites/idle"][1]:
-                _plyr.surface = pygame.transform.flip(
-                    pygame.transform.scale(pygame.image.load(_plyrAnimDict["Images/playersprites/idle"][0][plyrAnimIdx]), (_plyr.size[0], _plyr.size[1])),
-                    flipSprite, False
-                )
-            plyrAnimIdx += 1
-        except IndexError:
-            plyrAnimIdx = 0
-        
+            if _plyrDir.maxCycles == -1:
+                _plyrDir.maxCycles == -2
+                break
+
+            if _plyrDir.currentCycles == _plyrDir.maxCycles:
+                _plyrDir.isActive = False
+
+            _plyrDir.currentCycles += 1
 
         # restrict player's x and y coordinates to edge of window
-        if _plyrCoordinatesList[0] < 0:
-            _plyrCoordinatesList[0] = 0
-        elif _plyrCoordinatesList[0] + _plyr.size[0] > _window.width:
-            _plyrCoordinatesList[0] = _window.width - _plyr.size[0]
-        if _plyrCoordinatesList[1] < 0:
-            _plyrCoordinatesList[1] = 0
-        elif _plyrCoordinatesList[1] + _plyr.size[1] > _window.height:
-            _plyrCoordinatesList[1] = _window.height - _plyr.size[1]
-        
-        # translating coordinates from list back to tuple
-        _plyr.coordinates = (_plyrCoordinatesList[0], _plyrCoordinatesList[1])  
-
-        # drawing surfaces onto screen
-        _window.screen.blit(_window.bg, (0, 0))        
-        _window.screen.blit(_plyr.surface, _plyr.coordinates)
+        if _plyr.rect.x < 0:
+            _plyr.rect.x = 0
+        elif _plyr.rect.x + _plyr.size[0] > _window.width:
+            _plyr.rect.x = _window.width - _plyr.size[0]
+        if _plyr.rect.y < 0:
+            _plyr.rect.y = 0
+        elif _plyr.rect.y + _plyr.size[1] > _window.height:
+            _plyr.rect.y = _window.height - _plyr.size[1]
 
         # updating all visible bullets on screen
         for bullet in bullets:
             # deleting bullets that travel off screen
-            if bullet.coordinates[0] > _window.width or bullet.coordinates[1] > _window.height:
+            if bullet.rect.x > _window.width or bullet.rect.y > _window.height:
                 bullets.remove(bullet)
             # updating bullet coordinates
-            bullet.coordinates[0] += bullet.velocity
-            _window.screen.blit(bullet.surface, bullet.coordinates)
+            bullet.rect.x += bullet.velocity
+
+            characterSpriteGroup.add(bullet)
+
+        # drawing surfaces onto screen
+        _window.screen.blit(_window.bg, (0, 0))
+
+        characterSpriteGroup.update()
+        characterSpriteGroup.draw(_window.screen)
+
 
         # updating screen
         pygame.display.update()

@@ -1,8 +1,12 @@
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+
 import pygame
 
 import Scenes
 import GUI
-from Characters import Player
+from Sprites import Character
+from Animations import Animation
 
 # initalises all pygame processes 
 pygame.init()
@@ -14,8 +18,8 @@ framerate = 40
 gameTitle = "Game Title"
 gameWindowSize = [1280, 720]
 
-menuWindow = GUI.Window(gameTitle, gameWindowSize, "Images/backgroundsprites/Background.bmp")
-gameWindow = GUI.Window(gameTitle, gameWindowSize, "Images/backgroundsprites/Background.bmp")
+menuWindow = GUI.Window(gameTitle, gameWindowSize, framerate, "Images/backgroundsprites/Background.bmp")
+gameWindow = GUI.Window(gameTitle, gameWindowSize, framerate, "Images/backgroundsprites/Background.bmp")
 
 # instances of custom text class
 titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
@@ -40,24 +44,23 @@ menuButtons = {
 }
 
 # list of the directories containing PLAYER animation frames 
-plyr_animDirectoryList = [
-    "Images/playersprites/idle",
-    "Images/playersprites/hit",
-    "Images/playersprites/pre-shooting",
-    "Images/playersprites/shooting",
-
+plyr_animList = [
+    Animation("Images/playersprites/idle", 0.5, -1),
+    Animation("Images/playersprites/hit", 0, 1),
+    Animation("Images/playersprites/pre-shooting", 0.15, 10),
+    Animation("Images/playersprites/shooting", 0, -1)
 ]
 
 # instance of Player class, representing player
-plyr = Player((0, 0), [100, 100], 7.5, "Images/playersprites/bullet/bullet.bmp", plyr_animDirectoryList)
+plyr = Character([100, 100], 7.5, plyr_animList, "Images/playersprites/bullet/bullet.bmp")
 
 if __name__ == "__main__":
 
-    menuState = Scenes.Menu(framerate, menuWindow, menuButtons)
+    menuState = Scenes.Menu(menuWindow, menuButtons)
 
     if menuState == "Start":
         # start the game
-        Scenes.Game(framerate, gameWindow, plyr)
+        Scenes.Game(gameWindow, plyr)
     elif menuState == "Quit":
         # passes the sequence to quit python
         pass

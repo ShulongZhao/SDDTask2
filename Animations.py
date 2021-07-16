@@ -1,27 +1,45 @@
 import os
 
-class animations:
-    def __init__(self, animDirectoryList):
-        self.animFramesDict = {}
-        # loop through all the directories providied, containing animation frames
-        for animDirectory in animDirectoryList:
-            # generate a list of all the animation frames within the directory
-            animFramesList = os.listdir(animDirectory)
-            # sort through all the animation frames, to give their locations
-            i = 0
-            for animFrame in animFramesList:
-                animFramesList[i] = os.path.join(animDirectory, animFrame)
+class Animation:
+    # increments every iteration to cycle through all frames
+    plyrAnimIdx = 0
+
+    def __init__(self, animsDir, frameTime, maxCycles, isActive=False):  
+        # directory containing all the animations 
+        self.animsDir = animsDir
+        # time for frame to stay on screen 
+        self.frameTime = frameTime
+        # number of current cycles of the animation
+        self.currentCycles = 0
+        # max number of cycles for the animation
+        self.maxCycles = maxCycles
+
+        self.isActive = isActive
+        # for the directories in the animation directory list provided...
+        # generate and sort a list of all the animation frames within the directory
+        self.animFramesList = os.listdir(animsDir)
+        self.animFramesList.sort()
+
+        i = 0
+        while i < len(self.animFramesList):
+            try:
+                # give all frames their correct directory, and not just their filename
+                self.animFramesList[i] = os.path.join(animsDir, self.animFramesList[i])
+                # remove any files that aren't '.bmp'
+                if self.animFramesList[i].endswith(".bmp") == False:
+                    self.animFramesList.remove(self.animFramesList[i])
+                    # when element is removed, the next element becomes the same index as the one removed, 
+                    # therefore i should be looped again for next element
+                    i -= 1   
                 i += 1
+            except IndexError:
+                # debuging statement
+                print("Index Error: i = " + i)
+                break
+    
+    def ResetAnimCycles():
+        pass
 
-            # separated loops, although they possess the same condition, 
-            # to not conflict their functioanlities with one another 
-            for animFrame in animFramesList:
-                if animFrame.endswith(".bmp") == False:
-                    animFramesList.remove(animFrame)
-
-            animFramesList.sort()
-            self.animFramesDict[animDirectory] = [animFramesList, False]
+            
 
 
-
-                    

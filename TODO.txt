@@ -5,10 +5,16 @@ player:
 		- make bullet come from center of player rather than top left corner
 	- animations
 		- if the player enters a new animation, the animation index must return to 0
-		- idle should be underneath all other animations
+		- add times to animations
 
 
 environment:
 	- background management
 	- adding different layers for backgrounds
 	- sprite objects on screen
+
+
+music
+
+Player upgrades
+	- speed boost
