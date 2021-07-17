@@ -2,6 +2,9 @@
     "python.pythonPath": "/usr/local/bin/python3",
     "python.autoComplete.extraPaths": [
         "Users/nagamaddali/Documents/GitHub/SDDTask2"
+    ],
+    "python.analysis.extraPaths": [
+        "Users/nagamaddali/Documents/GitHub/SDDTask2"
     ]
 
 }
