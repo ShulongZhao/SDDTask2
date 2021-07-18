@@ -123,14 +123,14 @@ def Game(_window, _plyr):
                                 pygame.image.load(_plyrDir.animFramesList[_plyrDir.plyrAnimIdx]), 
                             _plyr.size),
                         _plyr.flipSprite, False
-                    )
+                    ).convert_alpha()
                 else:
                     _plyr.image = pygame.transform.flip(
                         pygame.transform.scale(
                                 pygame.image.load(_plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]), 
                             _plyr.size),
                         _plyr.flipSprite, False
-                    )
+                    ).convert_alpha()
                 _plyrDir.plyrAnimIdx += 1
             except IndexError:
                 # loop back to 0 index after all animations have been looped
@@ -165,7 +165,7 @@ def Game(_window, _plyr):
 
             characterSpriteGroup.add(bullet)
 
-        # drawing surfaces onto screen
+
         _window.screen.blit(_window.bg, (0, 0))
 
         characterSpriteGroup.update()
