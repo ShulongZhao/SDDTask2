@@ -1,6 +1,3 @@
-from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-
 import pygame
 
 import Scenes
@@ -14,7 +11,7 @@ pygame.init()
 # time
 framerate = 40
 
-# game properties: external
+# game properties
 gameTitle = "Game Title"
 gameWindowSize = [1280, 720]
 
@@ -22,25 +19,19 @@ menuWindow = GUI.Window(gameTitle, gameWindowSize, framerate, "Images/background
 gameWindow = GUI.Window(gameTitle, gameWindowSize, framerate, "Images/backgroundsprites/Background.bmp")
 
 # instances of custom text class
-titleText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
-startText = GUI.Text("Start", "Fonts/titlefont.ttf", 24, (0, 0, 0))
-quitText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
+titleLayerText = GUI.Text("Max Cheng Is God", "Fonts/titlefont.ttf", 35, (255, 255, 255))
+startLayerText = GUI.Text("Start", "Fonts/titlefont.ttf", 24, (0, 0, 0))
+quitLayerText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 
 # dictionary containing instances of custom button class, located on menu window
 menuButtons = {
-    titleText.originalText: 
-        GUI.Button(titleText, (0, 0, 0), (0, 0, 0), 
-        [menuWindow.width/2, menuWindow.height/3], menuWindow,
-        # doesn't treat title rect as rect surface
-        is_rect=False),
+    titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/3], menuWindow),
 
-    startText.originalText: 
-        GUI.Button(startText, (170, 170, 170), (100, 100, 100), 
-        [menuWindow.width/2, menuWindow.height/2], menuWindow),
+    startLayerText.originalText:    GUI.Layer(startLayerText, [menuWindow.width/2, menuWindow.height/2], menuWindow, 
+                                    clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
 
-    quitText.originalText: 
-        GUI.Button(quitText, (170, 170, 170), (100, 100, 100), 
-        [menuWindow.width/2, 2*menuWindow.height/3], menuWindow)
+    quitLayerText.originalText:     GUI.Layer(quitLayerText, [menuWindow.width/2, 2*menuWindow.height/3], menuWindow, 
+                                    clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
 }
 
 # list of the directories containing PLAYER animation frames 

@@ -3,7 +3,7 @@ from Sprites import Bullet
 
 def Menu(_window, buttonDict):
 
-    _windowScreen = _window.screen
+    GUISpriteGroup = pygame.sprite.Group()
 
     while True:
         # framerate
@@ -11,8 +11,14 @@ def Menu(_window, buttonDict):
         clock.tick(_window.frameRate)
 
         # background
-        _windowScreen.blit(_window.bg, (0, 0))
+        _window.screen.blit(_window.bg, (0, 0))
 
+        # calls main() in all buttons of buttonDict
+        for buttonName in buttonDict:
+            button = buttonDict[buttonName]
+            button.main()
+            GUISpriteGroup.add(button)
+         
         # events (key presses, mouse presses)
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
@@ -24,16 +30,13 @@ def Menu(_window, buttonDict):
                 # checks if mouse clicks buttons
                 if ev.type == pygame.MOUSEBUTTONDOWN:
                     # condition for mouse click on buttons
-                    if button.IsButtonClick() == True:
+                    if button.IsLayerClicked() == True:
                         # exits loop and returns the name of the button
                         return button.myText.originalText
 
-        # calls main() in all buttons of buttonDict
-        for buttonName in buttonDict:
-            button = buttonDict[buttonName]
-            button.main()
-            # rendering text so it is on the uppermost layer
-            _windowScreen.blit(button.myText.renderedText, button.textRect)
+        
+        GUISpriteGroup.draw(_window.screen)
+        #_window.screen.blit(button.myText.renderedText, button.rect)
 
         pygame.display.update()
 
@@ -126,13 +129,12 @@ def Game(_window, _plyr):
         if plyr_Y < 0:
             plyr_Y = 0
         elif plyr_Y + _plyr.rect.height > _window.height:
-            plyr_Y = _window.height - _plyr.height
+            plyr_Y = _window.height - _plyr.rect.height
 
 
         for _plyrDir in _plyr.animsDirList:
             # sort the list into alphabetical order
             _plyrDir.animFramesList.sort()
-
 
             try:
                 # if animation is active
