@@ -5,7 +5,7 @@ class Character (pygame.sprite.Sprite):
         # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = pygame.Surface(size).convert_alpha()
+        self.image = pygame.Surface(size)
         self.rect = self.image.get_rect()
         self.rect.center = (1280 / 2, 720 / 2)
         self.size = size
@@ -20,7 +20,7 @@ class Character (pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, image, size, velocity, startingPos):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(pygame.image.load(image), size).convert()
+        self.image = pygame.transform.scale(pygame.image.load(image), size)
         self.rect = self.image.get_rect()
         self.rect.x = startingPos[0]
         self.rect.y = startingPos[1]
