@@ -48,6 +48,11 @@ def Game(_window, _plyr):
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(_plyr)
 
+    # added local variables because rect's own coordinates reset after every iteration
+    # therefore function updates local variables and passes them to player rect coordinates
+    plyr_X = 0
+    plyr_Y = 0
+
     gameState = True
     while gameState:
 
@@ -102,9 +107,9 @@ def Game(_window, _plyr):
         # restricting diagonal movement by only either allowing 
         # horizontal or vertical movement at a time
         if deltHorizMovement:
-            _plyr.rect.x += deltHorizMovement * _plyr.velocity
+            plyr_X += deltHorizMovement * _plyr.velocity
         elif deltaVertMovement:
-            _plyr.rect.y += deltaVertMovement * _plyr.velocity
+            plyr_Y += deltaVertMovement * _plyr.velocity
 
         # flipping from left to right facing player surfaces
         if deltHorizMovement > 0:
@@ -112,25 +117,61 @@ def Game(_window, _plyr):
         elif deltHorizMovement < 0:
             _plyr.flipSprite = True
 
+    
+        # restrict player's x and y coordinates to edge of window
+        if plyr_X < 0:
+            plyr_X = 0
+        elif plyr_X + _plyr.rect.width > _window.width:
+            plyr_X = _window.width - _plyr.rect.width
+        if plyr_Y < 0:
+            plyr_Y = 0
+        elif plyr_Y + _plyr.rect.height > _window.height:
+            plyr_Y = _window.height - _plyr.height
+
+
         for _plyrDir in _plyr.animsDirList:
             # sort the list into alphabetical order
             _plyrDir.animFramesList.sort()
+
+
             try:
                 # if animation is active
                 if (_plyrDir.isActive == True) and _plyrDir != "Images/playersprites/idle":
+
+                    plyrImage = pygame.image.load(
+                        _plyrDir.animFramesList[_plyrDir.plyrAnimIdx]).convert_alpha()
+                    _plyr.rect = plyrImage.get_rect(x=plyr_X, y=plyr_Y)
+                    _plyr.rect.size = (int(_plyr.rect.width * _plyr.scaleFactor), int(_plyr.rect.height * _plyr.scaleFactor))
+
                     _plyr.image = pygame.transform.flip(
+<<<<<<< Updated upstream
                         pygame.transform.scale(
                                 pygame.image.load(_plyrDir.animFramesList[_plyrDir.plyrAnimIdx]), 
                             _plyr.size),
                         _plyr.flipSprite, False
                     )
+=======
+                        pygame.transform.scale(plyrImage, _plyr.rect.size), _plyr.flipSprite, False).convert_alpha()
+
+>>>>>>> Stashed changes
                 else:
+                    plyrImage = pygame.image.load(
+                        _plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]).convert_alpha()
+                    _plyr.rect = plyrImage.get_rect(x=plyr_X, y=plyr_Y)
+                    _plyr.rect.size = (int(_plyr.rect.width * _plyr.scaleFactor), int(_plyr.rect.height * _plyr.scaleFactor))
+
+
                     _plyr.image = pygame.transform.flip(
+<<<<<<< Updated upstream
                         pygame.transform.scale(
                                 pygame.image.load(_plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]), 
                             _plyr.size),
                         _plyr.flipSprite, False
                     )
+=======
+                        pygame.transform.scale(plyrImage, _plyr.rect.size), _plyr.flipSprite, False).convert_alpha()
+
+>>>>>>> Stashed changes
                 _plyrDir.plyrAnimIdx += 1
             except IndexError:
                 # loop back to 0 index after all animations have been looped
@@ -144,16 +185,6 @@ def Game(_window, _plyr):
                 _plyrDir.isActive = False
 
             _plyrDir.currentCycles += 1
-
-        # restrict player's x and y coordinates to edge of window
-        if _plyr.rect.x < 0:
-            _plyr.rect.x = 0
-        elif _plyr.rect.x + _plyr.size[0] > _window.width:
-            _plyr.rect.x = _window.width - _plyr.size[0]
-        if _plyr.rect.y < 0:
-            _plyr.rect.y = 0
-        elif _plyr.rect.y + _plyr.size[1] > _window.height:
-            _plyr.rect.y = _window.height - _plyr.size[1]
 
         # updating all visible bullets on screen
         for bullet in bullets:
