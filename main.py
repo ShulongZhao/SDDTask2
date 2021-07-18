@@ -52,7 +52,7 @@ plyr_animList = [
 ]
 
 # instance of Player class, representing player
-plyr = Character([100, 100], 7.5, plyr_animList, "Images/playersprites/bullet/bullet.bmp")
+plyr = Character(1/8, 7.5, plyr_animList, "Images/playersprites/bullet/bullet.bmp")
 
 if __name__ == "__main__":
 
