@@ -144,34 +144,17 @@ def Game(_window, _plyr):
                     _plyr.rect.size = (int(_plyr.rect.width * _plyr.scaleFactor), int(_plyr.rect.height * _plyr.scaleFactor))
 
                     _plyr.image = pygame.transform.flip(
-<<<<<<< Updated upstream
-                        pygame.transform.scale(
-                                pygame.image.load(_plyrDir.animFramesList[_plyrDir.plyrAnimIdx]), 
-                            _plyr.size),
-                        _plyr.flipSprite, False
-                    )
-=======
                         pygame.transform.scale(plyrImage, _plyr.rect.size), _plyr.flipSprite, False).convert_alpha()
 
->>>>>>> Stashed changes
                 else:
                     plyrImage = pygame.image.load(
                         _plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]).convert_alpha()
                     _plyr.rect = plyrImage.get_rect(x=plyr_X, y=plyr_Y)
                     _plyr.rect.size = (int(_plyr.rect.width * _plyr.scaleFactor), int(_plyr.rect.height * _plyr.scaleFactor))
 
-
                     _plyr.image = pygame.transform.flip(
-<<<<<<< Updated upstream
-                        pygame.transform.scale(
-                                pygame.image.load(_plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]), 
-                            _plyr.size),
-                        _plyr.flipSprite, False
-                    )
-=======
                         pygame.transform.scale(plyrImage, _plyr.rect.size), _plyr.flipSprite, False).convert_alpha()
 
->>>>>>> Stashed changes
                 _plyrDir.plyrAnimIdx += 1
             except IndexError:
                 # loop back to 0 index after all animations have been looped

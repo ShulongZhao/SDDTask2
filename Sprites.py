@@ -4,12 +4,8 @@ class Character (pygame.sprite.Sprite):
     def __init__(self, scaleFactor, velocity, animsDirList, bulletImage, flipSprite=False):
         # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
-
-<<<<<<< Updated upstream
-        self.image = pygame.Surface(size)
-=======
+        
         self.image = pygame.Surface((0, 0)).convert_alpha()
->>>>>>> Stashed changes
         self.rect = self.image.get_rect()
         self.scaleFactor = scaleFactor
 
