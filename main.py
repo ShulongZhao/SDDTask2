@@ -42,8 +42,13 @@ plyr_animList = [
     Animation("Images/playersprites/shooting", 0, -1)
 ]
 
+enemy_animList = [
+    Animation("Images/enemysprites/idle", 0, -1),
+]
+
 # instance of Player class, representing player
-plyr = Character(1/8, 7.5, plyr_animList, "Images/playersprites/bullet/bullet.bmp")
+plyr = Character(1/8, [10, 100],[7.5, 7.5], plyr_animList, "Images/playersprites/bullet/bullet.bmp")
+enemy = Character(1/8, [1280 - 500, 10],[8, 8], enemy_animList, "Images/enemysprites/bullet/enemybullet-1.png.bmp")
 
 if __name__ == "__main__":
 
@@ -51,7 +56,7 @@ if __name__ == "__main__":
 
     if menuState == "Start":
         # start the game
-        Scenes.Game(gameWindow, plyr)
+        Scenes.Game(gameWindow, plyr, enemy)
     elif menuState == "Quit":
         # passes the sequence to quit python
         pass
