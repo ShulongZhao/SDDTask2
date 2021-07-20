@@ -24,7 +24,7 @@ startLayerText = GUI.Text("Start", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 quitLayerText = GUI.Text("Quit", "Fonts/titlefont.ttf", 24, (0, 0, 0))
 
 # dictionary containing instances of custom button class, located on menu window
-menuButtons = {
+menuButtonsDict = {
     titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/3], menuWindow),
 
     startLayerText.originalText:    GUI.Layer(startLayerText, [menuWindow.width/2, menuWindow.height/2], menuWindow, 
@@ -47,12 +47,12 @@ enemy_animList = [
 ]
 
 # instance of Player class, representing player
-plyr = Character(1/8, [10, 100],[7.5, 7.5], plyr_animList, "Images/playersprites/bullet/bullet.bmp")
-enemy = Character(1/8, [1280 - 500, 10],[8, 8], enemy_animList, "Images/enemysprites/bullet/enemybullet-1.png.bmp")
+plyr = Character(1/8, [10, 100], (7.5, 7.5), plyr_animList, "Images/playersprites/bullet/bullet.bmp")
+enemy = Character(1/8, [1280, 10],(8, 8), enemy_animList, "Images/enemysprites/bullet/enemybullet-1.png.bmp")
 
 if __name__ == "__main__":
 
-    menuState = Scenes.Menu(menuWindow, menuButtons)
+    menuState = Scenes.Menu(menuWindow, menuButtonsDict)
 
     if menuState == "Start":
         # start the game

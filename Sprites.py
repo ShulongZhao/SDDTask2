@@ -1,7 +1,7 @@
 import pygame
 
 class Character (pygame.sprite.Sprite):
-    def __init__(self, scaleFactor, startingPos, velocity, animsDirList, bulletImage):
+    def __init__(self, scaleFactor, startingPos, speed, animsDirList, bulletImage):
         # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
         
@@ -9,8 +9,11 @@ class Character (pygame.sprite.Sprite):
         # establishing a rect object on the player, and setting its coordinates
         self.rect = self.image.get_rect(center=startingPos)
         self.scaleFactor = scaleFactor
-
-        self.velocity = velocity
+        
+        # speed is an unchanged magnitude 
+        self.speed = [list(speed)[0], list(speed)[1]]
+        # whereas velocity changes based on direction
+        self.velocity = [list(speed)[0], list(speed)[1]]
 
         self.animsDirList = animsDirList
 

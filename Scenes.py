@@ -53,6 +53,8 @@ def Game(window, plyr, enemy):
     gameState = True
     while gameState:
 
+        print(plyr.speed)
+
         # calling character objects
         plyr
         enemy
@@ -72,24 +74,22 @@ def Game(window, plyr, enemy):
         deltaVert = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltaHoriz = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
 
-        # flipping from left to right facing player surfaces
+        # flipping horizontal faces
         if deltaHoriz > 0:
-            plyr.velocity[0] = abs(plyr.velocity[0])
+            plyr.velocity[0] = abs(plyr.speed[0])
             plyr.flipSprite = False
         elif deltaHoriz < 0:
-            plyr.velocity[0] = -abs(plyr.velocity[0])
+            plyr.velocity[0] = -abs(plyr.speed[0])
             plyr.flipSprite = True
         elif deltaHoriz == 0:
-            # if player is not moving,
-            # keep their sprite in the same orientation
-            pass
-        # player going vertical directions
+            plyr.velocity[0] = 0
+        # player going vertical direction
         if deltaVert > 0:
-            plyr.velocity[1] = abs(plyr.velocity[1])
+            plyr.velocity[1] = abs(plyr.speed[1])
         elif deltaVert < 0:
-            plyr.velocity[1] = -(abs(plyr.velocity[1]))
-        elif deltaHoriz == 0:
-            pass
+            plyr.velocity[1] = -(abs(plyr.speed[1]))
+        elif deltaVert == 0:
+            plyr.velocity[1] = 0
 
         # making horiz and vert positive so velocity determines direction,
         # (velocity is used elsewhere in program)
