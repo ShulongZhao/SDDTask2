@@ -1,4 +1,6 @@
 import pygame
+import math
+
 from Sprites import Bullet
 
 def Menu(window, buttonDict):
@@ -53,8 +55,6 @@ def Game(window, plyr, enemy):
     gameState = True
     while gameState:
 
-        print(plyr.speed)
-
         # calling character objects
         plyr
         enemy
@@ -73,31 +73,34 @@ def Game(window, plyr, enemy):
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         deltaVert = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltaHoriz = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-
+            
         # flipping horizontal faces
         if deltaHoriz > 0:
             plyr.velocity[0] = abs(plyr.speed[0])
+            plyr.diagonalSpeed[0] = abs(plyr.diagonalSpeed[0])
             plyr.flipSprite = False
         elif deltaHoriz < 0:
             plyr.velocity[0] = -abs(plyr.speed[0])
+            plyr.diagonalSpeed[0] = -abs(plyr.diagonalSpeed[0])
             plyr.flipSprite = True
         elif deltaHoriz == 0:
             plyr.velocity[0] = 0
+
         # player going vertical direction
         if deltaVert > 0:
             plyr.velocity[1] = abs(plyr.speed[1])
+            plyr.diagonalSpeed[1] = abs(plyr.diagonalSpeed[1])
         elif deltaVert < 0:
             plyr.velocity[1] = -(abs(plyr.speed[1]))
+            plyr.diagonalSpeed[1] = -abs(plyr.diagonalSpeed[1])
         elif deltaVert == 0:
             plyr.velocity[1] = 0
 
-        # making horiz and vert positive so velocity determines direction,
-        # (velocity is used elsewhere in program)
-        # making sure player only either goes vertically or horizontally, not both
-        if deltaHoriz:
-            plyr.rect.x += plyr.velocity[0]
-        elif deltaVert:
-            plyr.rect.y += plyr.velocity[1]
+        if deltaHoriz != 0 and deltaVert != 0:
+            plyr.velocity = [plyr.diagonalSpeed[0], plyr.diagonalSpeed[1]]
+
+        plyr.rect.x += plyr.velocity[0]
+        plyr.rect.y += plyr.velocity[1]
 
         # restrict player's x and y coordinates to edge of window
         if plyr.rect.x < 0:

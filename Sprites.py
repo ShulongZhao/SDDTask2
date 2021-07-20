@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Character (pygame.sprite.Sprite):
     def __init__(self, scaleFactor, startingPos, speed, animsDirList, bulletImage):
@@ -14,6 +15,9 @@ class Character (pygame.sprite.Sprite):
         self.speed = [list(speed)[0], list(speed)[1]]
         # whereas velocity changes based on direction
         self.velocity = [list(speed)[0], list(speed)[1]]
+
+        maxVelocity = (max(self.velocity[0], self.velocity[1]))
+        self.diagonalSpeed = [math.sqrt((maxVelocity**2)/2), math.sqrt((maxVelocity**2)/2)]
 
         self.animsDirList = animsDirList
 
