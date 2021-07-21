@@ -1,5 +1,4 @@
 import pygame
-import math
 
 from Sprites import Bullet
 
@@ -46,8 +45,7 @@ def Game(window, plyr, enemy):
 
     charList = [plyr, enemy]
 
-    mouseVisibility = False
-    limit_external_input = True 
+    mouseVisibility = True
 
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(plyr, enemy)
@@ -63,10 +61,8 @@ def Game(window, plyr, enemy):
         clock = pygame.time.Clock()
         clock.tick(window.frameRate)
 
-        # non-visble mouse during in game
+        # mouse visibility during the game
         pygame.mouse.set_visible(mouseVisibility)
-        # limits all user input to pygame environment
-        pygame.event.set_grab(limit_external_input)
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -117,20 +113,16 @@ def Game(window, plyr, enemy):
 
             # quitting the screen
             if event.type == pygame.QUIT:
-                gameState = False   # exits loop
+                # exits loop
+                gameState = False   
 
             # if player hits escape, mouse is unhidden;
-            # if player hits mouse down when mouse is unhidden,
-            # mouse is hidden again
+            # if player hits mouse down, mouse is hidden,
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    # mouse visibility is true
                     mouseVisibility = True
-                    limit_external_input = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if (mouseVisibility == True) and (limit_external_input == False):
-                    mouseVisibility = False
-                    limit_external_input = True
+                mouseVisibility = False
         
             # shoot bullet when space pressed
             # (created 2 keydown event checks to split both functionalities apart)
@@ -139,47 +131,46 @@ def Game(window, plyr, enemy):
                     plyrBullet = Bullet(plyr.bulletImage, size=[10, 10], velocity=[10, 0], startingPos=(plyr.rect.centerx, plyr.rect.bottom))
                     plyrBullet.InitVelocity(plyr.velocity, plyr.flipSprite)
                     plyr.bullets.append(plyrBullet)
-                    # activate the animation for shooting
-                    plyr.animsDirList[2].isActive = True
+
+                    # initalises the animation
+                    InitAnim(plyr.animsDirList[2])
 
 
+
+        def InitAnim(anim):
+            plyr.anim = anim
+            # reset the cycles of the animation whenever it is called
+            plyr.anim.currentCycles = 0
+
+            
         for char in charList:
-            for charDir in char.animsDirList:
-                # sort the list into alphabetical order
-                charDir.animFramesList.sort()
-
+            curTime = pygame.time.get_ticks()
+            # if the current time minus the time since the last animation was played is greater than the cooldown...
+            # for animation frame time control
+            if(curTime - char.anim.timeSinceLastCall >= char.anim.cooldown):
                 try:
-                    # if animation is active
-                    if (charDir.isActive == True) and charDir != "Images/playersprites/idle":
-
-                        char.image = pygame.image.load(charDir.animFramesList[charDir.plyrAnimIdx]).convert_alpha()
+                    # deactivate animation if the maximum number of cycles has been reached
+                    while char.anim.currentCycles != char.anim.maxCycles:
+                        # update player rect
+                        char.image = pygame.image.load(char.anim.framesList[char.anim.idx])
                         char.rect = char.image.get_rect(x=char.rect.x, y=char.rect.y)
                         char.rect.size = (int(char.rect.width * char.scaleFactor), int(char.rect.height * char.scaleFactor))
-
+                        # broadcast updated player info to the sprite's image component
                         char.image = pygame.transform.flip(
-                            pygame.transform.scale(char.image, char.rect.size), char.flipSprite, False).convert_alpha()
+                            pygame.transform.scale(
+                                    char.image,
+                                char.rect.size), 
+                            char.flipSprite, False).convert_alpha()
 
+                        char.anim.idx += 1
+                        char.anim.currentCycles += 1
+                        char.anim.timeSinceLastCall = curTime
+                        break
                     else:
-                        char.image = pygame.image.load(char.animsDirList[0].animFramesList[charDir.plyrAnimIdx]).convert_alpha()
-                        char.rect = char.image.get_rect(x=char.rect.x, y=char.rect.y)
-                        char.rect.size = (int(char.rect.width * char.scaleFactor), int(char.rect.height * char.scaleFactor))
-
-                        char.image = pygame.transform.flip(
-                            pygame.transform.scale(char.image, char.rect.size), char.flipSprite, False).convert_alpha()
-
-                    charDir.plyrAnimIdx += 1
+                        char.anim = char.animsDirList[0]
                 except IndexError:
-                    # loop back to 0 index after all animations have been looped
-                    charDir.plyrAnimIdx = 0
-
-                if charDir.maxCycles == -1:
-                    charDir.maxCycles == -2
-                    break
-
-                if charDir.currentCycles == charDir.maxCycles:
-                    charDir.isActive = False
-
-                charDir.currentCycles += 1
+                    char.anim.idx = 0
+            
 
         # updating all visible plyr bullets on screen
         for bullet in plyr.bullets:
@@ -193,20 +184,17 @@ def Game(window, plyr, enemy):
 
             characterSpriteGroup.add(bullet)
 
-
         # enemy movement
         enemy.rect.x += enemy.velocity[0]
 
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width or enemy.rect.y < 0 or enemy.rect.y + enemy.rect.height > window.height:
             enemy.velocity[0] = -enemy.velocity[0]
                 
-
         # drawing surfaces onto screen
         window.screen.blit(window.bg, (0, 0))
 
         characterSpriteGroup.update()
         characterSpriteGroup.draw(window.screen)
-
         
 
         # updating screen
@@ -214,9 +202,3 @@ def Game(window, plyr, enemy):
 
 
     return
-     
-
-
-
-
-    
