@@ -1,3 +1,4 @@
+from sys import displayhook
 import pygame
 import math
 
@@ -13,17 +14,19 @@ class Character (pygame.sprite.Sprite):
         
         self.image = pygame.image.load(self.anim.framesList[0]).convert_alpha()
         # establishing a rect object on the player, and setting its coordinates
-        self.rect = self.image.get_rect(center=startingPos)
-        self.scaleFactor = scaleFactor
-        
+        self.rect = self.image.get_rect(x=startingPos[0], y=startingPos[1])
+        print(self.rect.x, self.rect.y)
+        self.scaleFactor = scaleFactor        
+
         # speed is an unchanged magnitude 
         self.speed = [list(speed)[0], list(speed)[1]]
         # whereas velocity changes based on direction
         self.velocity = [list(speed)[0], list(speed)[1]]
-        maxVelocity = (max(self.velocity[0], self.velocity[1]))
-        self.diagonalSpeed = [math.sqrt((maxVelocity**2)/2), math.sqrt((maxVelocity**2)/2)]
-
-        
+        # diagonal vector is the average of the horizontal and vertical speeds 
+        diagonalVector = (self.speed[0] + self.speed[1])/2
+        # diagonal speed is the speeds at which the player has to travel horizontally and vertically
+        # to travel at exactly diagonal vector's magnitude
+        self.diagonalSpeed = [math.sqrt((diagonalVector**2)/2), math.sqrt((diagonalVector**2)/2)]
 
 
         self.bulletImage = bulletImage

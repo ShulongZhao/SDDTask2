@@ -21,15 +21,15 @@ def Menu(window, buttonDict):
             GUISpriteGroup.add(button)
          
         # events (key presses, mouse presses)
-        for ev in pygame.event.get():
-            if ev.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 return None  # exits loop
 
             # loops through all buttons within the scene
             for buttonName in buttonDict:
                 button = buttonDict[buttonName]
                 # checks if mouse clicks buttons
-                if ev.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     # condition for mouse click on buttons
                     if button.IsLayerClicked() == True:
                         # exits loop and returns the name of the button
@@ -133,14 +133,14 @@ def Game(window, plyr, enemy):
                     plyr.bullets.append(plyrBullet)
 
                     # initalises the animation
-                    InitAnim(plyr.animsDirList[2])
+                    InitAnim(plyr, plyr.animsDirList[2])
 
 
-
-        def InitAnim(anim):
-            plyr.anim = anim
+        def InitAnim(char, anim):
+            char.anim = anim
             # reset the cycles of the animation whenever it is called
-            plyr.anim.currentCycles = 0
+            char.anim.currentCycles = 0
+            char.anim.idx = 0
 
             
         for char in charList:
@@ -168,6 +168,7 @@ def Game(window, plyr, enemy):
                         break
                     else:
                         char.anim = char.animsDirList[0]
+                        char.anim.idx = 0
                 except IndexError:
                     char.anim.idx = 0
             
@@ -184,12 +185,15 @@ def Game(window, plyr, enemy):
 
             characterSpriteGroup.add(bullet)
 
+
         # enemy movement
         enemy.rect.x += enemy.velocity[0]
 
-        if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width or enemy.rect.y < 0 or enemy.rect.y + enemy.rect.height > window.height:
+        if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
             enemy.velocity[0] = -enemy.velocity[0]
-                
+        if enemy.rect.y < 0 or enemy.rect.y + enemy.rect.height > window.height:
+            enemy.velocity[1] = -enemy.velocity[1]
+
         # drawing surfaces onto screen
         window.screen.blit(window.bg, (0, 0))
 

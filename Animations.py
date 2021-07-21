@@ -2,7 +2,7 @@ import os
 import pygame
 import Sprites
 
-class Animation ():
+class Animation:
     # increments every iteration to cycle through all frames
     animIdx = 0
 
@@ -18,8 +18,6 @@ class Animation ():
         # generate and sort a list of all the animation frames within the directory
         self.framesList = os.listdir(dir)
         self.framesList.sort()
-
-        print(self.framesList)
 
         # number of current cycles of the animation
         self.currentCycles = 0
