@@ -1,5 +1,6 @@
 import pygame
 
+# custom modules
 import Scenes
 import GUI
 from Sprites import Character
@@ -36,14 +37,13 @@ menuButtons = {
 
 # list of the directories containing PLAYER animation frames 
 plyr_animList = [
-    Animation("Images/playersprites/idle", 0.5, -1),
+    Animation("Images/playersprites/idle", 30, -1),
     Animation("Images/playersprites/hit", 0, 1),
-    Animation("Images/playersprites/pre-shooting", 0.15, 10),
-    Animation("Images/playersprites/shooting", 0, -1)
+    Animation("Images/playersprites/shooting", 30, 1)
 ]
 
-# instance of Player class, representing player
-plyr = Character(1/8, 7.5, plyr_animList, "Images/playersprites/bullet/bullet.bmp")
+# instances of Character class, for player and enemy 
+plyr = Character(1/7, 7.5, plyr_animList, "Images/playersprites/bullet/bullet.bmp")
 
 if __name__ == "__main__":
 

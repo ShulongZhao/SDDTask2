@@ -1,4 +1,5 @@
 import pygame
+
 from Sprites import Bullet
 
 def Menu(_window, buttonDict):
@@ -45,17 +46,11 @@ def Game(_window, _plyr):
 
     bullets = []
 
-    mouseVisibility = False
-    limit_external_input = True 
+    mouseVisibility = True
 
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(_plyr)
-
-    # added local variables because rect's own coordinates reset after every iteration
-    # therefore function updates local variables and passes them to player rect coordinates
-    plyr_X = 0
-    plyr_Y = 0
-
+    
     gameState = True
     while gameState:
 
@@ -63,29 +58,23 @@ def Game(_window, _plyr):
         clock = pygame.time.Clock()
         clock.tick(_window.frameRate)
 
-        # non-visble mouse during in game
+        # mouse visibility during the game
         pygame.mouse.set_visible(mouseVisibility)
-        # limits all user input to pygame environment
-        pygame.event.set_grab(limit_external_input)
 
         for event in pygame.event.get():
 
             # quitting the screen
             if event.type == pygame.QUIT:
-                gameState = False   # exits loop
+                # exits loop
+                gameState = False   
 
             # if player hits escape, mouse is unhidden;
-            # if player hits mouse down when mouse is unhidden,
-            # mouse is hidden again
+            # if player hits mouse down, mouse is hidden,
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    # mouse visibility is true
                     mouseVisibility = True
-                    limit_external_input = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if (mouseVisibility == True) and (limit_external_input == False):
-                    mouseVisibility = False
-                    limit_external_input = True
+                mouseVisibility = False
         
             # shoot bullet when space pressed
             # (created 2 keydown event checks to split both functionalities apart)
@@ -97,7 +86,9 @@ def Game(_window, _plyr):
                     elif _plyr.flipSprite == True:
                         playerBullet.velocity = -(playerBullet.velocity)
                     bullets.append(playerBullet)
-                    _plyr.animsDirList[2].isActive = True
+                    
+                    # initalises the animation
+                    InitAnim(_plyr.animsDirList[2])
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -110,9 +101,9 @@ def Game(_window, _plyr):
         # restricting diagonal movement by only either allowing 
         # horizontal or vertical movement at a time
         if deltHorizMovement:
-            plyr_X += deltHorizMovement * _plyr.velocity
+            _plyr.rect.x += deltHorizMovement * _plyr.velocity
         elif deltaVertMovement:
-            plyr_Y += deltaVertMovement * _plyr.velocity
+            _plyr.rect.y += deltaVertMovement * _plyr.velocity
 
         # flipping from left to right facing player surfaces
         if deltHorizMovement > 0:
@@ -120,56 +111,48 @@ def Game(_window, _plyr):
         elif deltHorizMovement < 0:
             _plyr.flipSprite = True
 
-    
         # restrict player's x and y coordinates to edge of window
-        if plyr_X < 0:
-            plyr_X = 0
-        elif plyr_X + _plyr.rect.width > _window.width:
-            plyr_X = _window.width - _plyr.rect.width
-        if plyr_Y < 0:
-            plyr_Y = 0
-        elif plyr_Y + _plyr.rect.height > _window.height:
-            plyr_Y = _window.height - _plyr.rect.height
+        if _plyr.rect.x < 0:
+            _plyr.rect.x = 0
+        elif _plyr.rect.x + _plyr.rect.width > _window.width:
+            _plyr.rect.x = _window.width - _plyr.rect.width
+        if _plyr.rect.y < 0:
+            _plyr.rect.y = 0
+        elif _plyr.rect.y + _plyr.rect.height > _window.height:
+            _plyr.rect.y = _window.height - _plyr.rect.height
+              
 
-
-        for _plyrDir in _plyr.animsDirList:
-            # sort the list into alphabetical order
-            _plyrDir.animFramesList.sort()
-
+        def InitAnim(anim):
+            _plyr.anim = anim
+            # reset the cycles of the animation whenever it is called
+            _plyr.anim.currentCycles = 0
+ 
+        curTime = pygame.time.get_ticks()
+        # if the current time minus the time since the last animation was played is greater than the cooldown...
+        # for animation frame time control
+        if(curTime - _plyr.anim.timeSinceLastCall >= _plyr.anim.cooldown):
             try:
-                # if animation is active
-                if (_plyrDir.isActive == True) and _plyrDir != "Images/playersprites/idle":
-
-                    plyrImage = pygame.image.load(
-                        _plyrDir.animFramesList[_plyrDir.plyrAnimIdx]).convert_alpha()
-                    _plyr.rect = plyrImage.get_rect(x=plyr_X, y=plyr_Y)
+                # deactivate animation if the maximum number of cycles has been reached
+                while _plyr.anim.currentCycles != _plyr.anim.maxCycles:
+                    # update player rect
+                    _plyr.image = pygame.image.load(_plyr.anim.framesList[_plyr.anim.idx])
+                    _plyr.rect = _plyr.image.get_rect(x=_plyr.rect.x, y=_plyr.rect.y)
                     _plyr.rect.size = (int(_plyr.rect.width * _plyr.scaleFactor), int(_plyr.rect.height * _plyr.scaleFactor))
-
+                    # broadcast updated player info to the sprite's image component
                     _plyr.image = pygame.transform.flip(
-                        pygame.transform.scale(plyrImage, _plyr.rect.size), _plyr.flipSprite, False).convert_alpha()
+                        pygame.transform.scale(
+                                _plyr.image,
+                            _plyr.rect.size), 
+                        _plyr.flipSprite, False).convert_alpha()
 
+                    _plyr.anim.idx += 1
+                    _plyr.anim.currentCycles += 1
+                    _plyr.anim.timeSinceLastCall = curTime
+                    break
                 else:
-                    plyrImage = pygame.image.load(
-                        _plyr.animsDirList[0].animFramesList[_plyrDir.plyrAnimIdx]).convert_alpha()
-                    _plyr.rect = plyrImage.get_rect(x=plyr_X, y=plyr_Y)
-                    _plyr.rect.size = (int(_plyr.rect.width * _plyr.scaleFactor), int(_plyr.rect.height * _plyr.scaleFactor))
-
-                    _plyr.image = pygame.transform.flip(
-                        pygame.transform.scale(plyrImage, _plyr.rect.size), _plyr.flipSprite, False).convert_alpha()
-
-                _plyrDir.plyrAnimIdx += 1
+                    _plyr.anim = _plyr.animsDirList[0]
             except IndexError:
-                # loop back to 0 index after all animations have been looped
-                _plyrDir.plyrAnimIdx = 0
-
-            if _plyrDir.maxCycles == -1:
-                _plyrDir.maxCycles == -2
-                break
-
-            if _plyrDir.currentCycles == _plyrDir.maxCycles:
-                _plyrDir.isActive = False
-
-            _plyrDir.currentCycles += 1
+                _plyr.anim.idx = 0
 
         # updating all visible bullets on screen
         for bullet in bullets:
@@ -193,9 +176,3 @@ def Game(_window, _plyr):
 
 
     return
-     
-
-
-
-
-    
