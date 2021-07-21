@@ -2,6 +2,7 @@ import pygame
 
 from Sprites import Bullet
 
+
 def Menu(window, buttonDict):
 
     GUISpriteGroup = pygame.sprite.Group()
@@ -46,6 +47,8 @@ def Game(window, plyr, enemy):
     charList = [plyr, enemy]
 
     mouseVisibility = True
+
+    starting = False
 
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(plyr, enemy)
@@ -103,8 +106,8 @@ def Game(window, plyr, enemy):
             plyr.rect.x = 0
         elif plyr.rect.x + plyr.rect.width > window.width:
             plyr.rect.x = window.width - plyr.rect.width
-        if plyr.rect.y < 0:
-            plyr.rect.y = 0
+        if plyr.rect.y < enemy.rect.height:
+            plyr.rect.y = enemy.rect.height
         elif plyr.rect.y + plyr.rect.height > window.height:
             plyr.rect.y = window.height - plyr.rect.height
 
@@ -134,6 +137,16 @@ def Game(window, plyr, enemy):
 
                     # initalises the animation
                     InitAnim(plyr, plyr.animsDirList[2])
+
+            # dogfight begins if B pressed, only for development reasons will be removed in final game.
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_b:
+                    starting = True
+                    if starting == True:
+                        if enemy.rect.y < window.height/2:
+                            enemy.rect.y += enemy.velocity[1]
+                    else:
+                        starting = False
 
 
         def InitAnim(char, anim):
