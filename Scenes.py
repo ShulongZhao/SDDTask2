@@ -80,6 +80,8 @@ def Game(window, plyr, enemy):
 
         if enemy.rect.y < window.height/2 and starting:
             enemy.rect.y += enemy.velocity[1]
+        if enemy.rect.x + enemy.rect.width < window.width and starting:
+            enemy.rect.x += enemy.velocity[1]
             
         # flipping horizontal faces
         if deltaHoriz > 0:
@@ -114,10 +116,17 @@ def Game(window, plyr, enemy):
             plyr.rect.x = 0
         elif plyr.rect.x + plyr.rect.width > window.width:
             plyr.rect.x = window.width - plyr.rect.width
-        if plyr.rect.y < enemy.rect.height:
-            plyr.rect.y = enemy.rect.height
+        if starting == False:
+            if plyr.rect.y < enemy.rect.height + enemy.rect.y:
+                plyr.rect.y = enemy.rect.height + enemy.rect.y
+        elif plyr.rect.y < 0:
+            plyr.rect.y = 0
         elif plyr.rect.y + plyr.rect.height > window.height:
             plyr.rect.y = window.height - plyr.rect.height
+
+        plyrColEnemy = plyr.rect.colliderect(enemy.rect)
+        if plyrColEnemy:
+            print("hit")
 
 
         for event in pygame.event.get():
@@ -197,7 +206,8 @@ def Game(window, plyr, enemy):
 
 
         # enemy movement
-        enemy.rect.x += enemy.velocity[0]
+        if starting == False:
+            enemy.rect.x += enemy.velocity[0]
 
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
             enemy.velocity[0] = -enemy.velocity[0]
