@@ -204,7 +204,8 @@ def Game(window, plyr, enemy):
 
             bulletColEnemy = bullet.rect.colliderect(enemy.rect)
             if bulletColEnemy:
-                print("HIT")
+                plyr.bullets.remove(bullet)
+                characterSpriteGroup.remove(bullet)
 
             characterSpriteGroup.add(bullet)
 
