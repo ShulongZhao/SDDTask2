@@ -72,6 +72,14 @@ def Game(window, plyr, enemy):
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         deltaVert = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltaHoriz = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+
+        # dogfight begins if B pressed, only for development reasons will be removed in final game.
+        if keys[pygame.K_b]:
+            starting = True
+
+
+        if enemy.rect.y < window.height/2 and starting:
+            enemy.rect.y += enemy.velocity[1]
             
         # flipping horizontal faces
         if deltaHoriz > 0:
@@ -137,17 +145,6 @@ def Game(window, plyr, enemy):
 
                     # initalises the animation
                     InitAnim(plyr, plyr.animsDirList[2])
-
-            # dogfight begins if B pressed, only for development reasons will be removed in final game.
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_b:
-                    starting = True
-                    if starting == True:
-                        if enemy.rect.y < window.height/2:
-                            enemy.rect.y += enemy.velocity[1]
-                    else:
-                        starting = False
-
 
         def InitAnim(char, anim):
             char.anim = anim
