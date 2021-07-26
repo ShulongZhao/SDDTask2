@@ -233,7 +233,7 @@ def Game(window, plyr, enemy):
         characterSpriteGroup.draw(window.screen)
 
         if enemy.health == 0:
-            pygame.quit()
+            InitAnim(enemy, enemy.animsDirList[2])
         
 
         # updating screen
