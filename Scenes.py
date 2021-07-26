@@ -53,6 +53,8 @@ def Game(window, plyr, enemy):
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(plyr, enemy)
 
+    print(enemy.health)
+
     gameState = True
     while gameState:
 
@@ -126,7 +128,8 @@ def Game(window, plyr, enemy):
 
         plyrColEnemy = plyr.rect.colliderect(enemy.rect)
         if plyrColEnemy:
-            print("hit")
+            InitAnim(plyr, plyr.animsDirList[1])
+            InitAnim(enemy, enemy.animsDirList[1])
 
 
         for event in pygame.event.get():
@@ -211,6 +214,8 @@ def Game(window, plyr, enemy):
                 plyr.bullets.remove(bullet)
                 characterSpriteGroup.remove(bullet)
                 InitAnim(enemy, enemy.animsDirList[1])
+                enemy.health += -1
+                print(enemy.health)
 
         # enemy movement
         if starting == False:
