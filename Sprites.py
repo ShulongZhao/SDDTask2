@@ -3,7 +3,7 @@ import pygame
 import math
 
 class Character (pygame.sprite.Sprite):
-    def __init__(self, scaleFactor, startingPos, speed, animsDirList, bulletImage):
+    def __init__(self, scaleFactor, startingPos, speed, animsDirList, bulletImage, health):
         # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
 
@@ -15,7 +15,6 @@ class Character (pygame.sprite.Sprite):
         self.image = pygame.image.load(self.anim.framesList[0]).convert_alpha()
         # establishing a rect object on the player, and setting its coordinates
         self.rect = self.image.get_rect(x=startingPos[0], y=startingPos[1])
-        print(self.rect.x, self.rect.y)
         self.scaleFactor = scaleFactor        
 
         # speed is an unchanged magnitude 
@@ -33,6 +32,8 @@ class Character (pygame.sprite.Sprite):
         self.bullets = []
 
         self.flipSprite = False
+
+        self.health = health
 
 
 class Bullet(pygame.sprite.Sprite):

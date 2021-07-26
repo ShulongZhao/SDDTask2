@@ -2,6 +2,7 @@ import pygame
 
 from Sprites import Bullet
 
+
 def Menu(window, buttonDict):
 
     GUISpriteGroup = pygame.sprite.Group()
@@ -47,8 +48,12 @@ def Game(window, plyr, enemy):
 
     mouseVisibility = True
 
+    starting = False
+
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(plyr, enemy)
+
+    print(enemy.health)
 
     gameState = True
     while gameState:
@@ -69,6 +74,16 @@ def Game(window, plyr, enemy):
         # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
         deltaVert = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         deltaHoriz = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+
+        # dogfight begins if B pressed, only for development reasons will be removed in final game.
+        if keys[pygame.K_b]:
+            starting = True
+
+
+        if enemy.rect.y < window.height/2 and starting:
+            enemy.rect.y += enemy.velocity[1]
+        if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
+            enemy.rect.x += enemy.velocity[1]
             
         # flipping horizontal faces
         if deltaHoriz > 0:
@@ -103,10 +118,18 @@ def Game(window, plyr, enemy):
             plyr.rect.x = 0
         elif plyr.rect.x + plyr.rect.width > window.width:
             plyr.rect.x = window.width - plyr.rect.width
-        if plyr.rect.y < 0:
+        if starting == False:
+            if plyr.rect.y < enemy.rect.height + enemy.rect.y:
+                plyr.rect.y = enemy.rect.height + enemy.rect.y
+        elif plyr.rect.y < 0:
             plyr.rect.y = 0
         elif plyr.rect.y + plyr.rect.height > window.height:
             plyr.rect.y = window.height - plyr.rect.height
+
+        plyrColEnemy = plyr.rect.colliderect(enemy.rect)
+        if plyrColEnemy:
+            InitAnim(plyr, plyr.animsDirList[1])
+            InitAnim(enemy, enemy.animsDirList[1])
 
 
         for event in pygame.event.get():
@@ -134,7 +157,6 @@ def Game(window, plyr, enemy):
 
                     # initalises the animation
                     InitAnim(plyr, plyr.animsDirList[2])
-
 
         def InitAnim(char, anim):
             char.anim = anim
@@ -183,11 +205,21 @@ def Game(window, plyr, enemy):
             bullet.rect.x += bullet.velocity[0]
             bullet.rect.y += bullet.velocity[1]
 
+
             characterSpriteGroup.add(bullet)
 
+            # if enemy gets hit
+            bulletColEnemy = bullet.rect.colliderect(enemy.rect)
+            if bulletColEnemy:
+                plyr.bullets.remove(bullet)
+                characterSpriteGroup.remove(bullet)
+                InitAnim(enemy, enemy.animsDirList[1])
+                enemy.health += -1
+                print(enemy.health)
 
         # enemy movement
-        enemy.rect.x += enemy.velocity[0]
+        if starting == False:
+            enemy.rect.x += enemy.velocity[0]
 
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
             enemy.velocity[0] = -enemy.velocity[0]
@@ -199,6 +231,9 @@ def Game(window, plyr, enemy):
 
         characterSpriteGroup.update()
         characterSpriteGroup.draw(window.screen)
+
+        if enemy.health == 0:
+            pygame.quit()
         
 
         # updating screen
