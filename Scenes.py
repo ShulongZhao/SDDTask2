@@ -202,12 +202,13 @@ def Game(window, plyr, enemy):
             bullet.rect.x += bullet.velocity[0]
             bullet.rect.y += bullet.velocity[1]
 
+
+            characterSpriteGroup.add(bullet)
+        
             bulletColEnemy = bullet.rect.colliderect(enemy.rect)
             if bulletColEnemy:
                 plyr.bullets.remove(bullet)
                 characterSpriteGroup.remove(bullet)
-
-            characterSpriteGroup.add(bullet)
 
         # enemy movement
         if starting == False:
