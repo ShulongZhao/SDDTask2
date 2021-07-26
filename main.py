@@ -44,6 +44,7 @@ plyr_animList = [
 
 enemy_animList = [
     Animation("Images/enemysprites/idle", 0, -1),
+    Animation("Images/enemysprites/hit", 0, 1)
 ]
 
 # instance of Player class, representing player

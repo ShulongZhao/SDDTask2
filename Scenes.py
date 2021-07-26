@@ -204,11 +204,13 @@ def Game(window, plyr, enemy):
 
 
             characterSpriteGroup.add(bullet)
-        
+
+            # if enemy gets hit
             bulletColEnemy = bullet.rect.colliderect(enemy.rect)
             if bulletColEnemy:
                 plyr.bullets.remove(bullet)
                 characterSpriteGroup.remove(bullet)
+                InitAnim(enemy, enemy.animsDirList[1])
 
         # enemy movement
         if starting == False:
