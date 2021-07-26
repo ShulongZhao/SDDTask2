@@ -82,7 +82,7 @@ def Game(window, plyr, enemy):
 
         if enemy.rect.y < window.height/2 and starting:
             enemy.rect.y += enemy.velocity[1]
-        if enemy.rect.x + enemy.rect.width < window.width and starting:
+        if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
             enemy.rect.x += enemy.velocity[1]
             
         # flipping horizontal faces
@@ -231,6 +231,9 @@ def Game(window, plyr, enemy):
 
         characterSpriteGroup.update()
         characterSpriteGroup.draw(window.screen)
+
+        if enemy.health == 0:
+            pygame.quit()
         
 
         # updating screen
