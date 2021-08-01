@@ -49,6 +49,7 @@ def Game(window, plyr, enemy):
     mouseVisibility = True
 
     starting = False
+    dogfight = False
 
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(plyr, enemy)
@@ -78,24 +79,28 @@ def Game(window, plyr, enemy):
         # dogfight begins if B pressed, only for development reasons will be removed in final game.
         if keys[pygame.K_b]:
             starting = True
+            dogfight = True
 
 
         if enemy.rect.y < window.height/2 and starting:
             enemy.rect.y += enemy.velocity[1]
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
             enemy.rect.x += enemy.velocity[1]
+        if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2-1) and starting:
+            starting = False
             
         # flipping horizontal faces
-        if deltaHoriz > 0:
-            plyr.velocity[0] = abs(plyr.speed[0])
-            plyr.diagonalSpeed[0] = abs(plyr.diagonalSpeed[0])
-            plyr.flipSprite = False
-        elif deltaHoriz < 0:
-            plyr.velocity[0] = -abs(plyr.speed[0])
-            plyr.diagonalSpeed[0] = -abs(plyr.diagonalSpeed[0])
-            plyr.flipSprite = True
-        elif deltaHoriz == 0:
-            plyr.velocity[0] = 0
+        if enemy.health > 0:
+            if deltaHoriz > 0:
+                plyr.velocity[0] = abs(plyr.speed[0])
+                plyr.diagonalSpeed[0] = abs(plyr.diagonalSpeed[0])
+                plyr.flipSprite = False
+            elif deltaHoriz < 0:
+                plyr.velocity[0] = -abs(plyr.speed[0])
+                plyr.diagonalSpeed[0] = -abs(plyr.diagonalSpeed[0])
+                plyr.flipSprite = True
+            elif deltaHoriz == 0:
+                plyr.velocity[0] = 0
 
         # player going vertical direction
         if deltaVert > 0:
@@ -118,7 +123,7 @@ def Game(window, plyr, enemy):
             plyr.rect.x = 0
         elif plyr.rect.x + plyr.rect.width > window.width:
             plyr.rect.x = window.width - plyr.rect.width
-        if starting == False:
+        if dogfight == False:
             if plyr.rect.y < enemy.rect.height + enemy.rect.y:
                 plyr.rect.y = enemy.rect.height + enemy.rect.y
         elif plyr.rect.y < 0:
@@ -218,7 +223,7 @@ def Game(window, plyr, enemy):
                 print(enemy.health)
 
         # enemy movement
-        if starting == False:
+        if dogfight == False:
             enemy.rect.x += enemy.velocity[0]
 
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
@@ -234,6 +239,11 @@ def Game(window, plyr, enemy):
 
         if enemy.health == 0:
             InitAnim(enemy, enemy.animsDirList[2])
+            for bullet in plyr.bullets:
+                bullet.velocity[0] = 0
+            plyr.speed = [0, 0]
+            plyr.diagonalSpeed = [0, 0]
+            enemy.rect.y -= 4
         
 
         # updating screen
