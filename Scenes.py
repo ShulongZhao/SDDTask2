@@ -56,6 +56,8 @@ def Game(window, plyr, enemy):
 
     print(enemy.health)
 
+    firerate = 0
+
     gameState = True
     while gameState:
 
@@ -81,6 +83,8 @@ def Game(window, plyr, enemy):
             starting = True
             dogfight = True
 
+        if firerate > 0:
+            firerate -= 1
 
         if enemy.rect.y < window.height/2 and starting:
             enemy.rect.y += enemy.velocity[1]
@@ -155,10 +159,11 @@ def Game(window, plyr, enemy):
             # shoot bullet when space pressed
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and firerate == 0:
                     plyrBullet = Bullet(plyr.bulletImage, size=[10, 10], velocity=[10, 0], startingPos=(plyr.rect.centerx, plyr.rect.bottom))
                     plyrBullet.InitVelocity(plyr.velocity, plyr.flipSprite)
                     plyr.bullets.append(plyrBullet)
+                    firerate = 15
 
                     # initalises the animation
                     InitAnim(plyr, plyr.animsDirList[2])
@@ -243,7 +248,7 @@ def Game(window, plyr, enemy):
                 bullet.velocity[0] = 0
             plyr.speed = [0, 0]
             plyr.diagonalSpeed = [0, 0]
-            enemy.rect.y -= 4
+            enemy.rect.y -= 10
         
 
         # updating screen
