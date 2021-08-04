@@ -56,7 +56,6 @@ def Game(window, charList):
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(character for character in charList)
     
-    firerate = 0
 
     gameState = True
     while gameState:
@@ -64,6 +63,7 @@ def Game(window, charList):
         # framerate
         clock = pygame.time.Clock()
         clock.tick(window.frameRate)
+        curTime = pygame.time.get_ticks()
 
         # mouse visibility during the game
         pygame.mouse.set_visible(mouseVisibility)
@@ -78,9 +78,6 @@ def Game(window, charList):
         if keys[pygame.K_b]:
             starting = True
             dogfight = True
-
-        if firerate > 0:
-            firerate -= 1
 
         if enemy.rect.y < window.height/2 and starting:
             enemy.rect.y += enemy.velocity[1]
@@ -155,11 +152,12 @@ def Game(window, charList):
             # shoot bullet when space pressed
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and firerate == 0:
-                    plyrBullet = Bullet(plyr.bulletImage, size=[10, 10], velocity=[10, 0], startingPos=(plyr.rect.centerx, plyr.rect.bottom))
-                    plyrBullet.InitVelocity(plyr.velocity, plyr.flipSprite)
-                    plyr.bullets.append(plyrBullet)
-                    firerate = 15
+                if event.key == pygame.K_SPACE and curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown:
+                    plyr.bullet = Bullet(plyr.bulletImage, [10, 10], [10, 0], (plyr.rect.centerx, plyr.rect.bottom), 400)
+                    plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
+                    plyr.bullets.append(plyr.bullet)
+
+                    plyr.bullet.timeSinceLastCall = curTime
 
                     # initalises the animation
                     InitAnim(plyr, plyr.animsDirList[2])
@@ -172,7 +170,6 @@ def Game(window, charList):
 
             
         for char in charList:
-            curTime = pygame.time.get_ticks()
             # if the current time minus the time since the last animation was played is greater than the cooldown...
             # for animation frame time control
             if(curTime - char.anim.timeSinceLastCall >= char.anim.cooldown):

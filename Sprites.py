@@ -26,8 +26,8 @@ class Character (pygame.sprite.Sprite):
         # to travel at exactly diagonal vector's magnitude
         self.diagonalSpeed = [math.sqrt((diagonalVector**2)/2), math.sqrt((diagonalVector**2)/2)]
 
-
         self.bulletImage = bulletImage
+        self.bullet = Bullet(self.bulletImage, [0, 0], [10, 0], (self.rect.centerx, self.rect.bottom), 0)
         self.bullets = []
 
         self.flipSprite = False
@@ -36,15 +36,22 @@ class Character (pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, image, size, velocity, startingPos):
+    def __init__(self, image, size, velocity, startingPos, cooldown):
         pygame.sprite.Sprite.__init__(self)
+
         self.image = pygame.transform.scale(pygame.image.load(image), size)
         self.imagesList = []
+
         self.rect = self.image.get_rect()
         self.rect.x = startingPos[0]
         self.rect.y = startingPos[1]
         self.size = size
+
         self.velocity = velocity
+
+        self.timeSinceLastCall = 0
+        self.cooldown = cooldown
+
         self.i = 0
 
     def InitVelocity(self, plyrVelocity, flipSprite):
