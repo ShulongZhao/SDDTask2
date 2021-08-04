@@ -52,15 +52,17 @@ enemy_animList = [
 plyr = Character(1/7, [10, 100], (7.5, 7.5), plyr_animList, "Images/playersprites/bullet/bullet.bmp", 10)
 enemy = Character(1/8, [1000, 10],(8, 8), enemy_animList, "Images/enemysprites/bullet/enemybullet-1.png.bmp", 50)
 
+charList = [plyr, enemy]
+
 if __name__ == "__main__":
 
     menuState = Scenes.Menu(menuWindow, menuButtonsDict)
 
     if menuState == "Start":
         # start the game
-        Scenes.Game(gameWindow, plyr, enemy)
+        Scenes.Game(gameWindow, charList)
     elif menuState == "Quit":
-        # passes the sequence to quit python
+        # passes the sequence to quit python    
         pass
-
+    
     exit()

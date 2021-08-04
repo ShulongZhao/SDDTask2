@@ -16,8 +16,8 @@ def Menu(window, buttonDict):
         window.screen.blit(window.bg, (0, 0))
 
         # calls main() in all buttons of buttonDict
-        for buttonName in buttonDict:
-            button = buttonDict[buttonName]
+        for buttonRef in buttonDict:
+            button = buttonDict[buttonRef]
             button.main()
             GUISpriteGroup.add(button)
          
@@ -27,8 +27,8 @@ def Menu(window, buttonDict):
                 return None  # exits loop
 
             # loops through all buttons within the scene
-            for buttonName in buttonDict:
-                button = buttonDict[buttonName]
+            for buttonRef in buttonDict:
+                button = buttonDict[buttonRef]
                 # checks if mouse clicks buttons
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # condition for mouse click on buttons
@@ -42,9 +42,11 @@ def Menu(window, buttonDict):
         pygame.display.update()
 
 
-def Game(window, plyr, enemy):
-
-    charList = [plyr, enemy]
+def Game(window, charList):
+    
+    # calling character objects
+    plyr = charList[0]
+    enemy = charList[1]
 
     mouseVisibility = True
 
@@ -52,18 +54,12 @@ def Game(window, plyr, enemy):
     dogfight = False
 
     characterSpriteGroup = pygame.sprite.Group()
-    characterSpriteGroup.add(plyr, enemy)
-
-    print(enemy.health)
-
+    characterSpriteGroup.add(character for character in charList)
+    
     firerate = 0
 
     gameState = True
     while gameState:
-
-        # calling character objects
-        plyr
-        enemy
 
         # framerate
         clock = pygame.time.Clock()
@@ -93,7 +89,7 @@ def Game(window, plyr, enemy):
         if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2-1) and starting:
             starting = False
             
-        # flipping horizontal faces
+        # flipping player sprite based on direction 
         if enemy.health > 0:
             if deltaHoriz > 0:
                 plyr.velocity[0] = abs(plyr.speed[0])
@@ -106,7 +102,7 @@ def Game(window, plyr, enemy):
             elif deltaHoriz == 0:
                 plyr.velocity[0] = 0
 
-        # player going vertical direction
+        # moving player vertically 
         if deltaVert > 0:
             plyr.velocity[1] = abs(plyr.speed[1])
             plyr.diagonalSpeed[1] = abs(plyr.diagonalSpeed[1])
@@ -117,7 +113,7 @@ def Game(window, plyr, enemy):
             plyr.velocity[1] = 0
 
         if deltaHoriz != 0 and deltaVert != 0:
-            plyr.velocity = [plyr.diagonalSpeed[0], plyr.diagonalSpeed[1]]
+            plyr.velocity = plyr.diagonalSpeed
 
         plyr.rect.x += plyr.velocity[0]
         plyr.rect.y += plyr.velocity[1]

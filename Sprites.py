@@ -1,4 +1,3 @@
-from sys import displayhook
 import pygame
 import math
 
