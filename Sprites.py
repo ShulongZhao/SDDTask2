@@ -17,15 +17,15 @@ class Character (pygame.sprite.Sprite):
         self.scaleFactor = scaleFactor        
 
         # speed is an unchanged magnitude 
-        self.speed = [list(speed)[0], list(speed)[1]]
+        self.speed = speed
         # whereas velocity changes based on direction
-        self.velocity = [list(speed)[0], list(speed)[1]]
+        self.velocity = list((speed[0], speed[1]))
         # diagonal vector is the average of the horizontal and vertical speeds 
         diagonalVector = (self.speed[0] + self.speed[1])/2
         # diagonal speed is the speeds at which the player has to travel horizontally and vertically
         # to travel at exactly diagonal vector's magnitude
         self.diagonalSpeed = [math.sqrt((diagonalVector**2)/2), math.sqrt((diagonalVector**2)/2)]
-        self.diagonalVelocity = list(self.diagonalSpeed[0], self.diagonalSpeed[1])
+        self.diagonalVelocity = list((self.diagonalSpeed[0], self.diagonalSpeed[1]))
 
         self.bulletImage = bulletImage
         self.bullet = Bullet(self.bulletImage, [0, 0], [10, 0], (self.rect.centerx, self.rect.bottom), 0)
