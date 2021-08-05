@@ -25,6 +25,7 @@ class Character (pygame.sprite.Sprite):
         # diagonal speed is the speeds at which the player has to travel horizontally and vertically
         # to travel at exactly diagonal vector's magnitude
         self.diagonalSpeed = [math.sqrt((diagonalVector**2)/2), math.sqrt((diagonalVector**2)/2)]
+        self.diagonalVelocity = list(self.diagonalSpeed[0], self.diagonalSpeed[1])
 
         self.bulletImage = bulletImage
         self.bullet = Bullet(self.bulletImage, [0, 0], [10, 0], (self.rect.centerx, self.rect.bottom), 0)

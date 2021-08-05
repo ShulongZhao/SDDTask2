@@ -86,32 +86,23 @@ def Game(window, charList):
         if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2-1) and starting:
             starting = False
             
-        # flipping player sprite based on direction 
-        if enemy.health > 0:
-            if deltaHoriz > 0:
-                plyr.velocity[0] = abs(plyr.speed[0])
-                plyr.diagonalSpeed[0] = abs(plyr.diagonalSpeed[0])
-                plyr.flipSprite = False
-            elif deltaHoriz < 0:
-                plyr.velocity[0] = -abs(plyr.speed[0])
-                plyr.diagonalSpeed[0] = -abs(plyr.diagonalSpeed[0])
-                plyr.flipSprite = True
-            elif deltaHoriz == 0:
-                plyr.velocity[0] = 0
+        # assigning the direction to the player's velocity
+        # deltaHoriz and deltaVert are either 1, 0, -1, which assigns direction correctly        
+        plyr.velocity[0] = deltaHoriz * plyr.speed[0]
+        plyr.velocity[1] = deltaVert * plyr.speed[1]
+        # diagonal velocity is to keep the player from travelling quicker 
+        # than the normal horizontal and vertical speeds (pythagoras' theorem)
+        # --> see player class for more on diagonal velocity
+        plyr.diagonalVelocity[0] = deltaHoriz * plyr.diagonalSpeed[0] 
+        plyr.diagonalVelocity[1] = deltaVert * plyr.diagonalSpeed[1]
+        # if player is going left, flip sprite
+        plyr.flipSprite = keys[pygame.K_LEFT]
 
-        # moving player vertically 
-        if deltaVert > 0:
-            plyr.velocity[1] = abs(plyr.speed[1])
-            plyr.diagonalSpeed[1] = abs(plyr.diagonalSpeed[1])
-        elif deltaVert < 0:
-            plyr.velocity[1] = -(abs(plyr.speed[1]))
-            plyr.diagonalSpeed[1] = -abs(plyr.diagonalSpeed[1])
-        elif deltaVert == 0:
-            plyr.velocity[1] = 0
-
+        # if the player is going diagonally, assign the diagonal speed
         if deltaHoriz != 0 and deltaVert != 0:
-            plyr.velocity = plyr.diagonalSpeed
-
+            plyr.velocity = plyr.diagonalVelocity
+        
+        # add the velocity to the player's position 
         plyr.rect.x += plyr.velocity[0]
         plyr.rect.y += plyr.velocity[1]
 
