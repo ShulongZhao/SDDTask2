@@ -33,6 +33,16 @@ class Character (pygame.sprite.Sprite):
         self.flipSprite = False
 
         self.health = health
+        self.MAX_HEALTH = health
+
+    def drawHealth(self):
+        r = min(255, 255 - (255 * ((self.health - (self.MAX_HEALTH - self.health)) / self.MAX_HEALTH)))
+        g = min(255, 255 * (self.health / (self.MAX_HEALTH / 2)))
+        color = (r, g, 0)
+        width = int(self.rect.width * self.health / self.MAX_HEALTH)
+        self.health_bar = pygame.Rect(0, 0, width, 7)
+        if self.health < self.MAX_HEALTH:
+            pygame.draw.rect(self.image, color, self.health_bar)
 
 
 class Bullet(pygame.sprite.Sprite):

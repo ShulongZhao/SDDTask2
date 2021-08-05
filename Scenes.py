@@ -125,13 +125,15 @@ def Game(window, charList):
                 plyr.rect.y = enemy.rect.height + enemy.rect.y
         elif plyr.rect.y < 0:
             plyr.rect.y = 0
-        elif plyr.rect.y + plyr.rect.height > window.height:
-            plyr.rect.y = window.height - plyr.rect.height
+        if plyr.rect.y + plyr.rect.height > window.height - 2 * plyr.rect.height and plyr.health > 0:
+            plyr.rect.y = window.height - 3 * plyr.rect.height
 
         plyrColEnemy = plyr.rect.colliderect(enemy.rect)
-        if plyrColEnemy:
+        if plyrColEnemy and plyr.health > 0:
             InitAnim(plyr, plyr.animsDirList[1])
             InitAnim(enemy, enemy.animsDirList[1])
+            plyr.health += -1
+            enemy.health += -1
 
 
         for event in pygame.event.get():
@@ -218,7 +220,6 @@ def Game(window, charList):
                 characterSpriteGroup.remove(bullet)
                 InitAnim(enemy, enemy.animsDirList[1])
                 enemy.health += -1
-                print(enemy.health)
 
         # enemy movement
         if dogfight == False:
@@ -242,7 +243,16 @@ def Game(window, charList):
             plyr.speed = [0, 0]
             plyr.diagonalSpeed = [0, 0]
             enemy.rect.y -= 10
-        
+
+        if plyr.health == 0:
+            InitAnim(plyr, plyr.animsDirList[3])
+            for bullet in plyr.bullets:
+                bullet.velocity[0] = 0
+            plyr.speed = [0, 0]
+            plyr.diagonalSpeed = [0, 0]
+            plyr.rect.y += 10
+
+        enemy.drawHealth()
 
         # updating screen
         pygame.display.update()
