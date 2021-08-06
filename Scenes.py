@@ -83,7 +83,7 @@ def Game(window, charList):
             enemy.rect.y += enemy.velocity[1]
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
             enemy.rect.x += enemy.velocity[1]
-        if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2-1) and starting:
+        if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2- enemy.rect.y/2 -1) and starting:
             starting = False
             
         # assigning the direction to the player's velocity
@@ -146,7 +146,7 @@ def Game(window, charList):
             # (created 2 keydown event checks to split both functionalities apart)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown:
-                    plyr.bullet = Bullet(plyr.bulletImage, [10, 10], [10, 0], (plyr.rect.centerx, plyr.rect.bottom), 400)
+                    plyr.bullet = Bullet(plyr.bulletImage, [20, 10], [10, 0], (plyr.rect.centerx, plyr.rect.bottom), 400)
                     plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
                     plyr.bullets.append(plyr.bullet)
 
