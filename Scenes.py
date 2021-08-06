@@ -79,7 +79,7 @@ def Game(window, charList):
             starting = True
             dogfight = True
 
-        if enemy.rect.y < window.height/2 and starting:
+        if enemy.rect.y < window.height/2 - enemy.rect.y/2 and starting:
             enemy.rect.y += enemy.velocity[1]
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
             enemy.rect.x += enemy.velocity[1]
