@@ -84,6 +84,7 @@ def Game(window, charList):
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
             enemy.rect.x += enemy.velocity[1]
         if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2- enemy.rect.y/2 -1) and starting:
+            enemy.flipSprite = True
             starting = False
             
         # assigning the direction to the player's velocity
@@ -154,6 +155,33 @@ def Game(window, charList):
 
                     # initalises the animation
                     InitAnim(plyr, plyr.animsDirList[2])
+
+        if dogfight == True and curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown:
+            enemy.bullet = Bullet(enemy.bulletImage, [20, 10], [10, 0], (enemy.rect.centerx, enemy.rect.bottom), 400)
+            enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
+            enemy.bullets.append(enemy.bullet)
+
+            enemy.bullet.timeSinceLastCall = curTime
+            InitAnim(plyr, plyr.animsDirList[2])
+        
+        for bullet in enemy.bullets:
+            # deleting enemy bullets that travel off screen
+            if bullet.rect.x < 0 or bullet.rect.x > window.width or bullet.rect.y < 0 or bullet.rect.y > window.height:
+                enemy.bullets.remove(bullet)
+            
+            # updating bullet rect
+            bullet.rect.x += bullet.velocity[0]
+            bullet.rect.y += bullet.velocity[1]
+            
+            characterSpriteGroup.add(bullet)
+
+            bulletColPlyr = bullet.rect.colliderect(plyr.rect)
+            if bulletColPlyr:
+                enemy.bullets.remove(bullet)
+                characterSpriteGroup.remove(bullet)
+                InitAnim(plyr, plyr.animsDirList[1])
+                plyr.health += -1
+                print(plyr.health)
 
         def InitAnim(char, anim):
             char.anim = anim
@@ -228,7 +256,7 @@ def Game(window, charList):
         characterSpriteGroup.draw(window.screen)
 
         if enemy.health == 0:
-            InitAnim(enemy, enemy.animsDirList[2])
+            InitAnim(enemy, enemy.animsDirList[3])
             for bullet in plyr.bullets:
                 bullet.velocity[0] = 0
             plyr.speed = [0, 0]
