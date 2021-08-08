@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from Sprites import Bullet
 
@@ -15,7 +16,7 @@ def Menu(window, buttonDict):
         # background
         window.screen.blit(window.bg, (0, 0))
 
-        # calls main() in all buttons of buttonDict
+        # for each reference to the button in the button dictionary...
         for buttonRef in buttonDict:
             button = buttonDict[buttonRef]
             button.main()
@@ -47,6 +48,13 @@ def Game(window, charList):
     # calling character objects
     plyr = charList[0]
     enemy = charList[1]
+
+    man1 = charList[2]
+    man2 = charList[3]
+    woman1 = charList[4]
+    woman2 = charList[5]
+
+    humans = [man1, man2, woman1, woman2]
 
     mouseVisibility = True
 
@@ -189,7 +197,22 @@ def Game(window, charList):
             char.anim.currentCycles = 0
             char.anim.idx = 0
 
-            
+
+        # human walking animation logic
+        for human in humans:
+            if (curTime - human.timeSinceLastCall >= human.walkTime):
+                human.anim.currentCycles = 0
+                human.velocity = human.speed
+                human.timeSinceLastCall = curTime
+                
+            else:
+                #human.anim.currentCycles = human.anim.maxCycles
+                human.velocity = [0, 0]
+
+            human.rect.x += human.velocity[0]
+
+
+        # for every character present in the game
         for char in charList:
             # if the current time minus the time since the last animation was played is greater than the cooldown...
             # for animation frame time control
@@ -252,8 +275,6 @@ def Game(window, charList):
         # drawing surfaces onto screen
         window.screen.blit(window.bg, (0, 0))
 
-        characterSpriteGroup.update()
-        characterSpriteGroup.draw(window.screen)
 
         if enemy.health == 0:
             InitAnim(enemy, enemy.animsDirList[3])
@@ -269,7 +290,12 @@ def Game(window, charList):
                 bullet.velocity[0] = 0
             plyr.speed = [0, 0]
             plyr.diagonalSpeed = [0, 0]
-            plyr.rect.y += 10
+            plyr.rect.y += 10     
+
+
+        characterSpriteGroup.update()
+        characterSpriteGroup.draw(window.screen)
+            
 
         enemy.drawHealth()
 

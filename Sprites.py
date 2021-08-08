@@ -2,7 +2,7 @@ import pygame
 import math
 
 class Character (pygame.sprite.Sprite):
-    def __init__(self, scaleFactor, startingPos, speed, animsDirList, bulletImage, health):
+    def __init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage):
         # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
 
@@ -14,7 +14,6 @@ class Character (pygame.sprite.Sprite):
         self.image = pygame.image.load(self.anim.framesList[0]).convert_alpha()
         # establishing a rect object on the player, and setting its coordinates
         self.rect = self.image.get_rect(x=startingPos[0], y=startingPos[1])
-        self.scaleFactor = scaleFactor        
 
         # speed is an unchanged magnitude 
         self.speed = speed
@@ -36,6 +35,7 @@ class Character (pygame.sprite.Sprite):
         self.health = health
         self.MAX_HEALTH = health
 
+
     def drawHealth(self):
         r = min(255, 255 - (255 * ((self.health - (self.MAX_HEALTH - self.health)) / self.MAX_HEALTH)))
         g = min(255, 255 * (self.health / (self.MAX_HEALTH / 2)))
@@ -46,17 +46,35 @@ class Character (pygame.sprite.Sprite):
             pygame.draw.rect(self.image, color, self.health_bar)
 
 
+# inherits attributes and methods from Character class 
+# but also introduces new attributes specific to humans
+class Human (Character):
+    def __init__(self, walkTime, scaleFactor, startingPos, speed, animsDirList, health, bulletImage=None):
+
+
+        Character.__init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage)
+        
+        # walk time is how long human walks for
+        self.walkTime = walkTime
+        self.timeSinceLastCall = 0
+
+
+
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, image, size, velocity, startingPos, cooldown):
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = pygame.transform.scale(pygame.image.load(image), size)
-        self.imagesList = []
+        # catch exception due to None type error from passing None at initialisation
+        try:
+            self.image = pygame.transform.scale(pygame.image.load(image), size)
+            self.rect = self.image.get_rect()
+            self.rect.x = startingPos[0]
+            self.rect.y = startingPos[1]
+            self.size = size
+        except: 
+            pass
 
-        self.rect = self.image.get_rect()
-        self.rect.x = startingPos[0]
-        self.rect.y = startingPos[1]
-        self.size = size
+        self.imagesList = []
 
         self.velocity = velocity
 

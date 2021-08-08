@@ -3,7 +3,7 @@ import pygame
 # custom modules
 import Scenes
 import GUI
-from Sprites import Character
+from Sprites import Character, Human
 from Animations import Animation
 
 # initalises all pygame processes 
@@ -49,11 +49,21 @@ enemy_animList = [
     Animation("Images/enemysprites/defeated", 64, -1)
 ]
 
-# instance of Player class, representing player
-plyr = Character(1/7, [10, 100], [7.5, 7.5], plyr_animList, "Images/playersprites/bullet/bullet.bmp", 3)
-enemy = Character(1/8, [1000, 10],[8, 8], enemy_animList, "Images/enemysprites/bullet/enemybullet-1.png.bmp", 50)
+man1_animList = [Animation("Images/people/man1", 128, -1)]
+man2_animList = [Animation("Images/people/man2", 128, -1)]
+woman1_animList = [Animation("Images/people/woman1", 128, -1)]
+woman2_animList = [Animation("Images/people/woman2", 128, -1)]
 
-charList = [plyr, enemy]
+# instance of Player class, representing player
+plyr = Character(1/7, [10, 100], [7.5, 7.5], plyr_animList, 3, "Images/playersprites/bullet/bullet.bmp")
+enemy = Character(1/8, [1000, 10],[8, 8], enemy_animList, 50, "Images/enemysprites/bullet/enemybullet-1.png.bmp")
+
+man1 = Human(200, 1/9, [0, 0], [2, 0], man1_animList, health=1)
+man2 = Human(200, 1/9, [100, 100], [2, 0], man2_animList, health=1)
+woman1 = Human(200, 1/9, [200, 200], [2, 0], woman1_animList, health=1)
+woman2 = Human(200, 1/9, [300, 300], [2, 0], woman2_animList, health=1)
+
+charList = [plyr, enemy, man1, man2, woman1, woman2]
 
 if __name__ == "__main__":
 
