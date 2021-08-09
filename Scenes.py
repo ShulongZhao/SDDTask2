@@ -50,8 +50,11 @@ def Menu(window, buttonDict):
 
 
 def Game(window, charList):
+
+    for character in charList:
+        character
     
-    # calling character objects
+    # assigning characters
     plyr = charList[0]
     enemy = charList[1]
 
@@ -63,28 +66,27 @@ def Game(window, charList):
     # temp variable
     _humans = list(humans)
 
-    no_of_copies = 0
+    no_of_instances = 0
     i = 0
-
     for _human in _humans:
            
         # counts how many times each human character appears 
         for dirs in os.listdir("Images/people/"):
             if search(_human.name, "Images/people/" + dirs):
-                no_of_copies += 1
+                no_of_instances += 1
 
 
         # if the number of characters are over what is specified
         # then remove any number of copies
-        if no_of_copies > _human.max_no_of_copies:
-            for _ in range(no_of_copies - _human.max_no_of_copies):
-                shutil.rmtree(f"Images/people/{_human.name} - copy ({no_of_copies - _human.max_no_of_copies - 1})")
-                no_of_copies -= 1
+        if no_of_instances > _human.max_no_of_instances:
+            for _ in range(no_of_instances - _human.max_no_of_instances):
+                shutil.rmtree(f"Images/people/{_human.name} - copy ({no_of_instances - _human.max_no_of_instances - 1})")
+                no_of_instances -= 1
 
         # if the number of characters are under what is specified
         # add more copies of the folders
-        elif no_of_copies < _human.max_no_of_copies:
-            while i < _human.max_no_of_copies - no_of_copies:
+        elif no_of_instances < _human.max_no_of_instances:
+            while i < _human.max_no_of_instances - no_of_instances:
                 src = _human.anim.dir
                 dest = _human.anim.dir + f" - copy ({i})"                
                 os.makedirs(os.path.dirname(dest), exist_ok=True)
@@ -98,19 +100,20 @@ def Game(window, charList):
 
         # reset counters for next human character iteration
         i = 0
-        no_of_copies = 0
+        no_of_instances = 0
  
 
     # generate humans off the copies that were generated above
     for directory in os.listdir("Images/people/"):
+        randomNum = random.randint(1, 3) * 1000
         try:
             humanAnimCopy = [Animation("Images/people/" + directory, 100, -1)]
-            humanCopy = Human(directory, 1/9, [1, 0], humanAnimCopy, window=window, health=1, walkTime=1775)
+            humanCopy = Human(directory, 1/8, [3, 0], humanAnimCopy, window=window, health=1, walkTime=1000 + randomNum, waitTime=3000 + randomNum)
             humans.append(humanCopy)
         except NotADirectoryError:
             # some files are not folders, therefore exception
             pass
-
+    
 
     # adding all the proper human characters to the characters list
     # which is added next to the character sprite group
@@ -120,7 +123,11 @@ def Game(window, charList):
         charList.append(human)
 
 
-        
+    for i in range(len(humans)):
+        equalSegments = window.width / len(humans)
+        humans[i].rect.x = i * equalSegments
+
+
     mouseVisibility = True
 
     starting = False
@@ -128,6 +135,7 @@ def Game(window, charList):
 
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(character for character in charList)
+
     
 
     gameState = True
@@ -154,7 +162,6 @@ def Game(window, charList):
         if enemy.rect.y < window.height/2 - enemy.rect.y/2 and starting:
             enemy.rect.y += 8
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
-            print(enemy.rect.x)
             enemy.rect.x += 8
         if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2- enemy.rect.y/2 -1) and starting:
             enemy.flipSprite = True
@@ -194,7 +201,6 @@ def Game(window, charList):
             plyr.rect.y = 0
         if plyr.rect.y + plyr.rect.height > window.height - 2 * plyr.rect.height and plyr.health > 0:
             plyr.rect.y = window.height - 3 * plyr.rect.height
-
 
 
         plyrColEnemy = plyr.rect.colliderect(enemy.rect)
@@ -240,9 +246,7 @@ def Game(window, charList):
             InitAnim(enemy, enemy.animsDirList[2])
 
             enemy.bullet.timeSinceLastCall = curTime
-<<<<<<< Updated upstream
-        
-=======
+
             InitAnim(plyr, plyr.animsDirList[2])
 
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
@@ -250,7 +254,6 @@ def Game(window, charList):
         if enemy.rect.y < 0 or enemy.rect.y + enemy.rect.height > window.height:
             enemy.velocity[1] = -enemy.velocity[1]
 
->>>>>>> Stashed changes
         for bullet in enemy.bullets:
             # deleting enemy bullets that travel off screen
             if bullet.rect.x < 0 or bullet.rect.x > window.width or bullet.rect.y < 0 or bullet.rect.y > window.height:
@@ -277,33 +280,48 @@ def Game(window, charList):
             char.anim.idx = 0
 
 
+
         # human walking animation logic
         for human in humans:
+            # boundary restrictions
+            # if humans hit left border...
+            if human.rect.x - 10 < 0:
+                human.velocity[0] = abs(human.speed[0])
+                human.flipSprite = False
+            # if humans hit right border
+            elif (human.rect.x + human.rect.width + 10) > window.width:
+                human.velocity[0] = -human.speed[0]
+                human.flipSprite = True
+            
+            # cooldown for stopping and starting humans
             while ((pygame.time.get_ticks() - human.timeSinceLastCall) <= human.walkTime):
-                human.velocity = human.speed
+                human.anim.cooldown = human.anim.tempCooldown
+                if human.flipSprite:
+                    human.velocity = [-human.speed[0], 0]
+                else:
+                    human.velocity = [abs(human.speed[0]), 0]
                 break
             else:
-                if ((pygame.time.get_ticks() - human.timeSinceLastCall) >= (human.walkTime + (random.randint(1, 6) * 1000))):
+                if ((pygame.time.get_ticks() - human.timeSinceLastCall) >= (human.waitTime)):
                     human.timeSinceLastCall = pygame.time.get_ticks()
                 
-                human.velocity = [0, 0]
+                human.velocity[0] = 0
+
+
+
+            #print(human.name + str(human.velocity[0]))
+
 
         # for every character present in the game
         for char in charList:
-            
-            # boundary restrictions on enemy and humans
-            if char in humans:
-                if char.rect.x + 50 < 0:
-                    char.velocity[0] = abs(char.velocity[0])
-                elif (char.rect.x + char.rect.width - 50) > window.width:
-                    char.velocity[0] = -char.speed[0]
-
-                if char.rect.y < 0 or char.rect.y + char.rect.height > window.height:
-                    char.velocity[1] = -char.velocity[1]
-
+        
             # adding humans velocities, after manipulation above
             if char in humans:
                 char.rect.x += char.velocity[0]
+                print(char.anim.timeSinceLastCall)
+
+
+            # animation logic:
 
             # if the current time minus the time since the last animation was played is greater than the cooldown...
             # for animation frame time control
@@ -314,17 +332,19 @@ def Game(window, charList):
 
                         # update player rect
                         char.image = pygame.image.load(char.anim.framesList[char.anim.idx])
+                        char.rect = char.image.get_rect(x=char.rect.x, y=char.rect.y)
+                        char.rect.size = (int(char.rect.width * char.scaleFactor), int(char.rect.height * char.scaleFactor))
 
                         if char in humans:
                             if char.velocity[0] == 0:
-                                char.image = pygame.image.load(char.anim.framesList[0])
+                                # setting the time for each frame to the time taken for humans to exit zero velocity,
+                                # essentially freezing the frame for the humans animation when they're still
+                                char.anim.cooldown = char.waitTime
                             elif char.velocity[0] < 0:
                                 char.flipSprite = True
                             elif char.velocity[0] > 0:
                                 char.flipSprite = False 
-
-                        char.rect = char.image.get_rect(x=char.rect.x, y=char.rect.y)
-                        char.rect.size = (int(char.rect.width * char.scaleFactor), int(char.rect.height * char.scaleFactor))
+                        
                         # broadcast updated player info to the sprite's image component
                         char.image = pygame.transform.flip(
                             pygame.transform.scale(
@@ -341,9 +361,7 @@ def Game(window, charList):
                         char.anim = char.animsDirList[0]
                         char.anim.idx = 0
                 except IndexError:
-                    char.anim.idx = 0
-
-              
+                    char.anim.idx = 0              
 
         # updating all visible plyr bullets on screen
         for bullet in plyr.bullets:
@@ -401,9 +419,9 @@ def Game(window, charList):
             plyr.diagonalSpeed = [0, 0]
             plyr.rect.y += 10     
 
-
         characterSpriteGroup.update()
         characterSpriteGroup.draw(window.screen)
+
             
 
         enemy.DrawHealth()

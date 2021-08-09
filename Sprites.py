@@ -50,17 +50,23 @@ class Character (pygame.sprite.Sprite):
 # inherits attributes and methods from Character class 
 # but also introduces new attributes specific to humans
 class Human (Character):
-    def __init__(self, name, scaleFactor, speed, animsDirList, window, health, walkTime, bulletImage=None, max_no_of_copies=1):
+    def __init__(self, name, scaleFactor, speed, animsDirList, window, health, walkTime=2000, waitTime=3000, bulletImage=None, max_no_of_instances=1):
 
         startingPos = [random.randint(0, window.width), window.height - 125]
-        Character.__init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage)
 
-        
+        Character.__init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage)
+        self.rect.size = (int(self.rect.width * self.scaleFactor),int(self.rect.height * self.scaleFactor))
+
+        if random.randint(1, 2) == 1:
+            self.flipSprite = True
+
         self.name = name
         # walk time is how long human walks for
         self.walkTime = walkTime
+        self.waitTime = waitTime
         self.timeSinceLastCall = 0
-        self.max_no_of_copies = max_no_of_copies
+        self.max_no_of_instances = max_no_of_instances
+        self.is_scaled = False
 
 
 

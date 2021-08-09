@@ -11,8 +11,10 @@ class Animation:
         self.dir = dir
 
         # cooldowns and info for anim frame time control
-        self.timeSinceLastCall = pygame.time.get_ticks()
+        self.timeSinceLastCall = 0
         self.cooldown = cooldown
+        # making temp_cooldown immutable
+        self.tempCooldown = list((cooldown, cooldown))[0]
 
         # for the directories in the animation directory list provided...
         # generate and sort a list of all the animation frames within the directory
