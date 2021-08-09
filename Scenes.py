@@ -85,15 +85,18 @@ def Game(window, charList):
         # dogfight begins if B pressed, only for development reasons will be removed in final game.
         if keys[pygame.K_b]:
             starting = True
-            dogfight = True
 
         if enemy.rect.y < window.height/2 - enemy.rect.y/2 and starting:
-            enemy.rect.y += enemy.velocity[1]
+            enemy.rect.y += 8
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and starting:
-            enemy.rect.x += enemy.velocity[1]
+            print(enemy.rect.x)
+            enemy.rect.x += 8
         if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2- enemy.rect.y/2 -1) and starting:
             enemy.flipSprite = True
+            InitAnim(enemy, enemy.animsDirList[4])
+            dogfight = True
             starting = False
+            print("arrived")
             
         # assigning the direction to the player's velocity
         # deltaHoriz and deltaVert are either 1, 0, -1, which assigns direction correctly        
@@ -120,7 +123,7 @@ def Game(window, charList):
             plyr.rect.x = 0
         elif plyr.rect.x + plyr.rect.width > window.width:
             plyr.rect.x = window.width - plyr.rect.width
-        if dogfight == False:
+        if dogfight == False and starting == False:
             if plyr.rect.y < enemy.rect.height + enemy.rect.y:
                 plyr.rect.y = enemy.rect.height + enemy.rect.y
         elif plyr.rect.y < 0:
@@ -170,7 +173,6 @@ def Game(window, charList):
             enemy.bullets.append(enemy.bullet)
 
             enemy.bullet.timeSinceLastCall = curTime
-            InitAnim(plyr, plyr.animsDirList[2])
         
         for bullet in enemy.bullets:
             # deleting enemy bullets that travel off screen
@@ -264,7 +266,7 @@ def Game(window, charList):
                 enemy.health += -1
 
         # enemy movement
-        if dogfight == False:
+        if dogfight == False and starting == False:
             enemy.rect.x += enemy.velocity[0]
 
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:

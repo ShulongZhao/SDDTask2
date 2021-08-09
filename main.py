@@ -39,15 +39,15 @@ menuButtonsDict = {
 plyr_animList = [
     Animation("Images/playersprites/idle", 30, -1),
     Animation("Images/playersprites/hit", 64, 1),
-    Animation("Images/playersprites/shooting", 30, 1),
+    Animation("Images/playersprites/shooting", 30, -1),
     Animation("Images/playersprites/defeated", 64, -1)
 ]
-
 enemy_animList = [
     Animation("Images/enemysprites/idle", 64, -1),
     Animation("Images/enemysprites/hit", 64, 1),
-    Animation("Images/enemysprites/defeated", 64, -1)
-]
+    Animation("Images/enemysprites/shooting", 30, -1),
+    Animation("Images/enemysprites/defeated", 64, -1),
+    Animation("Images/enemysprites/pre-shooting", 64, -1)]
 
 man1_animList = [Animation("Images/people/man1", 128, -1)]
 man2_animList = [Animation("Images/people/man2", 128, -1)]
