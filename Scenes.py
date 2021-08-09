@@ -93,7 +93,6 @@ def Game(window, charList):
             enemy.rect.x += 8
         if enemy.rect.x + enemy.rect.width > (window.width - 16) and enemy.rect.y > (window.height/2- enemy.rect.y/2 -1) and starting:
             enemy.flipSprite = True
-            InitAnim(enemy, enemy.animsDirList[4])
             dogfight = True
             starting = False
             print("arrived")
