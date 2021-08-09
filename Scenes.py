@@ -171,6 +171,7 @@ def Game(window, charList):
             enemy.bullet = Bullet(enemy.bulletImage, [20, 10], [10, 0], (enemy.rect.centerx, enemy.rect.bottom), 400)
             enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
             enemy.bullets.append(enemy.bullet)
+            InitAnim(enemy, enemy.animsDirList[2])
 
             enemy.bullet.timeSinceLastCall = curTime
         
