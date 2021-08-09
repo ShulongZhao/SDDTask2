@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 
 class Character (pygame.sprite.Sprite):
     def __init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage):
@@ -33,30 +34,34 @@ class Character (pygame.sprite.Sprite):
         self.flipSprite = False
 
         self.health = health
-        self.MAX_HEALTH = health
+        self.max_health = health
 
 
-    def drawHealth(self):
-        r = min(255, 255 - (255 * ((self.health - (self.MAX_HEALTH - self.health)) / self.MAX_HEALTH)))
-        g = min(255, 255 * (self.health / (self.MAX_HEALTH / 2)))
+    def DrawHealth(self):
+        r = min(255, 255 - (255 * ((self.health - (self.max_health - self.health)) / self.max_health)))
+        g = min(255, 255 * (self.health / (self.max_health / 2)))
         color = (r, g, 0)
-        width = int(self.rect.width * self.health / self.MAX_HEALTH)
+        width = int(self.rect.width * self.health / self.max_health)
         self.health_bar = pygame.Rect(0, 0, width, 7)
-        if self.health < self.MAX_HEALTH:
+        if self.health < self.max_health:
             pygame.draw.rect(self.image, color, self.health_bar)
 
 
 # inherits attributes and methods from Character class 
 # but also introduces new attributes specific to humans
 class Human (Character):
-    def __init__(self, walkTime, scaleFactor, startingPos, speed, animsDirList, health, bulletImage=None):
+    def __init__(self, name, scaleFactor, speed, animsDirList, window, health, walkTime, bulletImage=None, max_no_of_copies=1):
 
-
+        startingPos = [random.randint(0, window.width), window.height - 125]
         Character.__init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage)
+
         
+        self.name = name
         # walk time is how long human walks for
         self.walkTime = walkTime
         self.timeSinceLastCall = 0
+        self.max_no_of_copies = max_no_of_copies
+
 
 
 

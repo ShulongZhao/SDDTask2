@@ -48,21 +48,21 @@ enemy_animList = [
     Animation("Images/enemysprites/shooting", 30, -1),
     Animation("Images/enemysprites/defeated", 64, -1)]
 
-man1_animList = [Animation("Images/people/man1", 128, -1)]
-man2_animList = [Animation("Images/people/man2", 128, -1)]
-woman1_animList = [Animation("Images/people/woman1", 128, -1)]
-woman2_animList = [Animation("Images/people/woman2", 128, -1)]
+man1_animList = [Animation("Images/people/man1", 100, -1)]
+man2_animList = [Animation("Images/people/man2", 100, -1)]
+woman1_animList = [Animation("Images/people/girl1", 100, -1)]
+woman2_animList = [Animation("Images/people/girl2", 100, -1)]
 
 # instance of Player class, representing player
 plyr = Character(1/7, [10, 100], [7.5, 7.5], plyr_animList, 3, "Images/playersprites/bullet/bullet.bmp")
 enemy = Character(1/8, [1000, 10],[8, 8], enemy_animList, 50, "Images/enemysprites/bullet/enemybullet-1.png.bmp")
 
-man1 = Human(200, 1/9, [0, 0], [2, 0], man1_animList, health=1)
-man2 = Human(200, 1/9, [100, 100], [2, 0], man2_animList, health=1)
-woman1 = Human(200, 1/9, [200, 200], [2, 0], woman1_animList, health=1)
-woman2 = Human(200, 1/9, [300, 300], [2, 0], woman2_animList, health=1)
+man1 = Human("man1", 1/9, [1, 0], man1_animList, window=gameWindow, health=1, walkTime=1775, max_no_of_copies=4)
+man2 = Human("man2", 1/9, [2, 0], man2_animList, window=gameWindow, health=1, walkTime=2222, max_no_of_copies=5)
+girl1 = Human("girl1", 1/9, [2, 0], woman1_animList, window=gameWindow, health=1, walkTime=575, max_no_of_copies=3)
+girl2 = Human("girl2", 1/9, [2, 0], woman2_animList, window=gameWindow, health=1, walkTime=1828, max_no_of_copies=2)
 
-charList = [plyr, enemy, man1, man2, woman1, woman2]
+charList = [plyr, enemy, man1, man2, girl1, girl2]
 
 if __name__ == "__main__":
 
