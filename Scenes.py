@@ -398,6 +398,16 @@ def Game(window, charList):
         if dogfight == False and starting == False:
             enemy.rect.x += enemy.velocity[0]
 
+            if curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown:
+                enemy.bullet = Bullet(enemy.bulletImage, [20, 10], [10, 0], (enemy.rect.centerx, enemy.rect.bottom), 400)
+                enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
+                enemy.bullets.append(enemy.bullet)
+                InitAnim(enemy, enemy.animsDirList[2])
+
+                enemy.bullet.timeSinceLastCall = curTime
+
+                InitAnim(plyr, plyr.animsDirList[2])
+
         
         # drawing surfaces onto screen
         window.screen.blit(window.bg, (0, 0))
