@@ -1,23 +1,29 @@
-from types import TracebackType
 import pygame
 import random
 import shutil
+import os
 from re import search
+
+
 from Animations import Animation
 from Sprites import Human
-import os 
-
 from Sprites import Bullet
 
-
 def Menu(window, buttonDict):
+    pygame.display.quit()
+    
+    window.screen = pygame.display.set_mode((window.size), pygame.FULLSCREEN)
+    pygame.display.set_caption(window.title)
+    window.bg = pygame.image.load(window.bgFileLocation)
 
     GUISpriteGroup = pygame.sprite.Group()
 
-    while True:
+    menuState = "True"
+    while menuState == "True":
         # framerate
         clock = pygame.time.Clock()
         clock.tick(window.frameRate)
+        mouse = pygame.mouse.get_pos()
 
         # background
         window.screen.blit(window.bg, (0, 0))
@@ -31,7 +37,7 @@ def Menu(window, buttonDict):
         # events (key presses, mouse presses)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return None  # exits loop
+                menuState = ""  # exits loop            
 
             # loops through all buttons within the scene
             for buttonRef in buttonDict:
@@ -41,16 +47,22 @@ def Menu(window, buttonDict):
                     # condition for mouse click on buttons
                     if button.IsLayerClicked() == True:
                         # exits loop and returns the name of the button
-                        return button.myText.originalText
-
+                        GUISpriteGroup.empty()
+                        menuState = button.myText.originalText
         
         GUISpriteGroup.draw(window.screen)
-
         pygame.display.update()
+        
+    return menuState
 
 
 def Game(window, charList):
+    pygame.display.quit()
+    window.screen = pygame.display.set_mode((window.size), pygame.FULLSCREEN)
+    pygame.display.set_caption(window.title)
+    window.bg = pygame.image.load(window.bgFileLocation)
 
+    # instantiating all instances of the characters within the game
     for character in charList:
         character
     
@@ -74,7 +86,6 @@ def Game(window, charList):
         for dirs in os.listdir("Images/people/"):
             if search(_human.name, "Images/people/" + dirs):
                 no_of_instances += 1
-
 
         # if the number of characters are over what is specified
         # then remove any number of copies
@@ -128,7 +139,8 @@ def Game(window, charList):
         humans[i].rect.x = i * equalSegments
 
 
-    mouseVisibility = True
+    mouseVisibility = False
+    limit_external_input = True
 
     starting = False
     dogfight = False
@@ -136,18 +148,19 @@ def Game(window, charList):
     characterSpriteGroup = pygame.sprite.Group()
     characterSpriteGroup.add(character for character in charList)
 
-    
-
     gameState = True
     while gameState:
 
         # framerate
         clock = pygame.time.Clock()
         clock.tick(window.frameRate)
+        # gets the time since start of Python in milliseconds
         curTime = pygame.time.get_ticks()
 
         # mouse visibility during the game
         pygame.mouse.set_visible(mouseVisibility)
+        # limits all user input to pygame environment
+        pygame.event.set_grab(limit_external_input)
 
         # getting state of all keys
         keys = pygame.key.get_pressed()
@@ -218,13 +231,16 @@ def Game(window, charList):
                 # exits loop
                 gameState = False   
 
-            # if player hits escape, mouse is unhidden;
-            # if player hits mouse down, mouse is hidden,
+            # if player hits escape, mouse is unhidden and player can move their input outside of the window;
+            # if player hits mouse down, mouse is hidden and external input is once again hidden,
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     mouseVisibility = True
+                    limit_external_input = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouseVisibility = False
+                if (mouseVisibility == True) and (limit_external_input == False):
+                    mouseVisibility = False
+                    limit_external_input = True
         
             # shoot bullet when space pressed
             # (created 2 keydown event checks to split both functionalities apart)
@@ -309,17 +325,12 @@ def Game(window, charList):
 
 
 
-            #print(human.name + str(human.velocity[0]))
-
-
         # for every character present in the game
         for char in charList:
         
             # adding humans velocities, after manipulation above
             if char in humans:
                 char.rect.x += char.velocity[0]
-                print(char.anim.timeSinceLastCall)
-
 
             # animation logic:
 
@@ -419,10 +430,10 @@ def Game(window, charList):
             plyr.diagonalSpeed = [0, 0]
             plyr.rect.y += 10     
 
+
         characterSpriteGroup.update()
         characterSpriteGroup.draw(window.screen)
 
-            
 
         enemy.DrawHealth()
 

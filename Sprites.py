@@ -66,7 +66,6 @@ class Human (Character):
         self.waitTime = waitTime
         self.timeSinceLastCall = 0
         self.max_no_of_instances = max_no_of_instances
-        self.is_scaled = False
 
 
 

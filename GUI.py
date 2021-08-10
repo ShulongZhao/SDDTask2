@@ -5,10 +5,11 @@ class Window:
     def __init__(self, title, size, frameRate, bgFileLocation):
         self.title = title
         self.size = size
+        self.screen = pygame.display.set_mode((1, 1), pygame.HIDDEN)
+        self.bg = pygame.Surface((0, 0))
+        self.bgFileLocation = bgFileLocation
         self.width = self.size[0]
         self.height = self.size[1]
-        self.screen = pygame.display.set_mode(self.size)
-        self.bg = pygame.image.load(bgFileLocation)
         self.frameRate = frameRate
 
 class Layer (pygame.sprite.Sprite):
@@ -44,6 +45,7 @@ class Layer (pygame.sprite.Sprite):
 
     def OnHover(self):
         if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
+            print("Hovering")
             self.image.fill(self.hoverClr)
 
     # manually-called 

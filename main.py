@@ -13,7 +13,7 @@ pygame.init()
 framerate = 40
 
 # game properties
-gameTitle = "Game Title"
+gameTitle = "Invasions"
 gameWindowSize = [1280, 720]
 
 menuWindow = GUI.Window(gameTitle, gameWindowSize, framerate, "Images/backgroundsprites/Background.bmp")
@@ -64,7 +64,11 @@ girl2 = Human("girl2", 1/8, [3, 0], woman2_animList, window=gameWindow, health=1
 
 charList = [plyr, enemy, man1, man2, girl1, girl2]
 
+ 
+
+
 if __name__ == "__main__":
+    input("\n\n\033[1mThis game is going to be opened in fullscreen and all external input will be removed. Press any key to confirm and play 'INVASIONS': \033[0m")
 
     menuState = Scenes.Menu(menuWindow, menuButtonsDict)
 
@@ -72,7 +76,9 @@ if __name__ == "__main__":
         # start the game
         Scenes.Game(gameWindow, charList)
     elif menuState == "Quit":
-        # passes the sequence to quit python    
+        # passes the sequence to quit python
         pass
-    
+
     exit()
+    
+
