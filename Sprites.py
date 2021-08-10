@@ -72,7 +72,7 @@ class Human (Character):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, image, size, velocity, startingPos, cooldown, window):
+    def __init__(self, image, size, speed, startingPos, cooldown, window):
         pygame.sprite.Sprite.__init__(self)
 
         # catch exception due to None type error from passing None at initialisation
@@ -87,7 +87,8 @@ class Bullet(pygame.sprite.Sprite):
 
         self.imagesList = []
 
-        self.velocity = [velocity[0] * window.height / 720, velocity[1] * window.height / 720]
+        self.speed = [speed[0] * window.height / 720, [speed[1] * window.height / 720]]
+        self.velocity = list((speed))
 
         self.timeSinceLastCall = 0
         self.cooldown = cooldown

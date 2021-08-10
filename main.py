@@ -44,11 +44,20 @@ def Initialisations():
                                         clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
     }
 
-    settingsLayerText = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/settings-1.bmp"), (30, 30)))
+    settingsLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/settings-1.bmp"), (30, 30)))
+    settingsTextLayer = GUI.LayerRenderer(gameWindow, text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=30, textColour=(0, 0, 0))
+    homeLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home-1.bmp"), (30, 30)))
+    backLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/replay-1.bmp"), (30, 30)))
+    quitLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit-1.bmp"), (30, 30)))
+
+
 
     gameLayersDict = {
-        "settingsLogo": GUI.Layer(settingsLayerText, [gameWindow.width - 50, 30], gameWindow, 
-                    clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True)
+        "settingsLogo": GUI.Layer(settingsLayer, [gameWindow.width - 50, 30], gameWindow, clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
+        "settingsText": GUI.Layer(settingsTextLayer, [gameWindow.width/2, 225], gameWindow, is_active=False),
+        "homeLogo": GUI.Layer(homeLayer, [gameWindow.width / 2, 300], gameWindow, is_button=True, is_active=False),
+        "quitLogo": GUI.Layer(quitLayer, [gameWindow.width / 2, 375], gameWindow, is_button=True, is_active=False),
+        "backLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 450], gameWindow, is_button=True, is_active=False),
     }
 
     # list of the directories containing PLAYER animation frames 
@@ -89,26 +98,28 @@ def Main():
 
     if menuState == "Start":
         # start the game
-        gameState = Scenes.Game(gameWindow, gameLayersDict, charList, humansDir="Images/people/")
+        gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
 
-        if gameState == "Home":
-            Main()
-            return
-        elif gameState == "Quit":
-            # passes the sequence to quit python
-            pass
+        # return the state of the game
+        return gameState
 
     elif menuState == "Quit":
-        # passes the sequence to quit python
-        pass
-
-    exit()
-
+        return False
+        
 
 if __name__ == "__main__":
     # programs asks for input before
     input("\n\n\033[1mThis game is going to be opened in fullscreen and all external input will be removed. Press ENTER to confirm and play 'INVASIONS': \033[0m")
     Initialisations()
-    Main()
+    programState = Main()
+
+    # if when running the game, it doesn't request to quit
+    # then keep running the game
+    while programState != False:
+        Initialisations()
+        programState = Main()
+
+    # otherwise exit the program
+    exit()
 
 
