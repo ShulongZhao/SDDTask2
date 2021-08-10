@@ -3,21 +3,21 @@ import math
 import random
 
 class Character (pygame.sprite.Sprite):
-    def __init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage):
+    def __init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage, window):
         # initialising sprite logic
         pygame.sprite.Sprite.__init__(self)
 
         self.animsDirList = animsDirList
         self.anim = self.animsDirList[0]
 
-        self.scaleFactor = scaleFactor
+        self.scaleFactor = scaleFactor * window.height / 720
         
         self.image = pygame.image.load(self.anim.framesList[0]).convert_alpha()
         # establishing a rect object on the player, and setting its coordinates
-        self.rect = self.image.get_rect(x=startingPos[0], y=startingPos[1])
+        self.rect = self.image.get_rect(x=startingPos[0] * window.height / 720, y=startingPos[1] * window.height / 720)
 
         # speed is an unchanged magnitude 
-        self.speed = speed
+        self.speed = [speed[0] * window.height / 720, speed[1] * window.height / 720]
         # whereas velocity changes based on direction
         self.velocity = list((speed[0], speed[1]))
         # diagonal vector is the average of the horizontal and vertical speeds 
@@ -28,50 +28,51 @@ class Character (pygame.sprite.Sprite):
         self.diagonalVelocity = list((self.diagonalSpeed[0], self.diagonalSpeed[1]))
 
         self.bulletImage = bulletImage
-        self.bullet = Bullet(self.bulletImage, [0, 0], [10, 0], (self.rect.centerx, self.rect.bottom), 0)
+        self.bullet = Bullet(self.bulletImage, [0, 0], [10, 0], (self.rect.centerx, self.rect.bottom), 0, window)
         self.bullets = []
 
         self.flipSprite = False
 
         self.health = health
         self.max_health = health
-
-
-    def DrawHealth(self):
-        r = min(255, 255 - (255 * ((self.health - (self.max_health - self.health)) / self.max_health)))
-        g = min(255, 255 * (self.health / (self.max_health / 2)))
-        color = (r, g, 0)
-        width = int(self.rect.width * self.health / self.max_health)
-        self.health_bar = pygame.Rect(0, 0, width, 7)
-        if self.health < self.max_health:
-            pygame.draw.rect(self.image, color, self.health_bar)
-
+      
 
 # inherits attributes and methods from Character class 
 # but also introduces new attributes specific to humans
 class Human (Character):
     def __init__(self, name, scaleFactor, speed, animsDirList, window, health, walkTime=2000, waitTime=3000, bulletImage=None, max_no_of_instances=1):
 
-        startingPos = [random.randint(0, window.width), window.height - 125]
-
-        Character.__init__(self, scaleFactor, startingPos, speed, animsDirList, health, bulletImage)
-        self.rect.size = (int(self.rect.width * self.scaleFactor),int(self.rect.height * self.scaleFactor))
-
-        if random.randint(1, 2) == 1:
-            self.flipSprite = True
-
+        self.scaleFactor = scaleFactor
+        self.speed = speed
+        self.animsDirList = animsDirList
+        self.health = health
+        self.bulletImage = bulletImage
+        
         self.name = name
+        # conditions for specific humans movement
+        self.is_moving = True
         # walk time is how long human walks for
         self.walkTime = walkTime
         self.waitTime = waitTime
         self.timeSinceLastCall = 0
         self.max_no_of_instances = max_no_of_instances
+        
+        # allowing this as a seperate function allows calling from anywhere else as well
+        self.Main(window)
 
 
+    def Main(self, window):
+        startingPos = [random.randint(0, window.width), 585 * window.height/720]
+
+        Character.__init__(self, self.scaleFactor, startingPos, self.speed, self.animsDirList, self.health, self.bulletImage, window)
+        self.rect.size = (int(self.rect.width * self.scaleFactor), int(self.rect.height * self.scaleFactor))
+
+        if random.randint(1, 2) == 1:
+            self.flipSprite = True
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, image, size, velocity, startingPos, cooldown):
+    def __init__(self, image, size, velocity, startingPos, cooldown, window):
         pygame.sprite.Sprite.__init__(self)
 
         # catch exception due to None type error from passing None at initialisation
@@ -86,7 +87,7 @@ class Bullet(pygame.sprite.Sprite):
 
         self.imagesList = []
 
-        self.velocity = velocity
+        self.velocity = [velocity[0] * window.height / 720, velocity[1] * window.height / 720]
 
         self.timeSinceLastCall = 0
         self.cooldown = cooldown

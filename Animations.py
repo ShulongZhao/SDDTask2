@@ -1,6 +1,4 @@
 import os
-import pygame
-import Sprites
 
 class Animation:
     # increments every iteration to cycle through all frames
