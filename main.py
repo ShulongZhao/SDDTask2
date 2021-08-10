@@ -29,35 +29,35 @@ def Initialisations():
     gameWindow = GUI.Window(gameTitle, framerate, bg="Images/backgroundsprites/Background.bmp")
 
     # instances of custom text class
-    titleLayerText = GUI.LayerRenderer(menuWindow, text="Max Cheng Is God", textFontLocation="Fonts/titlefont.ttf", textFontSize=35, textColour=(255, 255, 255))
-    startLayerText = GUI.LayerRenderer(menuWindow, text="Start", textFontLocation="Fonts/titlefont.ttf", textFontSize=24, textColour=(0, 0, 0))
-    quitLayerText = GUI.LayerRenderer(menuWindow, text="Quit", textFontLocation="Fonts/titlefont.ttf", textFontSize=24, textColour=(0, 0, 0))
+    titleLayerText = GUI.LayerRenderer(text="Max Cheng Is God", textFontLocation="Fonts/titlefont.ttf", textFontSize=35, textColour=(255, 255, 255))
+    startLayerText = GUI.LayerRenderer(text="Start", textFontLocation="Fonts/titlefont.ttf", textFontSize=24, textColour=(0, 0, 0))
+    quitLayerText = GUI.LayerRenderer(text="Quit", textFontLocation="Fonts/titlefont.ttf", textFontSize=24, textColour=(0, 0, 0))
 
     # dictionary containing instances of custom button class, located on menu window
     menuLayersDict = {
-        titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/3], menuWindow),
+        titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/3]),
 
-        startLayerText.originalText:    GUI.Layer(startLayerText, [menuWindow.width/2, menuWindow.height/2], menuWindow, 
+        startLayerText.originalText:    GUI.Layer(startLayerText, [menuWindow.width/2, menuWindow.height/2], 
                                         clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
 
-        quitLayerText.originalText:     GUI.Layer(quitLayerText, [menuWindow.width/2, 2*menuWindow.height/3], menuWindow, 
+        quitLayerText.originalText:     GUI.Layer(quitLayerText, [menuWindow.width/2, 2*menuWindow.height/3], 
                                         clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
     }
 
-    settingsLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/settings-1.bmp"), (30, 30)))
-    settingsTextLayer = GUI.LayerRenderer(gameWindow, text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=30, textColour=(0, 0, 0))
-    homeLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home-1.bmp"), (30, 30)))
-    backLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/replay-1.bmp"), (30, 30)))
-    quitLayer = GUI.LayerRenderer(gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit-1.bmp"), (30, 30)))
+    settingsLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/settings-1.bmp"), (35, 35)))
+    settingsTextLayer = GUI.LayerRenderer(text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=30, textColour=(0, 0, 0))
+    homeLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home-1.bmp"), (30, 30)))
+    backLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/replay-1.bmp"), (30, 30)))
+    quitLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit-1.bmp"), (30, 30)))
 
 
 
     gameLayersDict = {
-        "settingsLogo": GUI.Layer(settingsLayer, [gameWindow.width - 50, 30], gameWindow, clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
-        "settingsText": GUI.Layer(settingsTextLayer, [gameWindow.width/2, 225], gameWindow, is_active=False),
-        "homeLogo": GUI.Layer(homeLayer, [gameWindow.width / 2, 300], gameWindow, is_button=True, is_active=False),
-        "quitLogo": GUI.Layer(quitLayer, [gameWindow.width / 2, 375], gameWindow, is_button=True, is_active=False),
-        "backLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 450], gameWindow, is_button=True, is_active=False),
+        "settingsLogo": GUI.Layer(settingsLayer, [gameWindow.width - 35, 35], is_button=True),
+        "settingsText": GUI.Layer(settingsTextLayer, [gameWindow.width/2, 260], is_active=False),
+        "homeLogo": GUI.Layer(homeLayer, [gameWindow.width / 2, 320], is_button=True, is_active=False),
+        "quitLogo": GUI.Layer(quitLayer, [gameWindow.width / 2, 395], is_button=True, is_active=False),
+        "backLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 475], is_button=True, is_active=False),
     }
 
     # list of the directories containing PLAYER animation frames 
@@ -109,7 +109,7 @@ def Main():
 
 if __name__ == "__main__":
     # programs asks for input before
-    input("\n\n\033[1mThis game is going to be opened in fullscreen and all external input will be removed. Press ENTER to confirm and play 'INVASIONS': \033[0m")
+    input("\n\n\033[1mThis game is going to be opened in fullscreen. Press ENTER to confirm and play 'INVASIONS': \033[0m")
     Initialisations()
     programState = Main()
 

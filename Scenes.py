@@ -247,10 +247,8 @@ def Game(window, layersDict, charList):
                 # shoot bullet when space pressed
                 if event.key == pygame.K_SPACE:
                     if (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown):
-                        plyr.bullet = Bullet(plyr.bulletImage, [20, 10], [
-                                             10, 0], (plyr.rect.centerx, plyr.rect.bottom), 400, window)
-                        plyr.bullet.InitVelocity(
-                            plyr.velocity, plyr.flipSprite)
+                        plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 400, window)
+                        plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
                         plyr.bullets.append(plyr.bullet)
 
                         plyr.bullet.timeSinceLastCall = curTime
@@ -419,7 +417,8 @@ def Game(window, layersDict, charList):
 
             # if the enemy and player are in the dogfight session and the enemy is ready to shoot
             if (dogfight == True) and (curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown):
-                enemy.bullet = Bullet(enemy.bulletImage, [20, 10], [10, 0], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
+                enemy.bullet = Bullet(enemy.bulletImage, [30, 15], [15, 0], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
+
                 enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
                 enemy.bullets.append(enemy.bullet)
                 InitAnim(enemy, enemy.animsDirList[2])
@@ -431,7 +430,8 @@ def Game(window, layersDict, charList):
                 enemy.rect.x += enemy.velocity[0]
 
                 if (curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown):
-                    enemy.bullet = Bullet(enemy.bulletImage, [20, 10], [0, 10], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
+                    enemy.bullet = Bullet(enemy.bulletImage, [30, 15], [0, 15], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
+                    enemy.bullet.rect.size = (int(enemy.bullet.rect.width),int(enemy.bullet.rect.height))
                     enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
                     enemy.bullets.append(enemy.bullet)
                     InitAnim(enemy, enemy.animsDirList[0])
@@ -547,6 +547,7 @@ def Game(window, layersDict, charList):
                             char.rect = char.image.get_rect(x=char.rect.x, y=char.rect.y)
                             char.rect.size = (int(char.rect.width * char.scaleFactor), int(char.rect.height * char.scaleFactor))
 
+
                             if char in humans:
                                 if char.velocity[0] == 0:
                                     # setting the time for each frame to the time taken for humans to exit zero velocity,
@@ -591,9 +592,6 @@ def Game(window, layersDict, charList):
 
         # mouse visibility during the game
         pygame.mouse.set_visible(mouseVisibility)
-        # limits all user input to pygame environment
-        pygame.event.set_grab
-
         # ---------------------------------------------------------
 
         

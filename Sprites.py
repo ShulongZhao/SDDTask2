@@ -10,14 +10,16 @@ class Character (pygame.sprite.Sprite):
         self.animsDirList = animsDirList
         self.anim = self.animsDirList[0]
 
-        self.scaleFactor = scaleFactor * window.height / 720
+        self.scaleFactor = scaleFactor
         
         self.image = pygame.image.load(self.anim.framesList[0]).convert_alpha()
         # establishing a rect object on the player, and setting its coordinates
-        self.rect = self.image.get_rect(x=startingPos[0] * window.height / 720, y=startingPos[1] * window.height / 720)
+        self.rect = self.image.get_rect(x=startingPos[0], y=startingPos[1])
+        self.rect.size = (int(self.rect.width * self.scaleFactor), int(self.rect.height * self.scaleFactor))
+
 
         # speed is an unchanged magnitude 
-        self.speed = [speed[0] * window.height / 720, speed[1] * window.height / 720]
+        self.speed = speed
         # whereas velocity changes based on direction
         self.velocity = list((speed[0], speed[1]))
         # diagonal vector is the average of the horizontal and vertical speeds 
@@ -62,10 +64,9 @@ class Human (Character):
 
 
     def Main(self, window):
-        startingPos = [random.randint(0, window.width), 585 * window.height/720]
+        startingPos = [random.randint(0, window.width), 600 * window.height/720]
 
         Character.__init__(self, self.scaleFactor, startingPos, self.speed, self.animsDirList, self.health, self.bulletImage, window)
-        self.rect.size = (int(self.rect.width * self.scaleFactor), int(self.rect.height * self.scaleFactor))
 
         if random.randint(1, 2) == 1:
             self.flipSprite = True
@@ -87,7 +88,7 @@ class Bullet(pygame.sprite.Sprite):
 
         self.imagesList = []
 
-        self.speed = [speed[0] * window.height / 720, [speed[1] * window.height / 720]]
+        self.speed = [speed[0], [speed[1]]]
         self.velocity = list((speed))
 
         self.timeSinceLastCall = 0

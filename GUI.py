@@ -4,17 +4,11 @@ class Window:
 
     def __init__(self, title, frameRate, bg=(0, 0, 0)):
         self.title = title
-
-        self.screen = pygame.display.set_mode((1280, 720))
-        self.size = self.screen.get_size()
-
-        self.bg = pygame.transform.scale(pygame.image.load(bg), self.size)
-        
-
-        self.width = self.size[0]
-        self.height = self.size[1]
+        self.bg = bg
         self.frameRate = frameRate
         self.layers = []
+
+        self.Main()
 
     def Main(self):
         self.screen = pygame.display.set_mode((1280, 720))
@@ -26,7 +20,7 @@ class Window:
 
 class Layer (pygame.sprite.Sprite):
 
-    def __init__(self, layerRender, pos, window, clr=None, hoverClr=None, is_button=False, is_active=True):
+    def __init__(self, layerRender, pos, clr=None, hoverClr=None, is_button=False, is_active=True):
 
         pygame.sprite.Sprite.__init__(self)
 
@@ -40,9 +34,10 @@ class Layer (pygame.sprite.Sprite):
         self.is_button = is_button
         self.is_active = is_active
 
-        self.rect = self.layerRender.renderedSurface.get_rect(center=(self.pos[0] * window.height / 720, self.pos[1] * window.height / 720))
+        self.rect = self.layerRender.renderedSurface.get_rect(center=(self.pos[0], self.pos[1]))
+        self.rect.size = [self.rect.width, self.rect.height]
         if self.layerRender.originalText == "":
-            self.image = self.layerRender.renderedSurface
+            self.image = pygame.transform.scale(self.layerRender.renderedSurface, self.rect)
         else:
             self.image = pygame.Surface(self.rect.size)
 
@@ -50,6 +45,8 @@ class Layer (pygame.sprite.Sprite):
         try:
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
                 self.image.fill(self.hoverClr)
+                self.rect.size = [self.rect.width * 1.5, self.rect.height * 1.5]
+                return True
         except TypeError:
             pass
 
@@ -65,10 +62,9 @@ class Layer (pygame.sprite.Sprite):
 
         if self.is_button == True:
             self.OnHover() 
+            
 
         self.image.blit(self.layerRender.renderedSurface, self.layerRender.renderedSurface.get_rect())
-
-        
 
 
     # manually-called 
@@ -84,11 +80,11 @@ class Layer (pygame.sprite.Sprite):
 
 # renders the image for the layer
 class LayerRenderer:
-    def __init__(self, window, text=None, textFontLocation=None, textFontSize=None, textColour=None, renderedImage=None):
+    def __init__(self, text=None, textFontLocation=None, textFontSize=None, textColour=None, renderedImage=None):
 
         self.originalText = text
         try:
-            self.renderedSurface = pygame.font.Font(textFontLocation, textFontSize * window.height / 720).render(text, True, textColour)
+            self.renderedSurface = pygame.font.Font(textFontLocation, textFontSize).render(text, True, textColour)
         except TypeError:
             self.renderedSurface = renderedImage
         
