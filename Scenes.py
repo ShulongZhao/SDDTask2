@@ -478,6 +478,17 @@ def Game(window, layersDict, charList):
                     InitAnim(plyr, plyr.animsDirList[1])
                     plyr.health -= 1
 
+            for human in humans:
+                bulletColHuman = bullet.rect.colliderect(human.rect)
+                if bulletColHuman:
+                    try:
+                        enemy.bullets.remove(bullet)
+                        characterSpriteGroup.remove(bullet)
+                    except:
+                        pass
+                    humans.remove(human)
+                    characterSpriteGroup.remove(human)
+
 
         # Enemy Health Bar
 
