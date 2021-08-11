@@ -409,7 +409,7 @@ def Game(window, layersDict, charList):
         # ----------------------------------------------------------------------------------------------------------------
 
         # dogfight begins if B pressed, only for development reasons will be removed in final game.
-        if keys[pygame.K_b]:
+        if len(humans) < 10:
             is_dogfight_activated = True
 
         # enemy travelling to dogfight position
@@ -507,9 +507,12 @@ def Game(window, layersDict, charList):
 
             for p_bullet in plyr.bullets:
                 p_bullet.velocity[0] = 0
+                plyr.bullets.remove(p_bullet)
                 characterSpriteGroup.remove(p_bullet)
 
             for e_bullet in enemy.bullets:
+                e_bullet.velocity[0] = 0
+                enemy.bullets.remove(e_bullet)
                 characterSpriteGroup.remove(e_bullet)
 
             plyr.speed = [0, 0]
