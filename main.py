@@ -45,11 +45,11 @@ def Initialisations():
     }
 
 
-    settingsLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/settings-1.bmp"), (35, 35)))
+    settingsLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/pause.bmp"), (35, 35)))
     settingsTextLayer = GUI.LayerRenderer(text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=30, textColour=(0, 0, 0))
-    homeLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home-1.bmp"), (30, 30)))
-    backLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/replay-1.bmp"), (30, 30)))
-    quitLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit-1.bmp"), (30, 30)))
+    homeLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)))
+    backLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/play.bmp"), (30, 30)))
+    quitLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit.bmp"), (30, 30)))
 
     gameLayersDict = {
         "settingsLogo": GUI.Layer(settingsLayer, [gameWindow.width - 35, 35], is_button=True),
