@@ -367,19 +367,19 @@ def Game(window, layersDict, charList):
                     break
 
 
-            # Player Death Condition
-            if plyr.health == 0:
-                InitAnim(plyr, plyr.animsDirList[3])
+        # Player Death Condition
+        if plyr.health == 0:
+            InitAnim(plyr, plyr.animsDirList[3])
 
-                for p_bullet in plyr.bullets:
-                    bullet.velocity[0] = 0
-                    characterSpriteGroup.remove(p_bullet)
+            for p_bullet in plyr.bullets:
+                bullet.velocity[0] = 0
+                characterSpriteGroup.remove(p_bullet)
 
-                for e_bullet in enemy.bullets:
-                    characterSpriteGroup.remove(e_bullet)
-                plyr.speed = [0, 0]
-                plyr.diagonalSpeed = [0, 0]
-                plyr.rect.y += 10
+            for e_bullet in enemy.bullets:
+                characterSpriteGroup.remove(e_bullet)
+            plyr.speed = [0, 0]
+            plyr.diagonalSpeed = [0, 0]
+            plyr.rect.y += 10
             
 
         # -----------------------------------------------------------------------------------------------
@@ -432,7 +432,6 @@ def Game(window, layersDict, charList):
                 if (curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown):
                     enemy.bullet = Bullet(enemy.bulletImage, [30, 15], [0, 15], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
                     enemy.bullet.rect.size = (int(enemy.bullet.rect.width),int(enemy.bullet.rect.height))
-                    enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
                     enemy.bullets.append(enemy.bullet)
                     InitAnim(enemy, enemy.animsDirList[0])
 
