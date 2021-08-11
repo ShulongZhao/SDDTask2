@@ -60,6 +60,8 @@ def Game(window, layersDict, charList):
 
     is_dogfight_activated = False
     dogfight = False
+    returnfromdogfight = False
+    dogfightTimer = 60
 
     gameState = "Playing"
 
@@ -374,6 +376,9 @@ def Game(window, layersDict, charList):
                         characterSpriteGroup.remove(bullet)
                         enemy.bullets.remove(e_bullet)
                         characterSpriteGroup.remove(e_bullet)
+                        if dogfight == True:
+                            dogfightTimer += 1
+                            print(dogfightTimer)
 
 
         # Player Health Bar
@@ -408,9 +413,18 @@ def Game(window, layersDict, charList):
         # ENEMY
         # ----------------------------------------------------------------------------------------------------------------
 
-        # dogfight begins if B pressed, only for development reasons will be removed in final game.
-        if len(humans) < 10:
+        # dogfight begins.
+        if dogfightTimer == 0:
             is_dogfight_activated = True
+        
+        # dogfight ends.
+        if dogfightTimer == 90:
+            is_dogfight_activated = False
+            returnfromdogfight = True
+
+        # enemy returning from dogfight
+        if returnfromdogfight:
+            enemy.recy.y += 8
 
         # enemy travelling to dogfight position
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and is_dogfight_activated:
@@ -423,7 +437,6 @@ def Game(window, layersDict, charList):
             enemy.flipSprite = True
             dogfight = True
             is_dogfight_activated = False
-            print("Dogfight has been reached")
 
         # vertical and horizontal boundaries for enemy
         if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
@@ -453,6 +466,8 @@ def Game(window, layersDict, charList):
                     enemy.bullet.rect.size = (int(enemy.bullet.rect.width),int(enemy.bullet.rect.height))
                     enemy.bullets.append(enemy.bullet)
                     InitAnim(enemy, enemy.animsDirList[0])
+                    dogfightTimer -= 1
+                    print(dogfightTimer)
 
                     enemy.bullet.timeSinceLastCall = curTime
 
