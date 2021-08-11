@@ -366,6 +366,24 @@ def Game(window, layersDict, charList):
                     InitAnim(enemy, enemy.animsDirList[1])
                     enemy.health -= 1
                     break
+                
+                for e_bullet in enemy.bullets:
+                    bulletColBullet = bullet.rect.colliderect(e_bullet.rect)
+                    if bulletColBullet:
+                        plyr.bullets.remove(bullet)
+                        characterSpriteGroup.remove(bullet)
+                        enemy.bullets.remove(e_bullet)
+                        characterSpriteGroup.remove(e_bullet)
+
+
+        # Player Health Bar
+
+        r = min(255, 255 - (255 * ((2 * plyr.health - plyr.max_health) / plyr.max_health)))
+        g = min(255, 255 * (plyr.health / (plyr.max_health / 2)))
+        color = (r, g, 0)
+        width = int(plyr.rect.width * plyr.health / plyr.max_health)
+        plyr.health_bar = pygame.Rect(0, 0, width, 7)
+        pygame.draw.rect(plyr.image, color, plyr.health_bar)
 
 
         # Player Death Condition
