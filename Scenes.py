@@ -668,6 +668,7 @@ def Game(window, layersDict, charList):
         # Player Death Condition
         if plyr.health == 0:
             InitAnim(plyr, plyr.animsDirList[3])
+            gameState = Pause(charList)
 
             for p_bullet in plyr.bullets:
                 bullet.velocity[0] = 0
@@ -698,7 +699,7 @@ def Game(window, layersDict, charList):
 
         # enemy returning from dogfight
         if returnfromdogfight:
-            enemy.recy.y += 8
+            enemy.rect.y += 8
 
         # enemy travelling to dogfight position
         if enemy.rect.x + enemy.rect.width < (window.width - 15) and is_dogfight_activated:
@@ -793,6 +794,7 @@ def Game(window, layersDict, charList):
         # Enemy Death
         if enemy.health == 0:
             InitAnim(enemy, enemy.animsDirList[2])
+            gameState = Pause(charList)
 
             for p_bullet in plyr.bullets:
                 p_bullet.velocity[0] = 0
@@ -841,6 +843,11 @@ def Game(window, layersDict, charList):
                     human.timeSinceLastCall = pygame.time.get_ticks()
                 
                 human.velocity[0] = 0
+            
+        # if all humans die
+        if len(humans) == 0:
+            gameState = Pause(charList)
+
 
         # ---------------------------------------------------------------------------
 
