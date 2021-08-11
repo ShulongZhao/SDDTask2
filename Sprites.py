@@ -16,6 +16,7 @@ class Character (pygame.sprite.Sprite):
         # establishing a rect object on the player, and setting its coordinates
         self.rect = self.image.get_rect(x=startingPos[0], y=startingPos[1])
         self.rect.size = (int(self.rect.width * self.scaleFactor), int(self.rect.height * self.scaleFactor))
+        self.image = pygame.transform.scale(self.image, self.rect.size)
 
 
         # speed is an unchanged magnitude 

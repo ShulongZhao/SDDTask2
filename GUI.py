@@ -45,7 +45,6 @@ class Layer (pygame.sprite.Sprite):
         try:
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
                 self.image.fill(self.hoverClr)
-                self.rect.size = [self.rect.width * 1.5, self.rect.height * 1.5]
                 return True
         except TypeError:
             pass

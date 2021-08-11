@@ -10,14 +10,278 @@ from Sprites import Human
 from Sprites import Bullet
 
 
+# Tutorial Scene
+def Tutorial(window, charList, layersDict):
+
+    plyr = charList[0]
+    enemy = charList[1]
+
+    characterSpriteGroup = pygame.sprite.Group()
+    characterSpriteGroup.add(plyr)
+
+    GUISpriteGroup = pygame.sprite.Group()
+
+    has_moved = False
+    has_shot = False
+
+    mouseVisibility = False
+
+    pauseMenuBgColour = (200, 200, 200)
+
+    while True:
+
+        clock = pygame.time.Clock()
+        clock.tick(window.frameRate)
+
+        # mouse visibility during the game
+        pygame.mouse.set_visible(mouseVisibility)
+
+        curTime = pygame.time.get_ticks()
+
+        # getting state of all keys
+        keys = pygame.key.get_pressed()
+
+        # keys[pygame.(any key)] is always either 0 (if not being pressed) or 1 (if being pressed); boolean value
+        plyr_deltaVert = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+        plyr_deltaHoriz = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+
+
+        for event in pygame.event.get():
+            # quitting the screen
+            if event.type == pygame.QUIT:
+                # exits loop
+                return "Quit"
+
+            # if player hits escape, mouse is unhidden and player can move their input outside of the window;
+            # if player hits mouse down, mouse is hidden and external input is once again hidden,
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    mouseVisibility = True
+
+                # shoot bullet when space pressed
+                if event.key == pygame.K_SPACE:
+                    if (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown) and has_moved:
+                        if has_shot == False:
+                            has_shot = True
+                        plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 400, window)
+                        plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
+                        plyr.bullets.append(plyr.bullet)
+
+                        plyr.bullet.timeSinceLastCall = curTime
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if (mouseVisibility == True):
+                    mouseVisibility = False
+
+                # Settings
+
+                if layersDict["pauseLogo"].IsLayerClicked() == True and layersDict["pauseLogo"].is_active:
+                    # pause surface
+                    window.layers.append(pygame.Surface((250, 325)))
+                    # get the most recently added layer and fill it
+                    window.layers[len(window.layers) - 1].fill((pauseMenuBgColour))
+                    mouseVisibility = True
+                    layersDict["pauseText"].is_active = True
+                    layersDict["homeLogo"].is_active = True
+                    layersDict["resumeLogo"].is_active = True
+                    layersDict["quitLogo"].is_active = True
+                    # pause the game
+
+                # returns back to homepage
+                elif layersDict["homeLogo"].IsLayerClicked() == True and layersDict["homeLogo"].is_active:
+                    return "Home"
+
+                # quits the game
+                elif layersDict["quitLogo"].IsLayerClicked() == True and layersDict["quitLogo"].is_active:
+                    return "Quit"
+
+                # resumes the game
+                elif layersDict["resumeLogo"].IsLayerClicked() == True and layersDict["resumeLogo"].is_active:
+                    window.layers.pop(len(window.layers) - 1)
+                    mouseVisibility = False
+                    layersDict["pauseText"].is_active = False
+                    layersDict["homeLogo"].is_active = False
+                    layersDict["resumeLogo"].is_active = False
+                    layersDict["quitLogo"].is_active = False
+
+                    layersDict["aimText"].is_active = True
+                    layersDict["movementText"].is_active = True
+                    layersDict["shootText"].is_active = True
+                    layersDict["skipLogo"].is_active = True
+
+                
+                elif layersDict["skipLogo"].IsLayerClicked() == True and layersDict["skipLogo"].is_active:
+                    return "Skip"
+
+
+        # Movement
+
+        # assigning the direction to the player's velocity
+        # plyr_deltaHoriz and plyr_deltaVert are either 1, 0, -1, which assigns direction correctly
+        plyr.velocity[0] = plyr_deltaHoriz * plyr.speed[0]
+        plyr.velocity[1] = plyr_deltaVert * plyr.speed[1]
+        # diagonal velocity is to keep the player from travelling quicker
+        # than the normal horizontal and vertical speeds (pythagoras' theorem)
+        # --> see Character class for more on diagonal velocity
+        plyr.diagonalVelocity[0] = plyr_deltaHoriz * plyr.diagonalSpeed[0]
+        plyr.diagonalVelocity[1] = plyr_deltaVert * plyr.diagonalSpeed[1]
+        # if player is going left, flip sprite
+        plyr.flipSprite = keys[pygame.K_LEFT]
+
+        # if the player is going diagonally, assign the diagonal speed
+        if plyr_deltaHoriz != 0 and plyr_deltaVert != 0:
+            plyr.velocity = plyr.diagonalVelocity
+
+        # Restrictions
+
+        if plyr.rect.x < 0:
+            plyr.rect.x = 0
+        elif plyr.rect.x + plyr.rect.width > window.width:
+            plyr.rect.x = window.width - plyr.rect.width
+
+        # upper boundaries are enemy location
+        if plyr.rect.y < enemy.rect.height + enemy.rect.y + 10:
+            plyr.rect.y = enemy.rect.height + enemy.rect.y + 10
+        # if the player is not dead, then the lower boundary is the human location
+        if plyr.health > 0:
+            if (plyr.rect.y + plyr.rect.height > 500 * (window.height / 720)):
+                plyr.rect.y = 500 * (window.height / 720) - plyr.rect.height
+        # else if the player has died, then they fall through the floor
+
+
+        # variable changes if the player has moved for the first time in the game
+        if (plyr.velocity[0] > 0 or plyr.velocity[1] > 0) and has_moved == False:
+            has_moved = True
+        
+
+        # add the velocity to the player's position
+        plyr.rect.x += plyr.velocity[0]
+        plyr.rect.y += plyr.velocity[1]
+
+        if enemy.rect.x < 0 or enemy.rect.x + enemy.rect.width > window.width:
+            enemy.velocity[0] = -enemy.velocity[0]
+        if enemy.rect.y < 0 or enemy.rect.y + enemy.rect.height > window.height:
+            enemy.velocity[1] = -enemy.velocity[1]
+
+        enemy.rect.x += enemy.velocity[0]
+
+
+        # Bullets:
+        # updating all visible plyr bullets on screen
+        for bullet in plyr.bullets:
+            # deleting plyr bullets that travel off screen
+            if bullet.rect.x + 5 < 0 or bullet.rect.x > window.width or bullet.rect.y < 0 or bullet.rect.y > window.height:
+                plyr.bullets.remove(bullet)
+
+            # updating bullet rect
+            bullet.rect.x += bullet.velocity[0]
+            bullet.rect.y += bullet.velocity[1]
+
+            characterSpriteGroup.add(bullet)
+
+        # Animation Logic:
+
+        for char in charList:
+
+                # if the cooldown for the animation has been reached
+                if (curTime - char.anim.timeSinceLastCall >= char.anim.cooldown):
+                    try:
+                        # deactivate the animation if the maximum number of cycles has been reached
+                        while char.anim.currentCycles != char.anim.maxCycles:
+
+                            # update player rect
+                            char.image = pygame.image.load(char.anim.framesList[char.anim.idx])
+                            char.rect = char.image.get_rect(x=char.rect.x, y=char.rect.y)
+                            char.rect.size = (int(char.rect.width * char.scaleFactor), int(char.rect.height * char.scaleFactor))
+
+                            # broadcast updated player info to the sprite's image component
+                            char.image = pygame.transform.flip(
+                                pygame.transform.scale(
+                                    char.image,
+                                    char.rect.size),
+                                char.flipSprite, False).convert_alpha()
+
+                            char.anim.idx += 1
+                            char.anim.currentCycles += 1
+                            char.anim.timeSinceLastCall = curTime
+
+                            break
+                        else:
+                            char.anim = char.animsDirList[0]
+                            char.anim.idx = 0
+                    except IndexError:
+                        char.anim.idx = 0
+
+        
+        
+        # drawing background
+        window.screen.blit(window.bg, (0, 0))
+
+
+        if has_moved:
+            # commence the next message
+            layersDict["aimText"].is_active = True
+            layersDict["movementText"].is_active = True
+            layersDict["shootText"].is_active = True
+            layersDict["skipLogo"].is_active = True
+
+            characterSpriteGroup.add(enemy)
+            enemy.anim = enemy.animsDirList[0]
+
+            if has_shot:
+                layersDict["enemyText"].is_active = True
+                layersDict["lastText"].is_active = True
+
+
+        for windowLayer in window.layers:
+            for layerRef in layersDict:
+                layersDict[layerRef].is_active = False
+            
+            layersDict["pauseText"].is_active = True
+            layersDict["homeLogo"].is_active = True
+            layersDict["resumeLogo"].is_active = True
+            layersDict["quitLogo"].is_active = True
+
+            # settings window 
+            window.screen.blit(windowLayer, (window.width/2 - windowLayer.get_rect().width/2, window.height/2 - windowLayer.get_rect().height/2, 300, 300))
+
+        
+        # update layers within scene
+        for layerRef in layersDict:
+            layer = layersDict[layerRef]
+            if layer.is_active:
+                layer.Main()
+                GUISpriteGroup.add(layer)
+            elif layer.is_active == False:
+                GUISpriteGroup.remove(layer)
+
+        # drawing all GUI sprites onto screen
+        GUISpriteGroup.update()
+        GUISpriteGroup.draw(window.screen)
+
+        # drawing all sprite groups
+        characterSpriteGroup.update()
+        characterSpriteGroup.draw(window.screen)
+
+        # updating screen
+        pygame.display.update()
+
+
+
+# Menu Scene
 def Menu(window, layersDict):
     
     GUISpriteGroup = pygame.sprite.Group()
+
+    mouseVisibility = True
 
     while True:
         # framerate
         clock = pygame.time.Clock()
         clock.tick(window.frameRate)
+
+        # mouse visibility during the game
+        pygame.mouse.set_visible(mouseVisibility)
 
         # background
         window.screen.blit(window.bg, (0, 0))
@@ -31,24 +295,34 @@ def Menu(window, layersDict):
         # events (key presses, mouse presses)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return "Quit"  # exits loop            
+                return "Quit"  # exits loop   
 
-            # loops through all layers within the scene
-            for layerRef in layersDict:
-                layer = layersDict[layerRef]
-                # checks if mouse clicks layers
-                if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    mouseVisibility = True
+
+            # checks if mouse clicks layers
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # loops through all layers within the scene
+                for layerRef in layersDict:
+                    layer = layersDict[layerRef]
                     # condition for mouse click on layers
                     if layer.IsLayerClicked() == True:
                         # exits loop and returns the name of the layer clicked
                         GUISpriteGroup.empty()
-                        print(layer.layerRender.originalText)
                         return layer.layerRender.originalText
+
+                if (mouseVisibility == True):
+                    mouseVisibility = False
+
+                
         
         GUISpriteGroup.draw(window.screen)
         pygame.display.update()
 
 
+
+# Game Scene
 def Game(window, layersDict, charList):
     
     # INITIALISATIONS
@@ -66,7 +340,7 @@ def Game(window, layersDict, charList):
     gameState = "Playing"
 
 
-    settingsMenuBgColour = (200, 200, 200)
+    pauseMenuBgColour = (200, 200, 200)
 
     # HUMANS 
     # -------------------------------------------------------------------------------------------------------
@@ -265,15 +539,15 @@ def Game(window, layersDict, charList):
 
                 # Settings
 
-                if layersDict["settingsLogo"].IsLayerClicked() == True and layersDict["settingsLogo"].is_active and gameState == "Playing":
-                    # settings surface
+                if layersDict["pauseLogo"].IsLayerClicked() == True and layersDict["pauseLogo"].is_active and gameState == "Playing":
+                    # pause surface
                     window.layers.append(pygame.Surface((250, 325)))
                     # get the most recently added layer and fill it
-                    window.layers[len(window.layers) - 1].fill(settingsMenuBgColour)
+                    window.layers[len(window.layers) - 1].fill(pauseMenuBgColour)
                     mouseVisibility = True
-                    layersDict["settingsText"].is_active = True
+                    layersDict["pauseText"].is_active = True
                     layersDict["homeLogo"].is_active = True
-                    layersDict["backLogo"].is_active = True
+                    layersDict["resumeLogo"].is_active = True
                     layersDict["quitLogo"].is_active = True
                     # pause the game
                     gameState = Pause(charList)
@@ -287,12 +561,12 @@ def Game(window, layersDict, charList):
                     return "Quit"
 
                 # resumes the game
-                elif layersDict["backLogo"].IsLayerClicked() == True and layersDict["backLogo"].is_active and gameState == "Paused":
+                elif layersDict["resumeLogo"].IsLayerClicked() == True and layersDict["resumeLogo"].is_active and gameState == "Paused":
                     window.layers.pop(len(window.layers) - 1)
                     mouseVisibility = False
-                    layersDict["settingsText"].is_active = False
+                    layersDict["pauseText"].is_active = False
                     layersDict["homeLogo"].is_active = False
-                    layersDict["backLogo"].is_active = False
+                    layersDict["resumeLogo"].is_active = False
                     layersDict["quitLogo"].is_active = False
                     gameState = Play(charList)
 
@@ -653,12 +927,11 @@ def Game(window, layersDict, charList):
         characterSpriteGroup.update()
         characterSpriteGroup.draw(window.screen)
         
-        # drawing settings window
+        # drawing pause window
         for layer in window.layers:
             window.screen.blit(layer, (window.width/2 - layer.get_rect().width/2, window.height/2 - layer.get_rect().height/2, 300, 300))
 
         GUISpriteGroup.draw(window.screen)
-        
 
         # updating screen
         pygame.display.update()

@@ -18,7 +18,7 @@ gameLayersDict = None
 charList = None
 
 def Initialisations():
-    global menuWindow, gameWindow, menuLayersDict, gameLayersDict, charList
+    global menuWindow, gameWindow, menuLayersDict, gameLayersDict, tutorialLayersDict, charList
     # time
     framerate = 40
 
@@ -29,34 +29,65 @@ def Initialisations():
     gameWindow = GUI.Window(gameTitle, framerate, bg="Images/backgroundsprites/Background.bmp")
 
     # instances of custom text class
-    titleLayerText = GUI.LayerRenderer(text="Max Cheng Is God", textFontLocation="Fonts/titlefont.ttf", textFontSize=35, textColour=(255, 255, 255))
-    startLayerText = GUI.LayerRenderer(text="Start", textFontLocation="Fonts/titlefont.ttf", textFontSize=24, textColour=(0, 0, 0))
-    quitLayerText = GUI.LayerRenderer(text="Quit", textFontLocation="Fonts/titlefont.ttf", textFontSize=24, textColour=(0, 0, 0))
+    titleLayerText = GUI.LayerRenderer(text="Invasions", textFontLocation="Fonts/titlefont.ttf", textFontSize=50, textColour=(255, 255, 255))
+    startLayerText = GUI.LayerRenderer(text="Start", textFontLocation="Fonts/ferrum.ttf", textFontSize=36, textColour=(0, 0, 0))
+    tutorialLayerText = GUI.LayerRenderer(text="Tutorial", textFontLocation="Fonts/ferrum.ttf", textFontSize=36, textColour=(0, 0, 0))
+    quitLayerText = GUI.LayerRenderer(text="Quit", textFontLocation="Fonts/ferrum.ttf", textFontSize=36, textColour=(0, 0, 0))
+
 
     # dictionary containing instances of custom button class, located on menu window
     menuLayersDict = {
         titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/3]),
 
         startLayerText.originalText:    GUI.Layer(startLayerText, [menuWindow.width/2, menuWindow.height/2], 
-                                        clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
+                                        clr=(200, 200, 200), hoverClr=(255, 255, 255), is_button=True),
 
-        quitLayerText.originalText:     GUI.Layer(quitLayerText, [menuWindow.width/2, 2*menuWindow.height/3], 
-                                        clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
+
+        tutorialLayerText.originalText:     GUI.Layer(tutorialLayerText, [menuWindow.width/2, 3*menuWindow.height/5],
+                                                  clr=(200, 200, 200), hoverClr=(255, 255, 255), is_button=True),
+
+        quitLayerText.originalText:     GUI.Layer(quitLayerText, [menuWindow.width/2, 7*menuWindow.height/10], 
+                                        clr=(200, 200, 200), hoverClr=(255, 255, 255), is_button=True),
     }
 
 
-    settingsLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/pause.bmp"), (35, 35)))
-    settingsTextLayer = GUI.LayerRenderer(text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=30, textColour=(0, 0, 0))
+    pauseLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/pause.bmp"), (35, 35)))
+    pauseTextLayer = GUI.LayerRenderer(text="Settings", textFontLocation="Fonts/ferrum.ttf", textFontSize=45, textColour=(0, 0, 0))
     homeLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)))
     backLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/play.bmp"), (30, 30)))
     quitLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit.bmp"), (30, 30)))
 
     gameLayersDict = {
-        "settingsLogo": GUI.Layer(settingsLayer, [gameWindow.width - 35, 35], is_button=True),
-        "settingsText": GUI.Layer(settingsTextLayer, [gameWindow.width/2, 260], is_active=False),
+        "pauseLogo": GUI.Layer(pauseLayer, [gameWindow.width - 35, 35], is_button=True),
+        "pauseText": GUI.Layer(pauseTextLayer, [gameWindow.width/2, 260], is_active=False),
         "homeLogo": GUI.Layer(homeLayer, [gameWindow.width / 2, 320], is_button=True, is_active=False),
         "quitLogo": GUI.Layer(quitLayer, [gameWindow.width / 2, 395], is_button=True, is_active=False),
-        "backLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 475], is_button=True, is_active=False),
+        "resumeLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 475], is_button=True, is_active=False),
+    }
+
+
+    skipLogoLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/skip.bmp"), (75, 75)))
+    aimMessageLayer = GUI.LayerRenderer(text="To win the game, don't let all the humans die and kill the invader",textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(0, 0, 0))
+    movementMessageLayer = GUI.LayerRenderer(text="Use WASD keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(0, 0, 0))
+    shootMessageLayer = GUI.LayerRenderer(text="Press SPACE to shoot bullets. Give it a shot!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(0, 0, 0))
+    enemyMessageLayer = GUI.LayerRenderer(text="Watch out for the enemy as they come down and shoot at you. Use that chance to destroy the alien invader!", textFontLocation="Fonts/ferrum.ttf", textFontSize=33, textColour=(0, 0, 0))
+    lastMessage = GUI.LayerRenderer(text="GOOD LUCK SOLDIER!", textFontLocation="Fonts/ferrum.ttf", textFontSize=50, textColour=(240, 240, 240))
+
+
+    tutorialLayersDict = {
+        "skipLogo": GUI.Layer(skipLogoLayer, [gameWindow.width - 75, gameWindow.height - 100], is_button=True, is_active=True),
+
+        "aimText": GUI.Layer(aimMessageLayer, [gameWindow.width/2, 150], is_active=True),
+        "movementText": GUI.Layer(movementMessageLayer, [gameWindow.width/2, 250], is_active=True),
+        "shootText": GUI.Layer(shootMessageLayer, [gameWindow.width/2, 350], is_active=False),
+        "enemyText": GUI.Layer(enemyMessageLayer, [gameWindow.width/2, 450], is_active=False),
+        "lastText": GUI.Layer(lastMessage, [gameWindow.width/2, 550], is_active=False),
+
+        "pauseLogo": GUI.Layer(pauseLayer, [gameWindow.width - 35, 35], is_button=True),
+        "pauseText": GUI.Layer(pauseTextLayer, [gameWindow.width/2, 260], is_active=False),
+        "homeLogo": GUI.Layer(homeLayer, [gameWindow.width / 2, 320], is_button=True, is_active=False),
+        "quitLogo": GUI.Layer(quitLayer, [gameWindow.width / 2, 395], is_button=True, is_active=False),
+        "resumeLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 475], is_button=True, is_active=False),
     }
 
     # list of the directories containing PLAYER animation frames 
@@ -91,16 +122,31 @@ def Initialisations():
 
 
 def Main():
-    global menuWindow, gameWindow, menuLayersDict, gameLayersDict, charList
+    global menuWindow, gameWindow, menuLayersDict, gameLayersDict, tutorialLayersDict, charList
 
     menuState = Scenes.Menu(menuWindow, menuLayersDict)
 
     if menuState == "Start":
+
         # start the game
         gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
 
         # return the state of the game
         return gameState
+
+    elif menuState == "Tutorial":
+
+        tutorialState = Scenes.Tutorial(menuWindow, charList, tutorialLayersDict)
+
+        if (tutorialState == "Skip"):
+
+            gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
+            return gameState
+
+        else:
+            # input from settings or quitting the program
+            return tutorialState
+
 
     elif menuState == "Quit":
         return menuState
@@ -108,7 +154,6 @@ def Main():
 
 if __name__ == "__main__":
     # programs asks for input before
-    input("\n\n\033[1mThis game is going to be opened in fullscreen. Press ENTER to confirm and play 'INVASIONS': \033[0m")
     Initialisations()
     programState = Main()
 
