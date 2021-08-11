@@ -44,13 +44,12 @@ def Initialisations():
                                         clr=(170, 170, 170), hoverClr=(100, 100, 100), is_button=True),
     }
 
+
     settingsLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/settings-1.bmp"), (35, 35)))
     settingsTextLayer = GUI.LayerRenderer(text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=30, textColour=(0, 0, 0))
     homeLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home-1.bmp"), (30, 30)))
     backLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/replay-1.bmp"), (30, 30)))
     quitLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit-1.bmp"), (30, 30)))
-
-
 
     gameLayersDict = {
         "settingsLogo": GUI.Layer(settingsLayer, [gameWindow.width - 35, 35], is_button=True),
@@ -104,7 +103,7 @@ def Main():
         return gameState
 
     elif menuState == "Quit":
-        return False
+        return menuState
         
 
 if __name__ == "__main__":
@@ -115,7 +114,7 @@ if __name__ == "__main__":
 
     # if when running the game, it doesn't request to quit
     # then keep running the game
-    while programState != False:
+    while programState != "Quit":
         Initialisations()
         programState = Main()
 

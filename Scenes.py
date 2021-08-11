@@ -42,6 +42,7 @@ def Menu(window, layersDict):
                     if layer.IsLayerClicked() == True:
                         # exits loop and returns the name of the layer clicked
                         GUISpriteGroup.empty()
+                        print(layer.layerRender.originalText)
                         return layer.layerRender.originalText
         
         GUISpriteGroup.draw(window.screen)
@@ -235,7 +236,7 @@ def Game(window, layersDict, charList):
             # quitting the screen
             if event.type == pygame.QUIT:
                 # exits loop
-                return False
+                return "Quit"
 
             # if player hits escape, mouse is unhidden and player can move their input outside of the window;
             # if player hits mouse down, mouse is hidden and external input is once again hidden,
@@ -277,11 +278,11 @@ def Game(window, layersDict, charList):
                              
                 # returns back to homepage
                 elif layersDict["homeLogo"].IsLayerClicked() == True and layersDict["homeLogo"].is_active and gameState == "Paused":
-                    return None
+                    return "Home"
 
                 # quits the game
                 elif layersDict["quitLogo"].IsLayerClicked() == True and layersDict["quitLogo"].is_active and gameState == "Paused":
-                    return False
+                    return "Quit"
 
                 # resumes the game
                 elif layersDict["backLogo"].IsLayerClicked() == True and layersDict["backLogo"].is_active and gameState == "Paused":
@@ -617,8 +618,5 @@ def Game(window, layersDict, charList):
         pygame.display.update()
 
         # ------------------------------------------------------------------
-
-
-    return
 
     # ----------------------------------------------------------------------------------------------
