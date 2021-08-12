@@ -153,9 +153,9 @@ def Tutorial(window, charList, layersDict):
         if (plyr.velocity[0] > 0 or plyr.velocity[1] > 0) and has_moved == False:
             has_moved = True
         
-        if plyr.velocity < 0:
+        if plyr.velocity[0] < 0:
             plyr.flipSprite = True
-        elif plyr.velocity > 0:
+        elif plyr.velocity[0] > 0:
             plyr.flipSprite = False
         else:
             print(plyr.flipSprite)
