@@ -53,6 +53,8 @@ class Layer (pygame.sprite.Sprite):
 
         except TypeError:
             pass
+        except AttributeError:
+            pass
 
     def Main(self):
         # stores the (x, y) coordinates as a tuple
@@ -63,8 +65,11 @@ class Layer (pygame.sprite.Sprite):
                 self.image.fill(self.clr)
             else:
                 self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.clr)
+        # excepting the condition that there is no colour provided
         except TypeError:
-            # excepting the condition that there is no colour provided
+            pass
+        # or the condition that the object has no rect
+        except AttributeError:
             pass
 
         if self.is_button == True:
