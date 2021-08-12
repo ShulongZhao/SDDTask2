@@ -241,7 +241,7 @@ def Tutorial(window, charList, layersDict):
                 layersDict["enemyText"].is_active = True
                 layersDict["lastText"].is_active = True
 
-
+        # for all of windows layers activated, activate its corresponding buttons
         for windowLayer in window.layers:
             for layerRef in layersDict:
                 layersDict[layerRef].is_active = False
@@ -252,7 +252,7 @@ def Tutorial(window, charList, layersDict):
             layersDict["quitLogo"].is_active = True
 
             # settings window 
-            window.screen.blit(windowLayer, (window.width/2 - windowLayer.get_rect().width/2, window.height/2 - windowLayer.get_rect().height/2, 300, 300))
+            window.screen.blit(windowLayer, (window.width/2 - windowLayer.get_width()/2, window.height/2 - windowLayer.get_height()/2, 300, 300))
 
         
         # update layers within scene
@@ -260,6 +260,8 @@ def Tutorial(window, charList, layersDict):
             layer = layersDict[layerRef]
             if layer.is_active:
                 layer.Main()
+                for windowLayer in window.layers:
+                    layersDict["pauseText"].Surface_Renderer(windowLayer, (int(window.width/2 - windowLayer.get_width()/2), int(window.height/2 - windowLayer.get_height()/2)))
                 GUISpriteGroup.add(layer)
             elif layer.is_active == False:
                 GUISpriteGroup.remove(layer)
@@ -281,9 +283,7 @@ def Tutorial(window, charList, layersDict):
 def TitleScreen(window, layersDict, programState=""):
 
     if programState != "":
-        titleTextLayer = GUI.LayerRenderer(text=programState, textFontLocation="Fonts/titlefont.ttf", textFontSize=100, textColour=(255, 255, 255))
-        layersDict[programState] = GUI.Layer(titleTextLayer, [window.width/2, window.height/4], has_rect=False)
-   
+        layersDict[programState] = GUI.Layer([window.width/2, window.height/4], window, text=programState, textFontLocation="Fonts/titlefont.ttf", textFontSize=100, textColour=(255, 255, 255))
 
     GUISpriteGroup = pygame.sprite.Group()
 
@@ -318,7 +318,7 @@ def TitleScreen(window, layersDict, programState=""):
                     if layer.IsLayerClicked() == True:
                         # exits loop and returns the name of the layer clicked
                         GUISpriteGroup.empty()
-                        return layer.layerRender.originalText                
+                        return layer.text            
         
         GUISpriteGroup.draw(window.screen)
         pygame.display.update()
@@ -547,6 +547,7 @@ def Game(window, layersDict, charList):
                     window.layers.append(pygame.Surface((250, 325)))
                     # get the most recently added layer and fill it
                     window.layers[len(window.layers) - 1].fill(pauseMenuBgColour)
+                    layersDict["pauseText"].Surface_Renderer(window.layers[len(window.layers) - 1])
                     mouseVisibility = True
                     layersDict["pauseText"].is_active = True
                     layersDict["homeLogo"].is_active = True
