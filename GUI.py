@@ -20,7 +20,7 @@ class Window:
 
 class Layer (pygame.sprite.Sprite):
 
-    def __init__(self, layerRender, pos, clr=None, hoverClr=None, is_button=False, is_active=True):
+    def __init__(self, layerRender, pos, clr=None, hoverClr=None, is_button=False, is_active=True, has_rect=True):
 
         pygame.sprite.Sprite.__init__(self)
 
@@ -33,6 +33,7 @@ class Layer (pygame.sprite.Sprite):
         self.pos = pos
         self.is_button = is_button
         self.is_active = is_active
+        self.has_rect = has_rect
 
         self.rect = self.layerRender.renderedSurface.get_rect(center=(self.pos[0], self.pos[1]))
         self.rect.size = [self.rect.width, self.rect.height]
@@ -44,8 +45,12 @@ class Layer (pygame.sprite.Sprite):
     def OnHover(self):
         try:
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
-                self.image.fill(self.hoverClr)
-                return True
+                if(self.has_rect):
+                    self.image.fill(self.hoverClr)
+                    return True
+                else:
+                    self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.hoverClr)                
+
         except TypeError:
             pass
 
@@ -54,7 +59,10 @@ class Layer (pygame.sprite.Sprite):
         self.mouse = pygame.mouse.get_pos()
 
         try:
-            self.image.fill(self.clr)
+            if self.has_rect:
+                self.image.fill(self.clr)
+            else:
+                self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.clr)
         except TypeError:
             # excepting the condition that there is no colour provided
             pass
@@ -82,8 +90,10 @@ class LayerRenderer:
     def __init__(self, text=None, textFontLocation=None, textFontSize=None, textColour=None, renderedImage=None):
 
         self.originalText = text
+
         try:
-            self.renderedSurface = pygame.font.Font(textFontLocation, textFontSize).render(text, True, textColour)
+            self.renderedFont = pygame.font.Font(textFontLocation, textFontSize)
+            self.renderedSurface = self.renderedFont.render(text, True, textColour)
         except TypeError:
             self.renderedSurface = renderedImage
         
