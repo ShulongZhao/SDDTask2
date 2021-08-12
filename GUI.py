@@ -92,7 +92,7 @@ class LayerRenderer:
         # if layer being rendered is text then..
         if renderedImage == None and (text and textFontLocation and textFontSize and textColour) != None:
             self.renderedFont = pygame.font.Font(textFontLocation, textFontSize)
-            self.renderedSurface = self.renderedFont.render(text, True, textColour)
+            self.renderedSurface = self.renderedFont.render(text, True, textColour, background=(114, 199, 252))
         # else if the layer rendered is an image
         elif renderedImage != None and (text and textFontLocation and textFontSize and textColour) == None:
             self.renderedSurface = renderedImage

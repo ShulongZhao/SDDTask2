@@ -32,9 +32,9 @@ def Initialisations():
 
     # instances of custom text class
     titleLayerText = GUI.LayerRenderer(text="Invasions", textFontLocation="Fonts/titlefont.ttf", textFontSize=150, textColour=(255, 255, 255))
-    startLayerText = GUI.LayerRenderer(text="Start", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(0, 0, 0))
-    tutorialLayerText = GUI.LayerRenderer(text="Tutorial", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(0, 0, 0))
-    quitLayerText = GUI.LayerRenderer(text="Quit", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(0, 0, 0))
+    startLayerText = GUI.LayerRenderer(text="Start", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(255, 255, 255))
+    tutorialLayerText = GUI.LayerRenderer(text="Tutorial", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(255, 255, 255))
+    quitLayerText = GUI.LayerRenderer(text="Quit", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(255, 255, 255))
 
     homeLogoLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)))
 
@@ -75,11 +75,11 @@ def Initialisations():
 
 
     skipLogoLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/skip.bmp"), (75, 75)))
-    aimMessageLayer = GUI.LayerRenderer(text="To win the game, don't let all the humans die and kill the invader",textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(0, 0, 0))
-    movementMessageLayer = GUI.LayerRenderer(text="Use WASD keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(0, 0, 0))
-    shootMessageLayer = GUI.LayerRenderer(text="Press SPACE to shoot bullets. Give it a shot!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(0, 0, 0))
-    enemyMessageLayer = GUI.LayerRenderer(text="Watch out for the enemy as they come down and shoot at you. Use that chance to destroy the alien invader!", textFontLocation="Fonts/ferrum.ttf", textFontSize=33, textColour=(0, 0, 0))
-    lastMessage = GUI.LayerRenderer(text="GOOD LUCK SOLDIER!", textFontLocation="Fonts/ferrum.ttf", textFontSize=50, textColour=(240, 240, 240))
+    aimMessageLayer = GUI.LayerRenderer(text="To win the game, don't let all the humans die and kill the invader", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
+    movementMessageLayer = GUI.LayerRenderer(text="Use WASD keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
+    shootMessageLayer = GUI.LayerRenderer(text="Press SPACE to shoot bullets. Give it a shot!",textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
+    enemyMessageLayer = GUI.LayerRenderer(text="Watch out for the enemy as they come down and shoot at you. Use that chance to destroy the alien invader!", textFontLocation="Fonts/ferrum.ttf", textFontSize=33, textColour=(255, 255, 255))
+    lastMessage = GUI.LayerRenderer(text="GOOD LUCK SOLDIER!", textFontLocation="Fonts/ferrum.ttf", textFontSize=50, textColour=(255, 255, 255))
 
 
     tutorialLayersDict = {
