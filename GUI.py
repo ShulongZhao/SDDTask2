@@ -38,16 +38,14 @@ class Layer (pygame.sprite.Sprite):
         self.has_rect = has_rect
 
         self.rect = self.layerRender.renderedSurface.get_rect(center=(self.pos[0], self.pos[1]))
-        self.rect.size = [self.rect.width, self.rect.height]
-
         self.image = pygame.Surface(self.rect.size)
 
     def OnHover(self):
         try:
-            # if the layer is meant to have a rect behind it
+            # if the layer is being hovered over
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
                 if(self.has_rect):
-                    self.image.fill(self.hoverClr)
+                    self.layerRender.renderedSurface.fill(self.hoverClr)
                     return True
                 # else if the layer possesses text elements but doesn't need a rect behind it
                 elif self.has_rect == False and self.layerRender.renderedImage == None:
@@ -62,11 +60,9 @@ class Layer (pygame.sprite.Sprite):
 
         try:
             if self.has_rect == True:
-                self.image.fill(self.clr)
+                self.layerRender.renderedSurface.fill(self.clr)
             elif self.has_rect == False and self.layerRender.renderedImage == None:
                 self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.clr)
-            elif self.has_rect == False and self.layerRender.renderedImage != None:
-                pass
         # excepting the condition that there is no colour provided
         except TypeError:
             pass
@@ -83,9 +79,6 @@ class Layer (pygame.sprite.Sprite):
         if self.is_button:
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
                 return True
-        # else if not a button
-        else:
-            pass
 
 
 # renders the image for the layer
@@ -96,9 +89,12 @@ class LayerRenderer:
         self.renderedImage = renderedImage
 
         # if layer being rendered is text then..
-        try:
+        if renderedImage == None and (text and textFontLocation and textFontSize and textColour) != None:
             self.renderedFont = pygame.font.Font(textFontLocation, textFontSize)
-            self.renderedSurface = self.renderedFont.render(text, True, textColour)
+            self.renderedSurface = self.renderedFont.render(text, True, color=textColour)
         # else if the layer rendered is an image
-        except TypeError:
+        elif renderedImage != None and (text and textFontLocation and textFontSize and textColour) == None:
             self.renderedSurface = renderedImage
+        else:
+            print("Crash from GUI")
+            exit()
