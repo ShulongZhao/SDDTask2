@@ -3,6 +3,7 @@ import random
 import shutil
 import os
 from re import search
+import math
 
 
 from Animations import Animation
@@ -724,9 +725,11 @@ def Game(window, layersDict, charList):
 
             # if the enemy and player are in the dogfight session and the enemy is ready to shoot
             if (dogfight == True) and (curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown):
-                enemy.bullet = Bullet(enemy.bulletImage, [30, 15], [15, 0], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
-
-                enemy.bullet.InitVelocity(enemy.velocity, enemy.flipSprite)
+                vector = math.atan((plyr.rect.y-enemy.rect.y)/(plyr.rect.x-enemy.rect.x))
+                velx = 15 * math.cos(vector)
+                vely = 15 * math.sin(vector)
+                print(vector)
+                enemy.bullet = Bullet(enemy.bulletImage, [30, 15], [0-velx, 0-vely], (enemy.rect.centerx, enemy.rect.bottom), 400, window)
                 enemy.bullets.append(enemy.bullet)
                 InitAnim(enemy, enemy.animsDirList[2])
 
@@ -754,6 +757,7 @@ def Game(window, layersDict, charList):
                 # deleting enemy bullets that travel off screen
                 if bullet.rect.x < 0 or bullet.rect.x > window.width or bullet.rect.y < 0 or bullet.rect.y > window.height:
                     enemy.bullets.remove(bullet)
+                    characterSpriteGroup.remove(bullet)
 
                 # updating bullet rect
                 bullet.rect.x += bullet.velocity[0]
