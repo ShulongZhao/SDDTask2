@@ -276,12 +276,9 @@ def TitleScreen(window, layersDict, programState=""):
     if programState != "":
         titleTextLayer = GUI.LayerRenderer(text=programState, textFontLocation="Fonts/titlefont.ttf", textFontSize=100, textColour=(255, 255, 255))
         layersDict[programState] = GUI.Layer(titleTextLayer, [window.width/2, window.height/4], has_rect=False)
-        print(layersDict)
-    
+   
 
     GUISpriteGroup = pygame.sprite.Group()
-
-    mouseVisibility = True
 
     while True:
         # framerate
@@ -289,7 +286,7 @@ def TitleScreen(window, layersDict, programState=""):
         clock.tick(window.frameRate)
 
         # mouse visibility during the game
-        pygame.mouse.set_visible(mouseVisibility)
+        pygame.mouse.set_visible(True)
 
         # background
         window.screen.blit(window.bg, (0, 0))
@@ -305,10 +302,6 @@ def TitleScreen(window, layersDict, programState=""):
             if event.type == pygame.QUIT:
                 return "Quit"  # exits loop   
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    mouseVisibility = True
-
             # checks if mouse clicks layers
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # loops through all layers within the scene
@@ -318,12 +311,7 @@ def TitleScreen(window, layersDict, programState=""):
                     if layer.IsLayerClicked() == True:
                         # exits loop and returns the name of the layer clicked
                         GUISpriteGroup.empty()
-                        return layer.layerRender.originalText
-
-                if (mouseVisibility == True):
-                    mouseVisibility = False
-
-                
+                        return layer.layerRender.originalText                
         
         GUISpriteGroup.draw(window.screen)
         pygame.display.update()

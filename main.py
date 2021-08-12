@@ -36,6 +36,9 @@ def Initialisations():
     tutorialLayerText = GUI.LayerRenderer(text="Tutorial", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(0, 0, 0))
     quitLayerText = GUI.LayerRenderer(text="Quit", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(0, 0, 0))
 
+    homeLogoLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)))
+
+
 
     # dictionary containing instances of custom button class, located on menu window
     menuLayersDict = {
@@ -45,11 +48,14 @@ def Initialisations():
                                                   clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True, has_rect=False),
 
 
-        tutorialLayerText.originalText:     GUI.Layer(tutorialLayerText, [menuWindow.width/2, 2*menuWindow.height/3],
+        tutorialLayerText.originalText: GUI.Layer(tutorialLayerText, [menuWindow.width/2, 2*menuWindow.height/3],
                                                       clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True, has_rect=False),
 
         quitLayerText.originalText:     GUI.Layer(quitLayerText, [2*menuWindow.width/3, 2*menuWindow.height/3], 
                                                   clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True, has_rect=False),
+
+        "skipLogo":                     GUI.Layer(homeLogoLayer, [40, 40], is_button=False, is_active=True),
+
     }
 
 
@@ -99,9 +105,8 @@ def Initialisations():
 
     # dictionary containing instances of custom button class, located on menu window
     endgameLayersDict = {
-        "homeLogo": GUI.Layer(homeLayer, [gameWindow.width / 2, 320], is_button=True, is_active=False),
-        "quitLogo": GUI.Layer(quitLayer, [gameWindow.width / 2, 395], is_button=True, is_active=False),
-        "resumeLogo": GUI.Layer(backLayer, [gameWindow.width / 2, 475], is_button=True, is_active=False),
+        "homeLogo": GUI.Layer(homeLayer, [45*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False),
+        "quitLogo": GUI.Layer(quitLayer, [55*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False),
     }
 
     # list of the directories containing PLAYER animation frames 
@@ -141,33 +146,29 @@ def Main():
     menuState = Scenes.TitleScreen(menuWindow, menuLayersDict)
 
     if menuState == "Start":
-
-        # start the game
-        gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
-
-        if gameState == "You Died" or gameState == "All Humans Died" or gameState == "Victory":
-            
-            gameState = Scenes.TitleScreen(menuWindow, endgameLayersDict, gameState)
-
-        # return the state of the game
-        return gameState
+        pass
 
     elif menuState == "Tutorial":
 
         tutorialState = Scenes.Tutorial(gameWindow, charList, tutorialLayersDict)
 
         if (tutorialState == "Skip"):
-
-            gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
-            return gameState
-
+            pass
         else:
-            # input from settings or quitting the program
+            # input from settings: quit or home
             return tutorialState
 
 
     elif menuState == "Quit":
         return menuState
+
+
+    gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
+
+    if gameState == "You Died" or gameState == "All Humans Died" or gameState == "Victory":
+        gameState = Scenes.TitleScreen(menuWindow, endgameLayersDict, gameState)
+
+    return gameState
         
 
 if __name__ == "__main__":
