@@ -105,8 +105,8 @@ def Initialisations():
 
     # dictionary containing instances of custom button class, located on menu window
     endgameLayersDict = {
-        "homeLogo": GUI.Layer(homeLayer, [45*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False),
-        "quitLogo": GUI.Layer(quitLayer, [55*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False),
+        "homeLogo": GUI.Layer(homeLayer, [45*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False, has_rect=False),
+        "quitLogo": GUI.Layer(quitLayer, [55*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False, has_rect=False),
     }
 
     # list of the directories containing PLAYER animation frames 
