@@ -1,6 +1,7 @@
 import pygame
 
 # custom modules
+
 import Scenes
 import GUI
 from Sprites import Character, Human
@@ -25,9 +26,12 @@ def Initialisations():
 
     # game properties
     gameTitle = "Invasions"
-    pygame.mixer.init()
-    pygame.mixer.music.load('music.mp3')
-    pygame.mixer.music.play(-1)
+    try:
+        pygame.mixer.init()
+        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.play(-1)
+    except NotImplementedError:
+        pass
 
     # text colours
     white = (255, 255, 255)
