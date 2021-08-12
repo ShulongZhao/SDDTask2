@@ -9,6 +9,7 @@ import math
 from Animations import Animation
 from Sprites import Human
 from Sprites import Bullet
+import GUI
 
 
 # Tutorial Scene
@@ -270,8 +271,14 @@ def Tutorial(window, charList, layersDict):
 
 
 # Menu Scene
-def Menu(window, layersDict):
+def TitleScreen(window, layersDict, programState=""):
+
+    if programState != "":
+        titleTextLayer = GUI.LayerRenderer(text=programState, textFontLocation="Fonts/titlefont.ttf", textFontSize=100, textColour=(255, 255, 255))
+        layersDict[programState] = GUI.Layer(titleTextLayer, [window.width/2, window.height/4], has_rect=False)
+        print(layersDict)
     
+
     GUISpriteGroup = pygame.sprite.Group()
 
     mouseVisibility = True
@@ -602,8 +609,8 @@ def Game(window, layersDict, charList):
         
         # if dogfight hasn't begun, then the upper boundaries are enemy location
         if dogfight == False and is_dogfight_activated == False:
-            if plyr.rect.y < enemy.rect.height + enemy.rect.y + 10:
-                plyr.rect.y = enemy.rect.height + enemy.rect.y + 10
+            if plyr.rect.y < enemy.rect.height + enemy.rect.y + 40:
+                plyr.rect.y = enemy.rect.height + enemy.rect.y + 40
         # else (if the dogfight has begun) then there are no upper boundaries
         else:
             if plyr.rect.y < 0:
@@ -613,6 +620,12 @@ def Game(window, layersDict, charList):
             if (plyr.rect.y + plyr.rect.height > 500 * (window.height / 720)):
                 plyr.rect.y = 500 * (window.height / 720) - plyr.rect.height
         # else if the player has died, then they fall through the floor
+
+
+        # if the player has fallen through the floor, and the player's dead...
+        if plyr.rect.y > window.height and plyr.health <= 0:
+            return "You Died"
+
 
         # add the velocity to the player's position
         plyr.rect.x += plyr.velocity[0]
@@ -653,7 +666,6 @@ def Game(window, layersDict, charList):
                         characterSpriteGroup.remove(e_bullet)
                         if dogfight == True:
                             dogfightTimer += 1
-                            print(dogfightTimer)
 
 
         # Player Health Bar
@@ -745,7 +757,6 @@ def Game(window, layersDict, charList):
                     enemy.bullets.append(enemy.bullet)
                     InitAnim(enemy, enemy.animsDirList[0])
                     dogfightTimer -= 1
-                    print(dogfightTimer)
 
                     enemy.bullet.timeSinceLastCall = curTime
 
@@ -796,7 +807,7 @@ def Game(window, layersDict, charList):
 
 
         # Enemy Death
-        if enemy.health == 0:
+        if enemy.health <= 0:
             InitAnim(enemy, enemy.animsDirList[2])
             gameState = Pause(charList)
 
@@ -813,6 +824,10 @@ def Game(window, layersDict, charList):
             plyr.speed = [0, 0]
             plyr.diagonalSpeed = [0, 0]
             enemy.rect.y -= 10
+
+            if enemy.rect.y + enemy.rect.height < 0:
+                return "Victory"
+
 
 
         # ------------------------------------------------------------------------------------------------------------------
@@ -850,7 +865,7 @@ def Game(window, layersDict, charList):
             
         # if all humans die
         if len(humans) == 0:
-            gameState = Pause(charList)
+            return "All Humans Died"
 
 
         # ---------------------------------------------------------------------------
@@ -950,3 +965,5 @@ def Game(window, layersDict, charList):
         # ------------------------------------------------------------------
 
     # ----------------------------------------------------------------------------------------------
+
+
