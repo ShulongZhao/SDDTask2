@@ -1,6 +1,5 @@
 import pygame
 
-
 # custom modules
 import Scenes
 import GUI
@@ -26,6 +25,9 @@ def Initialisations():
 
     # game properties
     gameTitle = "Invasions"
+    pygame.mixer.init()
+    pygame.mixer.music.load('music.mp3')
+    pygame.mixer.music.play(-1)
 
     menuWindow = GUI.Window(gameTitle, framerate, bg="Images/backgroundsprites/TitleBG.bmp")
     gameWindow = GUI.Window(gameTitle, framerate, bg="Images/backgroundsprites/Background.bmp")

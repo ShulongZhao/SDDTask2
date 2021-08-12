@@ -5,11 +5,14 @@ import os
 from re import search
 import math
 
-
 from Animations import Animation
 from Sprites import Human
 from Sprites import Bullet
 import GUI
+
+pygame.mixer.init()
+pygame.mixer.music.load('music.mp3')
+pygame.mixer.music.play(-1)
 
 
 # Tutorial Scene
