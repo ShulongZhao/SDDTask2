@@ -76,7 +76,7 @@ def Initialisations():
 
     skipLogoLayer = GUI.LayerRenderer(renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/skip.bmp"), (75, 75)))
     aimMessageLayer = GUI.LayerRenderer(text="To win the game, don't let all the humans die and kill the invader", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
-    movementMessageLayer = GUI.LayerRenderer(text="Use WASD keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
+    movementMessageLayer = GUI.LayerRenderer(text="Use arrow keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
     shootMessageLayer = GUI.LayerRenderer(text="Press SPACE to shoot bullets. Give it a shot!",textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255))
     enemyMessageLayer = GUI.LayerRenderer(text="Watch out for the enemy as they come down and shoot at you. Use that chance to destroy the alien invader!", textFontLocation="Fonts/ferrum.ttf", textFontSize=33, textColour=(255, 255, 255))
     lastMessage = GUI.LayerRenderer(text="GOOD LUCK SOLDIER!", textFontLocation="Fonts/ferrum.ttf", textFontSize=50, textColour=(255, 255, 255))
