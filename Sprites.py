@@ -33,7 +33,7 @@ class Character (pygame.sprite.Sprite):
         self.bulletImage = bulletImage
         self.bullet = Bullet(self.bulletImage, [0, 0], [10, 0], (self.rect.centerx, self.rect.bottom), 0, window)
         self.bullets = []
-
+        
         self.flipSprite = False
 
         self.health = health

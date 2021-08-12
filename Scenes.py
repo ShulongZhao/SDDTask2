@@ -157,10 +157,6 @@ def Tutorial(window, charList, layersDict):
             plyr.flipSprite = True
         elif plyr.velocity[0] > 0:
             plyr.flipSprite = False
-        else:
-            print(plyr.flipSprite)
-            # if player is at rest, then keep it at what it was before
-            pass
 
         # add the velocity to the player's position
         plyr.rect.x += plyr.velocity[0]
