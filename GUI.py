@@ -1,5 +1,6 @@
 import pygame
 
+
 class Window:
 
     def __init__(self, title, frameRate, bg=(0, 0, 0)):
@@ -18,16 +19,17 @@ class Window:
         pygame.display.set_caption(self.title)
         self.bg = pygame.transform.scale(pygame.image.load(self.bg), self.size)
 
+
 class Layer (pygame.sprite.Sprite):
 
-    def __init__(self, layerRender, pos, clr=None, hoverClr=None, is_button=False, is_active=True, has_rect=True):
+    def __init__(self, layerRender, pos, clr=None, hoverClr=None, is_button=False, is_active=True, has_rect=False):
 
         pygame.sprite.Sprite.__init__(self)
 
         self.mouse = pygame.mouse.get_pos()
-        
+
         # custom Text class
-        self.layerRender = layerRender                
+        self.layerRender = layerRender
         self.clr = clr
         self.hoverClr = hoverClr
         self.pos = pos
@@ -37,6 +39,7 @@ class Layer (pygame.sprite.Sprite):
 
         self.rect = self.layerRender.renderedSurface.get_rect(center=(self.pos[0], self.pos[1]))
         self.rect.size = [self.rect.width, self.rect.height]
+
         if self.layerRender.originalText == "":
             self.image = pygame.transform.scale(self.layerRender.renderedSurface, self.rect)
         else:
@@ -44,16 +47,16 @@ class Layer (pygame.sprite.Sprite):
 
     def OnHover(self):
         try:
+            # if the layer is meant to have a rect behind it
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
                 if(self.has_rect):
                     self.image.fill(self.hoverClr)
                     return True
-                else:
-                    self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.hoverClr)                
+                # else if the layer possesses text elements but doesn't need a rect behind it
+                elif self.has_rect == False and self.layerRender.renderedImage == None:
+                    self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.hoverClr)
 
         except TypeError:
-            pass
-        except AttributeError:
             pass
 
     def Main(self):
@@ -61,25 +64,23 @@ class Layer (pygame.sprite.Sprite):
         self.mouse = pygame.mouse.get_pos()
 
         try:
-            if self.has_rect:
+            if self.has_rect == True:
                 self.image.fill(self.clr)
-            else:
+            elif self.has_rect == False and self.layerRender.renderedImage == None:
                 self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.clr)
+            elif self.has_rect == False and self.layerRender.renderedImage != None:
+                pass
         # excepting the condition that there is no colour provided
         except TypeError:
             pass
-        # or the condition that the object has no rect
-        except AttributeError:
-            pass
 
         if self.is_button == True:
-            self.OnHover() 
-            
+            self.OnHover()
 
         self.image.blit(self.layerRender.renderedSurface, self.layerRender.renderedSurface.get_rect())
 
+    # manually-called
 
-    # manually-called 
     def IsLayerClicked(self):
         # if layer is a button
         if self.is_button:
@@ -95,12 +96,12 @@ class LayerRenderer:
     def __init__(self, text=None, textFontLocation=None, textFontSize=None, textColour=None, renderedImage=None):
 
         self.originalText = text
+        self.renderedImage = renderedImage
 
+        # if layer being rendered is text then..
         try:
             self.renderedFont = pygame.font.Font(textFontLocation, textFontSize)
             self.renderedSurface = self.renderedFont.render(text, True, textColour)
+        # else if the layer rendered is an image
         except TypeError:
             self.renderedSurface = renderedImage
-        
-
-        

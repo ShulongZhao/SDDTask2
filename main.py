@@ -42,17 +42,17 @@ def Initialisations():
 
     # dictionary containing instances of custom button class, located on menu window
     menuLayersDict = {
-        titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/4], has_rect=False),
+        titleLayerText.originalText:    GUI.Layer(titleLayerText, [menuWindow.width/2, menuWindow.height/4]),
 
         startLayerText.originalText:    GUI.Layer(startLayerText, [menuWindow.width/3, 2*menuWindow.height/3], 
-                                                  clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True, has_rect=False),
+                                                  clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True),
 
 
         tutorialLayerText.originalText: GUI.Layer(tutorialLayerText, [menuWindow.width/2, 2*menuWindow.height/3],
-                                                      clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True, has_rect=False),
+                                                      clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True),
 
         quitLayerText.originalText:     GUI.Layer(quitLayerText, [2*menuWindow.width/3, 2*menuWindow.height/3], 
-                                                  clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True, has_rect=False),
+                                                  clr=(83, 70, 50), hoverClr=(102, 255, 71), is_button=True),
 
         "skipLogo":                     GUI.Layer(homeLogoLayer, [40, 40], is_button=False, is_active=True),
 
@@ -105,8 +105,8 @@ def Initialisations():
 
     # dictionary containing instances of custom button class, located on menu window
     endgameLayersDict = {
-        "homeLogo": GUI.Layer(homeLayer, [45*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False, has_rect=False),
-        "quitLogo": GUI.Layer(quitLayer, [55*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False, has_rect=False),
+        "homeLogo": GUI.Layer(homeLayer, [45*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False),
+        "quitLogo": GUI.Layer(quitLayer, [55*gameWindow.width/100, 1*gameWindow.height/2], is_button=True, is_active=False),
     }
 
     # list of the directories containing PLAYER animation frames 
