@@ -65,7 +65,7 @@ def Tutorial(window, charList, layersDict):
                     if (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown) and has_moved:
                         if has_shot == False:
                             has_shot = True
-                        plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 400, window)
+                        plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 200, window)
                         plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
                         plyr.bullets.append(plyr.bullet)
 

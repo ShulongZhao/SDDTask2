@@ -129,7 +129,7 @@ def Initialisations():
 
     # instance of Player class, representing player
     # (player and enemy sizes were configured to 1280x720, so scales changes as window size changes)
-    plyr = Character(1/7, [10, 100], [7.5, 7.5], plyr_animList, 5, "Images/playersprites/bullet/bullet.bmp", gameWindow)
+    plyr = Character(1/7, [10, 100], [10, 10], plyr_animList, 5, "Images/playersprites/bullet/bullet.bmp", gameWindow)
     enemy = Character(1/8, [1000, 10], [8, 8], enemy_animList, 50, "Images/enemysprites/bullet/enemybullet-1.png.bmp", gameWindow)
 
     man1 = Human("man1", 1/8, [3, 0], man1_animList, window=gameWindow, health=1, walkTime=1775, waitTime=3000, max_no_of_instances=4)
