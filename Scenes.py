@@ -746,7 +746,7 @@ def Game(window, layersDict, charList):
                 enemy.rect.x += enemy.velocity[0]
 
                 if (curTime - enemy.bullet.timeSinceLastCall >= enemy.bullet.cooldown):
-                    enemy.bullet = Bullet(enemy.bulletImage, [30, 15], [0, 10], (enemy.rect.centerx, enemy.rect.bottom), 800, window)
+                    enemy.bullet = Bullet(enemy.bulletImage, [30, 20], [0, 10], (enemy.rect.centerx, enemy.rect.bottom), 800, window)
                     enemy.bullet.rect.size = (int(enemy.bullet.rect.width),int(enemy.bullet.rect.height))
                     enemy.bullets.append(enemy.bullet)
                     InitAnim(enemy, enemy.animsDirList[0])
