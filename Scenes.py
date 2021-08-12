@@ -10,9 +10,12 @@ from Sprites import Human
 from Sprites import Bullet
 import GUI
 
-pygame.mixer.init()
-pygame.mixer.music.load('music.mp3')
-pygame.mixer.music.play(-1)
+try:
+    pygame.mixer.init()
+    pygame.mixer.music.load('music.mp3')
+    pygame.mixer.music.play(-1)
+except NotImplementedError:
+    pass
 
 
 # Tutorial Scene
