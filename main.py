@@ -29,15 +29,18 @@ def Initialisations():
     pygame.mixer.music.load('music.mp3')
     pygame.mixer.music.play(-1)
 
+    # text colours
+    white = (255, 255, 255)
+
     menuWindow = GUI.Window(gameTitle, framerate, bg="Images/backgroundsprites/TitleBG.bmp")
     gameWindow = GUI.Window(gameTitle, framerate, bg="Images/backgroundsprites/Background.bmp")
 
     # dictionary containing instances of custom button class, located on menu window
     menuLayersDict = {
-        "Invasions":    GUI.Layer([menuWindow.width/2, menuWindow.height/4], menuWindow, text="Invasions", textFontLocation="Fonts/titlefont.ttf", textFontSize=150, textColour=(255, 255, 255)),
-        "Start":        GUI.Layer([menuWindow.width/3, 2*menuWindow.height/3], menuWindow, text="Start", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(255, 255, 255), textHoverClr=(102, 255, 71), is_button=True),
-        "Tutorial":     GUI.Layer([menuWindow.width/2, 2*menuWindow.height/3], menuWindow, text="Tutorial", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(255, 255, 255), textHoverClr=(102, 255, 71), is_button=True),
-        "Quit":         GUI.Layer([2*menuWindow.width/3, 2*menuWindow.height/3], menuWindow, text="Quit", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=(255, 255, 255), textHoverClr=(102, 255, 71), is_button=True),
+        "Invasions":    GUI.Layer([menuWindow.width/2, menuWindow.height/4], menuWindow, text="Invasions", textFontLocation="Fonts/titlefont.ttf", textFontSize=150, textColour=white),
+        "Start":        GUI.Layer([menuWindow.width/3, 2*menuWindow.height/3], menuWindow, text="Start", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=white, textHoverClr=(102, 255, 71), is_button=True),
+        "Tutorial":     GUI.Layer([menuWindow.width/2, 2*menuWindow.height/3], menuWindow, text="Tutorial", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=white, textHoverClr=(102, 255, 71), is_button=True),
+        "Quit":         GUI.Layer([2*menuWindow.width/3, 2*menuWindow.height/3], menuWindow, text="Quit", textFontLocation="Fonts/gasalt-regular.ttf", textFontSize=36, textColour=white, textHoverClr=(102, 255, 71), is_button=True),
         "homeLogo":     GUI.Layer([40, 40], menuWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)), is_button=False, is_active=True),
     }
 
@@ -53,11 +56,11 @@ def Initialisations():
     tutorialLayersDict = {
         "skipLogo":     GUI.Layer([gameWindow.width - 75, gameWindow.height - 100], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/skip.bmp"), (75, 75)), is_button=True, is_active=True),
 
-        "aimText":      GUI.Layer([gameWindow.width/2, 150], gameWindow, text="To win the game, don't let all the humans die and kill the invader", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255), is_active=True),
-        "movementText": GUI.Layer([gameWindow.width/2, 250], gameWindow, text="Use arrow keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255), is_active=True),
-        "shootText":    GUI.Layer([gameWindow.width/2, 350], gameWindow, text="Press SPACE to shoot bullets. Give it a shot!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=(255, 255, 255), is_active=False),
-        "enemyText":    GUI.Layer([gameWindow.width/2, 450], gameWindow, text="Watch out for the enemy as they come down and shoot at you. Use that chance to destroy the alien invader!", textFontLocation="Fonts/ferrum.ttf", textFontSize=33, textColour=(255, 255, 255), is_active=False),
-        "lastText":     GUI.Layer([gameWindow.width/2, 550], gameWindow, text="GOOD LUCK SOLDIER!", textFontLocation="Fonts/ferrum.ttf", textFontSize=50, textColour=(255, 255, 255), is_active=False),
+        "aimText":      GUI.Layer([gameWindow.width/2, 150], gameWindow, text="To win the game, don't let all the humans die and kill the invader", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=white, is_active=True),
+        "movementText": GUI.Layer([gameWindow.width/2, 250], gameWindow, text="Use arrow keys to move your character. Try it now!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=white, is_active=True),
+        "shootText":    GUI.Layer([gameWindow.width/2, 350], gameWindow, text="Press SPACE to shoot bullets. Give it a shot!", textFontLocation="Fonts/ferrum.ttf", textFontSize=35, textColour=white, is_active=False),
+        "enemyText":    GUI.Layer([gameWindow.width/2, 450], gameWindow, text="Watch out for the enemy as they come down and shoot at you. Use that chance to destroy the alien invader!", textFontLocation="Fonts/ferrum.ttf", textFontSize=33, textColour=white, is_active=False),
+        "lastText":     GUI.Layer([gameWindow.width/2, 550], gameWindow, text="GOOD LUCK SOLDIER!", textFontLocation="Fonts/ferrum.ttf", textFontSize=50, textColour=white, is_active=False),
 
         # settings
         "pauseLogo":    GUI.Layer([gameWindow.width - 35, 35], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/pause.bmp"), (35, 35)), is_button=True),
