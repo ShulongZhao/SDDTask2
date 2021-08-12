@@ -45,7 +45,7 @@ class Layer (pygame.sprite.Sprite):
             # if the layer is being hovered over
             if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
                 if(self.has_rect):
-                    #self.layerRender.renderedSurface.fill(self.hoverClr)
+                    self.layerRender.renderedSurface.fill(self.hoverClr)
                     return True
                 # else if the layer possesses text elements but doesn't need a rect behind it
                 elif self.has_rect == False and self.layerRender.renderedImage == None:
@@ -60,7 +60,7 @@ class Layer (pygame.sprite.Sprite):
 
         try:
             if self.has_rect == True:
-                #self.layerRender.renderedSurface.fill(self.clr)
+                self.layerRender.renderedSurface.fill(self.clr)
                 pass
             elif self.has_rect == False and self.layerRender.renderedImage == None:
                 self.layerRender.renderedSurface = self.layerRender.renderedFont.render(self.layerRender.originalText, True, self.clr)
@@ -92,7 +92,7 @@ class LayerRenderer:
         # if layer being rendered is text then..
         if renderedImage == None and (text and textFontLocation and textFontSize and textColour) != None:
             self.renderedFont = pygame.font.Font(textFontLocation, textFontSize)
-            self.renderedSurface = self.renderedFont.render(text, True, textColour, (114, 199, 252))
+            self.renderedSurface = self.renderedFont.render(text, True, textColour, (103, 192, 251))
         # else if the layer rendered is an image
         elif renderedImage != None and (text and textFontLocation and textFontSize and textColour) == None:
             self.renderedSurface = renderedImage
