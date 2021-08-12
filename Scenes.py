@@ -127,8 +127,6 @@ def Tutorial(window, charList, layersDict):
         # --> see Character class for more on diagonal velocity
         plyr.diagonalVelocity[0] = plyr_deltaHoriz * plyr.diagonalSpeed[0]
         plyr.diagonalVelocity[1] = plyr_deltaVert * plyr.diagonalSpeed[1]
-        # if player is going left, flip sprite
-        plyr.flipSprite = keys[pygame.K_LEFT]
 
         # if the player is going diagonally, assign the diagonal speed
         if plyr_deltaHoriz != 0 and plyr_deltaVert != 0:
@@ -155,6 +153,14 @@ def Tutorial(window, charList, layersDict):
         if (plyr.velocity[0] > 0 or plyr.velocity[1] > 0) and has_moved == False:
             has_moved = True
         
+        if plyr.velocity < 0:
+            plyr.flipSprite = True
+        elif plyr.velocity > 0:
+            plyr.flipSprite = False
+        else:
+            print(plyr.flipSprite)
+            # if player is at rest, then keep it at what it was before
+            pass
 
         # add the velocity to the player's position
         plyr.rect.x += plyr.velocity[0]
@@ -164,6 +170,8 @@ def Tutorial(window, charList, layersDict):
             enemy.velocity[0] = -enemy.velocity[0]
         if enemy.rect.y < 0 or enemy.rect.y + enemy.rect.height > window.height:
             enemy.velocity[1] = -enemy.velocity[1]
+
+        
 
         enemy.rect.x += enemy.velocity[0]
 
@@ -567,8 +575,6 @@ def Game(window, layersDict, charList):
                     gameState = Play(charList)
 
 
-
-
         # Velocity
 
         # assigning the direction to the player's velocity
@@ -581,11 +587,15 @@ def Game(window, layersDict, charList):
         plyr.diagonalVelocity[0] = plyr_deltaHoriz * plyr.diagonalSpeed[0] 
         plyr.diagonalVelocity[1] = plyr_deltaVert * plyr.diagonalSpeed[1]
         # if player is going left, flip sprite
-        plyr.flipSprite = keys[pygame.K_LEFT]
 
         # if the player is going diagonally, assign the diagonal speed
         if plyr_deltaHoriz != 0 and plyr_deltaVert != 0:
             plyr.velocity = plyr.diagonalVelocity
+
+        if plyr.velocity[0] < 0:
+            plyr.flipSprite = True
+        elif plyr.velocity[0] > 0:
+            plyr.flipSprite = False
 
 
         # Restrictions

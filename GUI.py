@@ -40,10 +40,7 @@ class Layer (pygame.sprite.Sprite):
         self.rect = self.layerRender.renderedSurface.get_rect(center=(self.pos[0], self.pos[1]))
         self.rect.size = [self.rect.width, self.rect.height]
 
-        if self.layerRender.originalText == "":
-            self.image = pygame.transform.scale(self.layerRender.renderedSurface, self.rect)
-        else:
-            self.image = pygame.Surface(self.rect.size)
+        self.image = pygame.Surface(self.rect.size)
 
     def OnHover(self):
         try:
