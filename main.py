@@ -70,8 +70,8 @@ def Initialisations():
         "pauseLogo":    GUI.Layer([gameWindow.width - 35, 35], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/pause.bmp"), (35, 35)), is_button=True),
         "pauseText":    GUI.Layer([gameWindow.width/2, 260], gameWindow, text="Settings", textFontLocation="Fonts/titlefont.ttf", textFontSize=35, textColour=(255, 255, 255), is_active=False),
         "homeLogo":     GUI.Layer([gameWindow.width / 2, 320], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)), is_button=True, is_active=False),
-        "quitLogo":     GUI.Layer([gameWindow.width / 2, 395], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/play.bmp"), (30, 30)), is_button=True, is_active=False),
-        "resumeLogo":   GUI.Layer([gameWindow.width / 2, 475], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit.bmp"), (30, 30)), is_button=True, is_active=False),
+        "quitLogo":     GUI.Layer([gameWindow.width / 2, 395], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit.bmp"), (30, 30)), is_button=True, is_active=False),
+        "resumeLogo":   GUI.Layer([gameWindow.width / 2, 475], gameWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/play.bmp"), (30, 30)), is_button=True, is_active=False),
     }
 
     # dictionary containing instances of custom button class, located on menu window
