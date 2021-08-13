@@ -135,7 +135,7 @@ def Main():
 
     gameState = Scenes.Game(gameWindow, gameLayersDict, charList)
 
-    if gameState == "You Died" or gameState == "All Humans Died" or gameState == "Victory":
+    if gameState in ('You Died', 'All Humans Died', 'Victory'):
         gameState = Scenes.TitleScreen(menuWindow, endgameLayersDict, gameState)
 
     return gameState

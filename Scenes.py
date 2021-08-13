@@ -135,7 +135,7 @@ def Tutorial(window, charList, layersDict):
         plyr.diagonalVelocity[1] = plyr_deltaVert * plyr.diagonalSpeed[1]
 
         # if the player is going diagonally, assign the diagonal speed
-        if plyr_deltaHoriz != 0 and plyr_deltaVert != 0:
+        if 0 not in (plyr_deltaHoriz, plyr_deltaVert):
             plyr.velocity = plyr.diagonalVelocity
 
         # Restrictions
@@ -593,7 +593,7 @@ def Game(window, layersDict, charList):
         # if player is going left, flip sprite
 
         # if the player is going diagonally, assign the diagonal speed
-        if plyr_deltaHoriz != 0 and plyr_deltaVert != 0:
+        if 0 not in (plyr_deltaHoriz, plyr_deltaVert):
             plyr.velocity = plyr.diagonalVelocity
 
         if plyr.velocity[0] < 0:
