@@ -87,7 +87,7 @@ def Tutorial(window, charList, layersDict):
                     # pause surface
                     window.layers.append(pygame.Surface((250, 325)))
                     # get the most recently added layer and fill it
-                    window.layers[len(window.layers) - 1].fill((pauseMenuBgColour))
+                    window.layers[-1].fill((pauseMenuBgColour))
                     mouseVisibility = True
                     layersDict["pauseText"].is_active = True
                     layersDict["homeLogo"].is_active = True
@@ -548,10 +548,10 @@ def Game(window, layersDict, charList):
                 if layersDict["pauseLogo"].IsLayerClicked() == True and layersDict["pauseLogo"].is_active and gameState == "Playing":
                     # pause surface
                     window.layers.append(pygame.Surface((250, 325)))
-                    settingsLyr = window.layers[len(window.layers) - 1]
+                    settingsLyr = window.layers[-1]
                     settingsLyr.fill(pauseMenuBgColour)
                     # get the most recently added layer and fill it
-                    window.layers[len(window.layers) - 1].fill(pauseMenuBgColour)
+                    window.layers[-1].fill(pauseMenuBgColour)
                     mouseVisibility = True
                     layersDict["pauseText"].is_active = True
                     layersDict["homeLogo"].is_active = True
