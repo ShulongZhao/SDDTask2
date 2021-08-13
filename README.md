@@ -3,7 +3,7 @@ Implementing Software Solutions (Group Project)
 ### Team Members:
 Naga Maddali, Shulong Zhao, Lalith Manne
 ## Prerequisites
-[pygame](https://github.com/pygame/pygame)
+[python](https://www.python.org/downloads/)
 ## Execution
 ### Windows
 Run `launcher.bat`
