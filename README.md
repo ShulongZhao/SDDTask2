@@ -1,4 +1,4 @@
-# SDDTask2
+# Invasions
 Implementing Software Solutions (Group Project)
 ### Team Members:
 Naga Maddali, Shulong Zhao, Lalith Manne
