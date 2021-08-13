@@ -7,7 +7,8 @@ Naga Maddali, Shulong Zhao, Lalith Manne
 ## Execution
 ### Windows
 Run `launcher.bat`
-### OSX
+### Unix and OSX (Linux and MacOS) 
 ```
+pip install pygame
 python3 main.py
 ```
