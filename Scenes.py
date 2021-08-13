@@ -72,7 +72,7 @@ def Tutorial(window, charList, layersDict):
                     and (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown)
                     and has_moved
                 ):
-                    if has_shot == False:
+                    if has_shot is False:
                         has_shot = True
                     plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 200, window)
                     plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
@@ -81,7 +81,7 @@ def Tutorial(window, charList, layersDict):
                     plyr.bullet.timeSinceLastCall = curTime
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if (mouseVisibility == True):
+                if mouseVisibility == True:
                     mouseVisibility = False
 
                 # Settings
