@@ -22,7 +22,7 @@ endgameLayersDict = None
 def Initialisations():
     global menuWindow, gameWindow, menuLayersDict, gameLayersDict, tutorialLayersDict, endgameLayersDict, charList
     # time
-    framerate = 40
+    framerate = 60
 
     # game properties
     gameTitle = "Invasions"
