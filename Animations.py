@@ -1,11 +1,12 @@
 import os
 
+
 class Animation:
     # increments every iteration to cycle through all frames
     animIdx = 0
 
-    def __init__(self, dir, cooldown, maxCycles):  
-        # directory containing all the animations 
+    def __init__(self, dir, cooldown, maxCycles):
+        # directory containing all the animations
         self.dir = dir
 
         # cooldowns and info for anim frame time control
@@ -35,15 +36,7 @@ class Animation:
             # remove any files that aren't '.bmp'
             if self.framesList[i].endswith(".bmp") == False:
                 self.framesList.remove(self.framesList[i])
-                # when element is removed, the next element becomes the same index as the one removed, 
+                # when element is removed, the next element becomes the same index as the one removed,
                 # therefore i should be looped again for next element
-                i -= 1   
+                i -= 1
             i += 1
-
-
-
-
-    
-            
-
-
