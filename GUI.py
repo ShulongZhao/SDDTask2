@@ -81,7 +81,7 @@ class Layer (pygame.sprite.Sprite):
         # if layer being rendered is text then..
         if self.renderedImage == None and (self.text and self.textFontLocation and self.textFontSize and self.textColour) != None:
             self.renderedFont = pygame.font.Font(self.textFontLocation, self.textFontSize)
-            self.renderedSurface = self.renderedFont.render(self.text, True, self.textColour, (0, 0, 0, 0))
+            self.renderedSurface = self.renderedFont.render(self.text, True, self.textColour, (255, 255, 255, 0))
         # else if the layer rendered is an image
         elif self.renderedImage != None and (self.text and self.textFontLocation and self.textFontSize and self.textColour) == None:
             self.renderedSurface = self.renderedImage
