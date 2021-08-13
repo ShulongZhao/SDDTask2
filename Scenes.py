@@ -268,8 +268,6 @@ def Tutorial(window, charList, layersDict):
             layer = layersDict[layerRef]
             if layer.is_active:
                 layer.Main()
-                for windowLayer in window.layers:
-                    layersDict["pauseText"].Surface_Renderer(windowLayer, (int(window.width/2 - windowLayer.get_width()/2), int(window.height/2 - windowLayer.get_height()/2)))
                 GUISpriteGroup.add(layer)
             elif layer.is_active == False:
                 GUISpriteGroup.remove(layer)
@@ -558,7 +556,7 @@ def Game(window, layersDict, charList):
                     settingsLyr = window.layers[-1]
                     settingsLyr.fill(pauseMenuBgColour)
                     # get the most recently added layer and fill it
-                    window.layers[-1].fill(pauseMenuBgColour)
+                    settingsLyr.fill(pauseMenuBgColour)
                     mouseVisibility = True
                     layersDict["pauseText"].is_active = True
                     layersDict["homeLogo"].is_active = True
@@ -577,7 +575,7 @@ def Game(window, layersDict, charList):
 
                 # resumes the game
                 elif layersDict["resumeLogo"].IsLayerClicked() == True and layersDict["resumeLogo"].is_active and gameState == "Paused":
-                    window.layers.pop(len(window.layers) - 1)
+                    window.layers.remove(settingsLyr)
                     mouseVisibility = False
                     layersDict["pauseText"].is_active = False
                     layersDict["homeLogo"].is_active = False

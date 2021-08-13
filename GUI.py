@@ -81,7 +81,7 @@ class Layer (pygame.sprite.Sprite):
         # if layer being rendered is text then..
         if self.renderedImage == None and (self.text and self.textFontLocation and self.textFontSize and self.textColour) != None:
             self.renderedFont = pygame.font.Font(self.textFontLocation, self.textFontSize)
-            self.renderedSurface = self.renderedFont.render(self.text, True, self.textColour, surface.get_at(surfaceLocation))
+            self.renderedSurface = self.renderedFont.render(self.text, True, self.textColour, (0, 0, 0, 0))
         # else if the layer rendered is an image
         elif self.renderedImage != None and (self.text and self.textFontLocation and self.textFontSize and self.textColour) == None:
             self.renderedSurface = self.renderedImage
@@ -91,11 +91,7 @@ class Layer (pygame.sprite.Sprite):
 
     def IsLayerClicked(self):
         # if layer is a button
-        if (
-            self.is_button
-            and (self.rect.left <= self.mouse[0] <= self.rect.right)
-                and (self.rect.top <= self.mouse[1] <= self.rect.bottom)
-        ):
+        if (self.is_button and (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom)):
             return True
 
         
