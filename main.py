@@ -77,7 +77,7 @@ def Initialisations():
     # dictionary containing instances of custom button class, located on menu window
     endgameLayersDict = {
         "homeLogo":     GUI.Layer([45*gameWindow.width/100, 1*gameWindow.height/2], menuWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/home.bmp"), (30, 30)), is_button=True, is_active=False),
-        "quit":         GUI.Layer([55*gameWindow.width/100, 1*gameWindow.height/2], menuWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit.bmp"), (30, 30)), is_button=True, is_active=False),
+        "Quit":         GUI.Layer([55*gameWindow.width/100, 1*gameWindow.height/2], menuWindow, renderedImage=pygame.transform.scale(pygame.image.load("Images/menusprites/quit.bmp"), (30, 30)), is_button=True, is_active=False),
     }
 
     # list of the directories containing PLAYER animation frames 
@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
     # if when running the game, it doesn't request to quit
     # then keep running the game
-    while programState != "Quit":
+    while programState not in ("Quit"):
         Initialisations()
         programState = Main()
 

@@ -67,11 +67,7 @@ def Tutorial(window, charList, layersDict):
                     mouseVisibility = True
 
                 # shoot bullet when space pressed
-                if (
-                    event.key == pygame.K_SPACE
-                    and (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown)
-                    and has_moved
-                ):
+                if (event.key == pygame.K_SPACE and (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown) and has_moved):
                     if has_shot is False:
                         has_shot = True
                     plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 200, window)
@@ -324,7 +320,7 @@ def TitleScreen(window, layersDict, programState=""):
                     if layer.IsLayerClicked() == True:
                         # exits loop and returns the name of the layer clicked
                         GUISpriteGroup.empty()
-                        return layer.text            
+                        return layerRef            
         
         GUISpriteGroup.draw(window.screen)
         pygame.display.update()
