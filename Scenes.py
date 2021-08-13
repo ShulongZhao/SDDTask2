@@ -67,15 +67,18 @@ def Tutorial(window, charList, layersDict):
                     mouseVisibility = True
 
                 # shoot bullet when space pressed
-                if event.key == pygame.K_SPACE:
-                    if (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown) and has_moved:
-                        if has_shot == False:
-                            has_shot = True
-                        plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 200, window)
-                        plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
-                        plyr.bullets.append(plyr.bullet)
+                if (
+                    event.key == pygame.K_SPACE
+                    and (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown)
+                    and has_moved
+                ):
+                    if has_shot == False:
+                        has_shot = True
+                    plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 200, window)
+                    plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
+                    plyr.bullets.append(plyr.bullet)
 
-                        plyr.bullet.timeSinceLastCall = curTime
+                    plyr.bullet.timeSinceLastCall = curTime
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if (mouseVisibility == True):
@@ -149,9 +152,11 @@ def Tutorial(window, charList, layersDict):
         if plyr.rect.y < enemy.rect.height + enemy.rect.y + 10:
             plyr.rect.y = enemy.rect.height + enemy.rect.y + 10
         # if the player is not dead, then the lower boundary is the human location
-        if plyr.health > 0:
-            if (plyr.rect.y + plyr.rect.height > 500 * (window.height / 720)):
-                plyr.rect.y = 500 * (window.height / 720) - plyr.rect.height
+        if (
+            plyr.health > 0
+            and (plyr.rect.y + plyr.rect.height > 500 * (window.height / 720))
+        ):
+            plyr.rect.y = 500 * (window.height / 720) - plyr.rect.height
         # else if the player has died, then they fall through the floor
 
 
@@ -528,16 +533,18 @@ def Game(window, layersDict, charList):
                 
 
                 # shoot bullet when space pressed
-                if event.key == pygame.K_SPACE:
-                    if (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown):
-                        plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 400, window)
-                        plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
-                        plyr.bullets.append(plyr.bullet)
+                if (
+                    event.key == pygame.K_SPACE
+                    and (curTime - plyr.bullet.timeSinceLastCall >= plyr.bullet.cooldown)
+                ):
+                    plyr.bullet = Bullet(plyr.bulletImage, [30, 15], [15, 0], (plyr.rect.centerx, plyr.rect.bottom), 400, window)
+                    plyr.bullet.InitVelocity(plyr.velocity, plyr.flipSprite)
+                    plyr.bullets.append(plyr.bullet)
 
-                        plyr.bullet.timeSinceLastCall = curTime
+                    plyr.bullet.timeSinceLastCall = curTime
 
-                        # initialises the animation
-                        InitAnim(plyr, plyr.animsDirList[2])
+                    # initialises the animation
+                    InitAnim(plyr, plyr.animsDirList[2])
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if (mouseVisibility == True): 
@@ -618,9 +625,11 @@ def Game(window, layersDict, charList):
             if plyr.rect.y < 0:
                 plyr.rect.y = 0
         # if the player is not dead, then the lower boundary is the human location
-        if plyr.health > 0:
-            if (plyr.rect.y + plyr.rect.height > 500 * (window.height / 720)):
-                plyr.rect.y = 500 * (window.height / 720) - plyr.rect.height
+        if (
+            plyr.health > 0
+            and (plyr.rect.y + plyr.rect.height > 500 * (window.height / 720))
+        ):
+            plyr.rect.y = 500 * (window.height / 720) - plyr.rect.height
         # else if the player has died, then they fall through the floor
 
 

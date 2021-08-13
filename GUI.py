@@ -91,8 +91,11 @@ class Layer (pygame.sprite.Sprite):
 
     def IsLayerClicked(self):
         # if layer is a button
-        if self.is_button:
-            if (self.rect.left <= self.mouse[0] <= self.rect.right) and (self.rect.top <= self.mouse[1] <= self.rect.bottom):
-                return True
+        if (
+            self.is_button
+            and (self.rect.left <= self.mouse[0] <= self.rect.right)
+                and (self.rect.top <= self.mouse[1] <= self.rect.bottom)
+        ):
+            return True
 
         
